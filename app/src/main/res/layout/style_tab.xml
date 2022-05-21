@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/tabImageView"
+        android:layout_width="68px"
+        android:layout_height="68px"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/tabTextView"
+        android:layout_width="128px"
+        android:layout_height="30px"
+        android:gravity="center"
+        android:lines="1"
+        android:textSize="30px"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12px"/>
+
+
+</LinearLayout>
