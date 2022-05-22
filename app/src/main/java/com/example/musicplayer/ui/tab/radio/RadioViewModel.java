@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 public class RadioViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
+    private MutableLiveData<Integer> mIndex = new MutableLiveData<>();
 
     public RadioViewModel() {
         mText = new MutableLiveData<>();
@@ -16,4 +17,9 @@ public class RadioViewModel extends ViewModel {
     public LiveData<String> getText() {
         return mText;
     }
+
+    public void setIndex(int index) {
+        mIndex.setValue(index);
+    }
+
 }

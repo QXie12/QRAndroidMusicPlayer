@@ -1,4 +1,4 @@
-package com.example.musicplayer.ui.tab.mine;
+package com.example.musicplayer.ui.tab.library;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,17 +11,18 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import com.example.musicplayer.databinding.FragmentMineBinding;
 
-public class MineFragment extends Fragment {
+import com.example.musicplayer.databinding.FragmentLibraryBinding;
+
+public class LibraryFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
 
     private TextView mTextView;
-    private MineViewModel mineViewModel;
-    private FragmentMineBinding binding;
+    private LibraryViewModel radioViewModel;
+    private FragmentLibraryBinding binding;
 
-    public static MineFragment newInstance(int index){
-        MineFragment fragment = new MineFragment();
+    public static LibraryFragment newInstance(int index){
+        LibraryFragment fragment = new LibraryFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_SECTION_NUMBER, index);
         fragment.setArguments(bundle);
@@ -31,23 +32,23 @@ public class MineFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mineViewModel = new ViewModelProvider(this).get(MineViewModel.class);
+        radioViewModel = new ViewModelProvider(this).get(LibraryViewModel.class);
         int index = 1;
         if (getArguments() != null) {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
-        mineViewModel.setIndex(index);
+        radioViewModel.setIndex(index);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentMineBinding.inflate(inflater, container, false);
+        binding = FragmentLibraryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.mainText;
+        final TextView textView = binding.libraryText;
 
-        mineViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        radioViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
@@ -61,8 +62,5 @@ public class MineFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-    
-    
-    
-    
 }
+

@@ -4,10 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.musicplayer.adapter.TabFragmentAdapter;
+import com.example.musicplayer.databinding.AppBarMainBinding;
+import com.example.musicplayer.databinding.ContentMainBinding;
 import com.example.musicplayer.ui.tab.mine.MineFragment;
-import com.example.musicplayer.ui.tab.musicLibrary.MusicLibraryFragment;
+import com.example.musicplayer.ui.tab.library.LibraryFragment;
 import com.example.musicplayer.ui.tab.radio.RadioFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -31,14 +35,18 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
-
     private List<Fragment> mFragments;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
 
+    private String[] mTitles = {"我的","乐库","电台"};
+    private int[] mImages = {R.drawable.ic_menu_slideshow, R.drawable.ic_menu_gallery, R.drawable.ic_menu_camera};
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -50,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
@@ -58,13 +67,16 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
                 .setOpenableLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        NavController navController = Navigation.findNavController(this, R.id.nav_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
 
         //标签页
         initView();
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -75,39 +87,38 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        NavController navController = Navigation.findNavController(this, R.id.nav_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
 
-
     private void initView(){
         //实例化组件
-        mViewPager = (ViewPager) findViewById(R.id.tabViewPager);
-        mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        mViewPager = binding.appBarMain.tabMain.tabViewPager;
+        mTabLayout = binding.appBarMain.tabMain.tabLayout;
 
         //初始化分页面的 Fragment，并将其添加到列表中
         initFragment();
 
         //实例化 FragmentPagerAdapter 并将 Fragment 列表传入
         TabFragmentAdapter adapter = new TabFragmentAdapter(this, getSupportFragmentManager(), mFragments);
-
         //将实例化好的 Adapter 设置到 ViewPager 中
         mViewPager.setAdapter(adapter);
-        //设置打开时的默认页面
-        mViewPager.setCurrentItem(1);
-
         //将 ViewPager 绑定到 TabLayout上
         mTabLayout.setupWithViewPager(mViewPager);
+
+//        //设置打开时的默认页面
+//        mViewPager.setCurrentItem(1);
+
 
         //进行 Tab自定义布局的实例化和添加
         for(int i = 0; i < 3; i++){
             //实例化 Tab 布局
-            View view = LayoutInflater.from(this).inflate(R.layout.fragment_main, null);
-//            ImageView imageView = (ImageView)view.findViewById(R.id.tabImageView);
-//            TextView textView = (TextView)view.findViewById(R.id.tabTextView);
-//            textView.setText(mTitles[i]);
-//            imageView.setImageResource(mImages[i]);
+            View view = LayoutInflater.from(this).inflate(R.layout.style_tab, null);
+            ImageView imageView = (ImageView)view.findViewById(R.id.tabImageView);
+            TextView textView = (TextView)view.findViewById(R.id.tabTextView);
+            textView.setText(mTitles[i]);
+            imageView.setImageResource(mImages[i]);
 
             //将实例化好的 Tab 布局设置给当前的 Tab即可
             mTabLayout.getTabAt(i).setCustomView(view);
@@ -117,9 +128,9 @@ public class MainActivity extends AppCompatActivity {
     //添加每个切换页面的Fragment
     private void initFragment(){
         mFragments = new ArrayList<>();
-        mFragments.add(MineFragment.newInstance("我的"));
-        mFragments.add(MusicLibraryFragment.newInstance("乐库"));
-        mFragments.add(RadioFragment.newInstance("电台"));
+        mFragments.add(MineFragment.newInstance(1));
+        mFragments.add(LibraryFragment.newInstance(2));
+        mFragments.add(RadioFragment.newInstance(3));
     }
 
 }
