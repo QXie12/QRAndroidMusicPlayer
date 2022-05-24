@@ -21,7 +21,9 @@
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
+            android:layout_marginTop="603dp"
             android:minHeight="?attr/actionBarSize">
 
             <com.google.android.material.tabs.TabItem
@@ -39,7 +41,7 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:icon="@drawable/ic_menu_camera"
+                android:icon="@drawable/ic_music"
                 android:text="@string/head_television" />
         </com.google.android.material.tabs.TabLayout>
     </RelativeLayout>
