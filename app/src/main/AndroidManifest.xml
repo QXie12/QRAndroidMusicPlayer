@@ -20,6 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".HomeActivity" android:exported="false" />
+        <activity android:name=".LocalMusicActivity" android:exported="false"
+            android:theme="@style/Theme.MusicPlayer.NoActionBar"/>
     </application>
 
 </manifest>

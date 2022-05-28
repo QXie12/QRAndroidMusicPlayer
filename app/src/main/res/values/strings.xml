@@ -17,5 +17,12 @@
     <string name="head_mine">我的</string>
     <string name="head_music_library">乐库</string>
     <string name="head_television">电台</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="single_song">单曲</string>
+    <string name="singer">歌手</string>
+    <string name="album">专辑</string>
+    <string name="folder">文件夹</string>
 
 </resources>

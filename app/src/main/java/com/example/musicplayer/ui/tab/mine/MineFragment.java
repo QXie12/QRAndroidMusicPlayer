@@ -1,5 +1,6 @@
 package com.example.musicplayer.ui.tab.mine;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.example.musicplayer.LocalMusicActivity;
+import com.example.musicplayer.MainActivity;
+import com.example.musicplayer.R;
 import com.example.musicplayer.databinding.FragmentMineBinding;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MineFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -53,6 +60,24 @@ public class MineFragment extends Fragment {
                 textView.setText(s);
             }
         });
+        CircleImageView recommend_music = binding.recommendMusic;
+        CircleImageView local_music = binding.recommendMusic;
+        CircleImageView download_music = binding.recommendMusic;
+        CircleImageView recent_music = binding.recommendMusic;
+        CircleImageView favorite_music = binding.recommendMusic;
+
+        recommend_music.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                MainActivity mainActivity = (MainActivity) getActivity();
+                intent.setClass(mainActivity, LocalMusicActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
         return root;
     }
 

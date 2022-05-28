@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintBottom_toTopOf="@+id/lunboLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +40,7 @@
         android:layout_width="408dp"
         android:layout_height="82dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lunboLayout"
@@ -50,13 +50,16 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/recommend_layout"
             android:layout_width="60dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            >
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/recommend_music"
-                android:layout_width="60dp"
+                android:layout_width="50dp"
                 android:layout_height="44dp"
                 android:layout_marginTop="12dp"
+                android:layout_marginLeft="5dp"
+
                 android:src="@drawable/ic_radio"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -89,9 +92,11 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/local_music"
-                android:layout_width="60dp"
+                android:layout_width="50dp"
                 android:layout_height="44dp"
                 android:layout_marginTop="12dp"
+                android:layout_marginLeft="5dp"
+
                 android:src="@drawable/ic_music"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -124,9 +129,11 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/download_music"
-                android:layout_width="60dp"
+                android:layout_width="50dp"
                 android:layout_height="44dp"
                 android:layout_marginTop="12dp"
+                android:layout_marginLeft="5dp"
+
                 android:src="@drawable/ic_save_alt"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -159,9 +166,11 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/recent_music"
-                android:layout_width="60dp"
+                android:layout_width="50dp"
                 android:layout_height="44dp"
                 android:layout_marginTop="12dp"
+                android:layout_marginLeft="5dp"
+
                 android:src="@drawable/ic_play_circle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -193,9 +202,11 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/favorite_music"
-                android:layout_width="60dp"
+                android:layout_width="50dp"
                 android:layout_height="44dp"
                 android:layout_marginTop="12dp"
+                android:layout_marginLeft="5dp"
+
                 android:src="@drawable/ic_favorite"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -231,7 +242,7 @@
         android:id="@+id/scrollView3"
         android:layout_width="415dp"
         android:layout_height="361dp"
-        app:layout_constraintBottom_toTopOf="@+id/divider2"
+        app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider"
@@ -269,87 +280,10 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="410dp"
-        android:layout_height="67dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.275"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_image"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/jay1"
-                app:civ_border_color="#FF000000"
-                app:civ_border_width="2dp"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="3dp" />
-
-            <TextView
-                android:id="@+id/music_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="听见下雨的声音"
-                app:layout_constraintBottom_toTopOf="@+id/music_author"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.051"
-                app:layout_constraintStart_toEndOf="@+id/profile_image"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
-
-            <TextView
-                android:id="@+id/music_author"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:text="周杰伦"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.04"
-                app:layout_constraintStart_toEndOf="@+id/profile_image" />
-
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="29dp"
-                android:layout_height="29dp"
-                android:src="@drawable/ic_music_on"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.816"
-                app:layout_constraintStart_toEndOf="@+id/profile_image"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/ic_format_indent_increase"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView5"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
 
 
 
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="409dp"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toTopOf="@+id/cardView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider"
-        app:layout_constraintVertical_bias="1.0" />
+
 
 
 

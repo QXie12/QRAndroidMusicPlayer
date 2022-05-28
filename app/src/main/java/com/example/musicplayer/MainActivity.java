@@ -1,7 +1,9 @@
 package com.example.musicplayer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.ImageView;
@@ -16,6 +18,7 @@ import com.example.musicplayer.ui.tab.radio.RadioFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -30,6 +33,8 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,13 +56,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
-        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
@@ -71,9 +76,26 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.nav_home: click_home();
+                        break;
+                    case R.id.nav_gallery:
+                        break;
+                    case R.id.nav_slideshow:
+                        break;
+                }
+                drawer.closeDrawers();
+                return false;
+            }
+        });
 
         //标签页
         initView();
+
+
     }
 
 
@@ -107,10 +129,6 @@ public class MainActivity extends AppCompatActivity {
         //将 ViewPager 绑定到 TabLayout上
         mTabLayout.setupWithViewPager(mViewPager);
 
-//        //设置打开时的默认页面
-//        mViewPager.setCurrentItem(1);
-
-
         //进行 Tab自定义布局的实例化和添加
         for(int i = 0; i < 3; i++){
             //实例化 Tab 布局
@@ -123,6 +141,10 @@ public class MainActivity extends AppCompatActivity {
             //将实例化好的 Tab 布局设置给当前的 Tab即可
             mTabLayout.getTabAt(i).setCustomView(view);
         }
+
+
+
+
     }
 
     //添加每个切换页面的Fragment
@@ -131,6 +153,12 @@ public class MainActivity extends AppCompatActivity {
         mFragments.add(MineFragment.newInstance(1));
         mFragments.add(LibraryFragment.newInstance(2));
         mFragments.add(RadioFragment.newInstance(3));
+    }
+
+    public void click_home() {
+        Intent intent = new Intent();
+        intent.setClass(MainActivity.this, HomeActivity.class);
+        startActivity(intent);
     }
 
 }
