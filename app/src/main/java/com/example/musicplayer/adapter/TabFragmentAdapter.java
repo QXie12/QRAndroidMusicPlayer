@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import java.util.List;
-
+//切换首页底部tab的adapter
 public class TabFragmentAdapter extends FragmentPagerAdapter {
 
     private List<Fragment> fragmentList;

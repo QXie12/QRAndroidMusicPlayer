@@ -13,6 +13,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.musicplayer.adapter.MusicFragmentAdapter;
 import com.example.musicplayer.adapter.TabFragmentAdapter;
+import com.example.musicplayer.common.MusicUtil;
 import com.example.musicplayer.databinding.ActivityLocalsongBinding;
 import com.example.musicplayer.databinding.ActivityMainBinding;
 import com.example.musicplayer.ui.localMusic.SingerFragment;
@@ -38,6 +39,8 @@ public class LocalMusicActivity extends AppCompatActivity {
             R.drawable.ic_menu_camera,
             R.drawable.ic_menu_camera};
 
+    //读取歌曲
+    MusicUtil musicUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,7 @@ public class LocalMusicActivity extends AppCompatActivity {
         Log.e("初始化前","本地音乐");
         initTab();
         Log.e("初始化后","本地音乐");
+        musicUtil = new MusicUtil(this);
 
 //        MusicFragmentAdapter musicFragmentAdapter = new MusicFragmentAdapter(this, getSupportFragmentManager(),mFragments);
         //实例化组件

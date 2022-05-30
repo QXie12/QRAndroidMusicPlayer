@@ -12,7 +12,7 @@ import com.example.musicplayer.LocalMusicActivity;
 import com.example.musicplayer.R;
 
 import java.util.List;
-
+//切换本地音乐tab页面的adapter
 public class MusicFragmentAdapter extends FragmentPagerAdapter {
 
     private List<Fragment> fragmentList;
