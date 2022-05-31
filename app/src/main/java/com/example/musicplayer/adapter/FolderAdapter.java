@@ -1,27 +1,27 @@
 package com.example.musicplayer.adapter;
 
 import android.content.Context;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+        import android.util.Log;
+        import android.view.LayoutInflater;
+        import android.view.View;
+        import android.view.ViewGroup;
+        import android.widget.ImageView;
+        import android.widget.TextView;
 
-import androidx.recyclerview.widget.RecyclerView;
+        import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.musicplayer.R;
-import com.example.musicplayer.bean.MusicInfoModel;
+        import com.example.musicplayer.R;
+        import com.example.musicplayer.bean.MusicInfoModel;
 
-import java.util.List;
+        import java.util.List;
 //单曲每一个recyclerlistitem的adapter
-public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.BaseViewHolder> {
+public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.BaseViewHolder> {
 
     private List<MusicInfoModel> mDatas;
     private Context mContext;
 
 
-    public MusicAdapter(Context context, List<MusicInfoModel> data) {
+    public FolderAdapter(Context context, List<MusicInfoModel> data) {
         this.mDatas = data;
         this.mContext = context;
     }
@@ -31,7 +31,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.BaseViewHold
         //创建不同的 ViewHolder
         View view = null;
         //根据viewtype来创建条目
-        view = LayoutInflater.from(mContext).inflate(R.layout.item, parent, false);
+        view = LayoutInflater.from(mContext).inflate(R.layout.folder_item, parent, false);
         return new NormalHolder(view);
 
     }
@@ -82,9 +82,9 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.BaseViewHold
 
         public NormalHolder(View itemView) {
             super(itemView);
-            songName =  itemView.findViewById(R.id.list_item);
-            singer = itemView.findViewById(R.id.item_content);
-            cover =  itemView.findViewById(R.id.avatar);
+            songName =  itemView.findViewById(R.id.folder_list_item);
+            singer = itemView.findViewById(R.id.folder_content);
+            cover =  itemView.findViewById(R.id.folder_avatar);
 
 
         }

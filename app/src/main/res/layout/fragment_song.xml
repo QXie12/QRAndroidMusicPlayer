@@ -6,13 +6,13 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recy_list"
+        android:id="@+id/song_list"
         android:layout_width="255dp"
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
     <com.example.musicplayer.widget.LetterSideView
-        android:id="@+id/fastIndexView"
+        android:id="@+id/songIndexView"
         android:layout_width="25dp"
         android:layout_height="match_parent"
         app:layout_constraintHeight_percent="0.7"

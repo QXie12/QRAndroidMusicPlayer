@@ -10,9 +10,14 @@ import android.provider.MediaStore.Audio.Media;
 import android.util.Log;
 
 import com.example.musicplayer.bean.MusicInfoModel;
+import com.github.stuxuhai.jpinyin.PinyinException;
+import com.github.stuxuhai.jpinyin.PinyinFormat;
+import com.github.stuxuhai.jpinyin.PinyinHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
+
 //读取本地音乐
 public class MusicUtil {
     private static List<MusicInfoModel> musicList=new ArrayList<>();
@@ -35,7 +40,7 @@ public class MusicUtil {
             Media.SIZE,//        歌曲文件的大小 ：MediaStore.Audio.Media.SIZE
             Media.ALBUM_ID//        专辑ID
     };
-
+    //构造函数去获取歌曲
     public MusicUtil(Context context){
         this.context = context;
         //创建ContentResolve对象
@@ -73,17 +78,29 @@ public class MusicUtil {
             int duration=cursor.getInt(durationCol);//总播放时长
             long size=cursor.getLong(sizeCol);//文件大小
             int albumId = cursor.getInt(albumIdCol);
-            Log.e("展示的名字",title+" "+ album+ " " +displayName);
-            Log.e("读取到的歌曲","歌曲id"+id+"歌曲名称"+title+"歌曲专辑"+album+"歌曲路径" +data+"歌手名"+singer+"发行日期"+year+"总播放时长"+duration+"文件大小"+size);
+            Log.e("1、展示的名字",title+" "+ album+ " " +displayName);
+            Log.e("2、读取到的歌曲","歌曲id:"+id+"歌曲名称:"+title+"歌曲专辑:"+album+"歌曲路径:" +data+"歌手名:"+singer+"发行日期:"+year+"总播放时长:"+duration+"文件大小:"+size);
 
 
             MusicInfoModel musicInfoModel = new MusicInfoModel(title,singer,album,duration,R.drawable.ic_gai);
+            //处理有时候歌曲名异常显示的情况，先分割出来歌曲名和歌手名
             if (title.contains("-")) {
                 String[] str = title.split("-");
                 musicInfoModel.setSinger(str[0].trim());
                 musicInfoModel.setMusicName(str[1].trim());
+                Log.e("3、这首歌的歌名是"," "+musicInfoModel.getMusicName());
+                Log.e("4、这首歌的歌手是"," "+musicInfoModel.getSinger());
+
             }
+            //设置专辑封面
             musicInfoModel.setBitmap(getAlbumArt(albumId));
+            //设置各类排序的id
+//            try{
+//                setSortId(musicInfoModel);
+//            }catch (PinyinException e){
+//                e.printStackTrace();
+//            }
+            //将歌曲添加到静态列表里
             musicList.add(musicInfoModel);
         }while (cursor.moveToNext());
         cursor.close();
@@ -106,14 +123,111 @@ public class MusicUtil {
         return bm;
     }
 
+    //把歌曲的各种排序id给设置一下
+//    public static MusicInfoModel setSortId(MusicInfoModel music) throws PinyinException {
+//        //歌曲名排序id
+//        if(checkFirstIsEnglish(music.getMusicName())){
+//            String name = music.getMusicName();
+//            music.setSortSongId(""+Character.toLowerCase(name.charAt(0)));
+//            music.setSortSongName(name);
+//        }else{
+//            String pingYin = PinyinHelper.convertToPinyinString(music.getMusicName(), " ", PinyinFormat.WITHOUT_TONE);
+//            Log.e("转换",pingYin);
+//            music.setSortSongId( pingYin.substring(0, 1));
+//            music.setSortSongName(pingYin);
+//        }
+//        //歌手排序id
+//        if(checkFirstIsEnglish(music.getSinger())){
+//            String singerName = music.getSinger();
+//            music.setSortSingerId(""+Character.toLowerCase(singerName.charAt(0)));
+//            music.setSortSingerName(singerName);
+//        }else{
+//            String pingYin = PinyinHelper.convertToPinyinString(music.getSinger(), " ", PinyinFormat.WITHOUT_TONE);
+//            Log.e("转换",pingYin);
+//            music.setSortSingerId( pingYin.substring(0, 1));
+//            music.setSortSingerName(pingYin);
+//        }
+//        //专辑排序id
+//        if(checkFirstIsEnglish(music.getAlbum())){
+//            String albumName = music.getAlbum();
+//            music.setSortAlbumId(""+Character.toLowerCase(albumName.charAt(0)));
+//            music.setSortAlbumName(albumName);
+//        }else{
+//            String pingYin = PinyinHelper.convertToPinyinString(music.getAlbum(), " ", PinyinFormat.WITHOUT_TONE);
+//            Log.e("转换",pingYin);
+//            music.setSortAlbumId( pingYin.substring(0, 1));
+//            music.setSortAlbumName(pingYin);
+//        }
+
+//        return music;
+//    }
+
+//    public static void  setSortSinger(){
+//        for (MusicInfoModel music : musicList) {
+//            try {
+//                Log.e("判断歌手的排序"," "+music.getSinger()+"第一个字符"+music.getSinger().charAt(0));
+//                String firstChar = music.getSinger().charAt(0)+"";
+//                if(checkFirstIsEnglish(firstChar) || firstChar.matches("[\\u4E00-\\u9FA5]")) {
+//                    if (checkFirstIsEnglish(music.getSinger())) {
+//                        String singerName = music.getSinger();
+//                        music.setSortSingerId("" + Character.toLowerCase(singerName.charAt(0)));
+//                        music.setSortSingerName(singerName);
+//                    } else {
+//                        String pingYin = PinyinHelper.convertToPinyinString(music.getSinger(), " ", PinyinFormat.WITHOUT_TONE);
+//                        Log.e("转换", pingYin);
+//                        music.setSortSingerId(pingYin.substring(0, 1));
+//                        music.setSortSingerName(pingYin);
+//                    }
+////                }
+////                if(music.getSinger().matches("[^\\u4E00-\\u9FA5A-Za-z]")){
+//                    //歌手排序id
+////                    if(music.getSinger().matches("[^A-Za-z]")){
+////                        String pingYin = PinyinHelper.convertToPinyinString(music.getSinger(), " ", PinyinFormat.WITHOUT_TONE);
+////                        music.setSortSingerId(pingYin.substring(0, 1));
+////                        music.setSortSingerName(pingYin);
+////                        Log.e("以开头的歌手",music.getSortSingerId()+" "+music.getSortSingerName());
+////
+////                       }else{
+////                        String singerName = music.getSinger();
+////                        music.setSortSingerId(""+Character.toLowerCase(singerName.charAt(0)));
+////                        music.setSortSingerName(singerName);
+////                        Log.e("以英文开头的歌手",music.getSortSingerId()+" "+music.getSortSingerName());
+////                    }
+//                }else{
+//                    music.setSortSingerId("#");
+//                    music.setSortSingerName(music.getSinger());
+//                    Log.e("以其他开头的歌手",music.getSortSingerId()+" "+music.getSortSingerName());
+//                }
+//            } catch (PinyinException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+
+    //判断一首歌是否字母开头
+//    public static boolean checkFirstIsEnglish(String string){
+//        char c = string.charAt(0);
+//        if((c>='a'&&c<='z')   ||   (c>='A'&&c<='Z')) {
+//            return   true;
+//        }else{
+//            return   false;
+//        }
+//    }
 
 
     public static List<MusicInfoModel> getMusicList() {
         return musicList;
     }
 
-    public void setMusicList(List<MusicInfoModel> musicList) {
-        this.musicList = musicList;
+
+    //判断一首歌是否字母开头
+    public static boolean checkFirstIsEnglish(String string){
+        char c = string.charAt(0);
+        if((c>='a'&&c<='z')   ||   (c>='A'&&c<='Z')) {
+            return   true;
+        }else{
+            return   false;
+        }
     }
 
 }

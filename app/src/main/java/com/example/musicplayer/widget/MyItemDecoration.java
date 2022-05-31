@@ -108,7 +108,6 @@ public class MyItemDecoration extends RecyclerView.ItemDecoration {
         int top = parent.getPaddingTop();
         int bottom = top + mTitleHeight;
 
-
         // 如果当前屏幕上第二个显示的item是下一组的的第一个，并且第一个被title覆盖，则开始移动上个title。
         // 原理就是不断改变title所在矩形的top与bottom的值。
         if (isFirst(position + 1) && firstVisibleView.getBottom() < mTitleHeight) {

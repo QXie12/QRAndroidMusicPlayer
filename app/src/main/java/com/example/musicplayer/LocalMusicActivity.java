@@ -33,11 +33,6 @@ public class LocalMusicActivity extends AppCompatActivity {
     private TabLayout mTabLayout;
     private List<Fragment> mFragments;
 
-    private String[] mTitles = {"单曲","专辑","歌手","文件夹"};
-    private int[] mImages = {R.drawable.ic_menu_slideshow,
-            R.drawable.ic_menu_gallery,
-            R.drawable.ic_menu_camera,
-            R.drawable.ic_menu_camera};
 
     //读取歌曲
     MusicUtil musicUtil;
@@ -51,15 +46,17 @@ public class LocalMusicActivity extends AppCompatActivity {
         Log.e("初始化前","本地音乐");
         initTab();
         Log.e("初始化后","本地音乐");
-        musicUtil = new MusicUtil(this);
-
+        //用于获取本地音乐
+//        if(musicUtil == null){
+//            musicUtil = new MusicUtil(this);
+//        }
+        MusicUtil musicUtil= new MusicUtil(this);
 //        MusicFragmentAdapter musicFragmentAdapter = new MusicFragmentAdapter(this, getSupportFragmentManager(),mFragments);
         //实例化组件
 //        mViewPager = binding.localViewpager;
 //        mViewPager.setAdapter(musicFragmentAdapter);
 //        mTabLayout = binding.localTabLayout;
 //        mTabLayout.setupWithViewPager(mViewPager);
-
 
 
     }
@@ -73,8 +70,6 @@ public class LocalMusicActivity extends AppCompatActivity {
         title_list.add("专辑");
         title_list.add("歌手");
         title_list.add("文件夹");
-
-
 
         //实例化 FragmentPagerAdapter 并将 Fragment 列表传入
         MusicFragmentAdapter adapter = new MusicFragmentAdapter(this, getSupportFragmentManager(), mFragments, title_list);
@@ -104,9 +99,11 @@ public class LocalMusicActivity extends AppCompatActivity {
     private void initFragment(){
         mFragments = new ArrayList<>();
         mFragments.add(SongFragment.newInstance(1));
-        mFragments.add(SingerFragment.newInstance("aaa","bbb"));
-        mFragments.add(SongFragment.newInstance(3));
-        mFragments.add(SongFragment.newInstance(4));
+//        mFragments.add(SongFragment.newInstance(2));
+
+        mFragments.add(SingerFragment.newInstance(2));
+        mFragments.add(SingerFragment.newInstance(3));
+        mFragments.add(SingerFragment.newInstance(4));
 
     }
 }

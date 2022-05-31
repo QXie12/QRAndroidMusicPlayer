@@ -30,8 +30,10 @@
         <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/drawable/side_nav_bar.xml" value="0.1855" />
         <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/activity_localsong.xml" value="0.1625" />
         <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/album_item.xml" value="0.2109375" />
         <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/app_bar_main.xml" value="0.176" />
         <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/content_main.xml" value="0.10400000000000001" />
+        <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/folder_item.xml" value="0.184375" />
         <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/fragment_album.xml" value="0.221875" />
         <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/fragment_folder.xml" value="0.221875" />
         <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/fragment_gallery.xml" value="0.176" />
@@ -49,6 +51,8 @@
         <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/local_music.xml" value="0.221875" />
         <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/local_song_tab_main.xml" value="0.221875" />
         <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/nav_header_main.xml" value="0.25364583333333335" />
+        <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/singer_item.xml" value="0.22552083333333334" />
+        <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/song_item.xml" value="0.2109375" />
         <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/songitem.xml" value="0.1" />
         <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/style_tab.xml" value="0.1" />
         <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/tab_main.xml" value="0.2" />
