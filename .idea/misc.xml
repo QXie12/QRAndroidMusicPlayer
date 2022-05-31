@@ -4,12 +4,15 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/AndroidStudio/AndroidStudioProjects/sideBar/app/src/main/res/drawable/me_drawable.xml" value="0.1" />
+        <entry key="..\:/AndroidStudio/AndroidStudioProjects/sideBar/app/src/main/res/drawable/play_songbt.xml" value="0.1805" />
+        <entry key="..\:/AndroidStudio/AndroidStudioProjects/sideBar/app/src/main/res/layout/activity_list_view.xml" value="0.1" />
         <entry key="..\:/AndroidStudio/AndroidStudioProjects/sideBar/app/src/main/res/layout/activity_main.xml" value="0.22" />
-        <entry key="..\:/AndroidStudio/AndroidStudioProjects/sideBar/app/src/main/res/layout/activity_order.xml" value="0.23072916666666668" />
+        <entry key="..\:/AndroidStudio/AndroidStudioProjects/sideBar/app/src/main/res/layout/activity_order.xml" value="0.22" />
         <entry key="..\:/AndroidStudio/AndroidStudioProjects/sideBar/app/src/main/res/layout/activity_order2.xml" value="0.23072916666666668" />
-        <entry key="..\:/AndroidStudio/AndroidStudioProjects/sideBar/app/src/main/res/layout/find.xml" value="0.1" />
+        <entry key="..\:/AndroidStudio/AndroidStudioProjects/sideBar/app/src/main/res/layout/find.xml" value="0.10638297872340426" />
         <entry key="..\:/AndroidStudio/AndroidStudioProjects/sideBar/app/src/main/res/layout/home.xml" value="0.1" />
         <entry key="..\:/AndroidStudio/AndroidStudioProjects/sideBar/app/src/main/res/layout/my.xml" value="0.1" />
+        <entry key="..\:/AndroidStudio/AndroidStudioProjects/sideBar/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.155" />
       </map>
     </option>
   </component>

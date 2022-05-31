@@ -30,14 +30,6 @@ android:layout_height="match_parent">
         android:gravity="left"
         android:onClick="myInformation"
         android:background="@drawable/nijile" />
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:id="@+id/background02"
-        android:src="@drawable/rouhuhu"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:scaleType="centerCrop"/>
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
@@ -100,24 +92,35 @@ android:background="#ffffff">
     android:id="@+id/menu_Main"
     android:orientation="vertical">
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/menu_Main_height"
-        android:orientation="horizontal">
+        android:background="@drawable/side_nav_bar"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        android:orientation="vertical"
+        android:gravity="bottom" android:layout_height="100dp">
+
         <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/qisi"/>
+            android:id="@+id/imageView"
+            android:layout_width="70dp"
+            android:layout_height="58dp"
+            android:contentDescription="@string/nav_header_desc"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/avatar1" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/user_name"
+            android:textColor="@color/black"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
-            android:textSize="24dp"
-            android:id="@+id/menu_Main_height_Text"
-            android:text="手机尾号:1848"/>
+            android:text="@string/user_email"
+            android:textColor="@color/black"
+            android:id="@+id/textView" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

@@ -9,6 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SideBar">
+        <service
+            android:name=".MusicService"
+            android:enabled="true"
+            android:exported="true"></service>
 
         <activity
             android:name=".OrderActivity"
