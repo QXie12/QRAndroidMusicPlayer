@@ -3,13 +3,9 @@ package com.example.musicplayer.adapter;
 import android.content.Context;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
-import com.example.musicplayer.LocalMusicActivity;
-import com.example.musicplayer.R;
 
 import java.util.List;
 //切换本地音乐tab页面的adapter

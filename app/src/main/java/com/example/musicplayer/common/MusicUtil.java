@@ -9,18 +9,33 @@ import android.net.Uri;
 import android.provider.MediaStore.Audio.Media;
 import android.util.Log;
 
+import com.example.musicplayer.bean.Album;
 import com.example.musicplayer.bean.MusicInfoModel;
+import com.example.musicplayer.bean.Singer;
 import com.github.stuxuhai.jpinyin.PinyinException;
 import com.github.stuxuhai.jpinyin.PinyinFormat;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
 //读取本地音乐
 public class MusicUtil {
-    private static List<MusicInfoModel> musicList=new ArrayList<>();
+    //所有歌曲列表
+    private static List<MusicInfoModel> allMusicList = new ArrayList<>();
+    //所有分类歌手歌曲列表
+    private static List<Singer> allSingerList = new ArrayList<>();
+    //所有专辑分类的歌曲列表
+    private static List<Album> allAlbumList = new ArrayList<>();
+
+
+    //所有歌手列表
+    private static HashMap<String,Integer> singerMap = new HashMap<>();
+    //所有专辑列表
+    private static HashMap<String,Integer> albumMap = new HashMap<>();
+
     private Context context;
 
 
@@ -29,18 +44,19 @@ public class MusicUtil {
     private Uri contentUri = Media.EXTERNAL_CONTENT_URI;
     //projection：选择的列; where：过滤条件; sortOrder：排序。
     private String[] projection = {
-            Media._ID,//        歌曲ID：MediaStore.Audio.Media._ID
-            Media.TITLE,//        歌曲的名称 ：MediaStore.Audio.Media.TITLE
-            Media.ALBUM,//        歌曲的专辑名：MediaStore.Audio.Media.ALBUM
-            Media.ARTIST,//        歌曲的歌手名： MediaStore.Audio.Media.ARTIST
-            Media.DATA,//        歌曲文件的全路径 ：MediaStore.Audio.Media.DATA
-            Media.DISPLAY_NAME,//        歌曲文件的名称：MediaStore.Audio.Media.DISPLAY_NAME
-            Media.YEAR,//        歌曲文件的发行日期：MediaStore.Audio.Media.YEAR
-            Media.DURATION,//        歌曲的总播放时长 ：MediaStore.Audio.Media.DURATION
-            Media.SIZE,//        歌曲文件的大小 ：MediaStore.Audio.Media.SIZE
-            Media.ALBUM_ID//        专辑ID
+            Media._ID,           //        歌曲ID：MediaStore.Audio.Media._ID
+            Media.TITLE,         //        歌曲的名称 ：MediaStore.Audio.Media.TITLE
+            Media.ALBUM,         //        歌曲的专辑名：MediaStore.Audio.Media.ALBUM
+            Media.ARTIST,        //        歌曲的歌手名： MediaStore.Audio.Media.ARTIST
+            Media.DATA,          //        歌曲文件的全路径 ：MediaStore.Audio.Media.DATA
+            Media.DISPLAY_NAME,  //        歌曲文件的名称：MediaStore.Audio.Media.DISPLAY_NAME
+            Media.YEAR,          //        歌曲文件的发行日期：MediaStore.Audio.Media.YEAR
+            Media.DURATION,      //        歌曲的总播放时长 ：MediaStore.Audio.Media.DURATION
+            Media.SIZE,          //        歌曲文件的大小 ：MediaStore.Audio.Media.SIZE
+            Media.ALBUM_ID       //        专辑ID
     };
-    //构造函数去获取歌曲
+
+    //使用构造函数去获取本地所有的歌曲
     public MusicUtil(Context context){
         this.context = context;
         //创建ContentResolve对象
@@ -51,7 +67,7 @@ public class MusicUtil {
         // selection 指定查询条件
         // selectionArgs 参数selection里有？符号时，用这个实际值代替问号，如果没有的话，这个string数组可以为null
         //sortorder 指定查询结果的排列顺序
-        Cursor cursor = contentResolver.query(contentUri,null,Media.IS_MUSIC,null,Media.DEFAULT_SORT_ORDER);
+        Cursor cursor = contentResolver.query(contentUri,null,Media.IS_MUSIC,null,Media.ARTIST);
         //游标归零
         cursor.moveToFirst();
         //相应的列代表歌曲的相应信息
@@ -68,7 +84,7 @@ public class MusicUtil {
 
 
         do{
-            long id=cursor.getLong(idCol);//歌曲内部id
+            int id=cursor.getInt(idCol);//歌曲内部id
             String title=cursor.getString(titleCol);//歌曲名称
             String album=cursor.getString(albumCol);//歌曲专辑名
             String singer=cursor.getString(artistCol);//歌手名
@@ -90,20 +106,55 @@ public class MusicUtil {
                 musicInfoModel.setMusicName(str[1].trim());
                 Log.e("3、这首歌的歌名是"," "+musicInfoModel.getMusicName());
                 Log.e("4、这首歌的歌手是"," "+musicInfoModel.getSinger());
-
             }
             //设置专辑封面
             musicInfoModel.setBitmap(getAlbumArt(albumId));
-            //设置各类排序的id
-//            try{
-//                setSortId(musicInfoModel);
-//            }catch (PinyinException e){
-//                e.printStackTrace();
-//            }
-            //将歌曲添加到静态列表里
-            musicList.add(musicInfoModel);
+
+            //1、将歌曲添加到所有歌曲列表里
+            allMusicList.add(musicInfoModel);
+            //2、将歌曲按歌手分分类添加到歌手列表里
+            if(singerMap.get(musicInfoModel.getSinger()) != null){//前面已经加过这个歌手的歌
+                Singer thisSinger = allSingerList.get(singerMap.get(musicInfoModel.getSinger()));
+                thisSinger.getMusicList().add(musicInfoModel);
+            }else{
+                List<MusicInfoModel> thisSingerMusicList = new ArrayList<>();
+                thisSingerMusicList.add(musicInfoModel);
+                String thisSingerName = musicInfoModel.getSinger();
+                allSingerList.add(new Singer(thisSingerName, thisSingerMusicList));
+                singerMap.put(thisSingerName,singerMap.size());
+            }
+            //将歌曲按专辑分类添加到专辑列表里
+            if(albumMap.get(musicInfoModel.getAlbum()) != null){//前面已经加过这个歌手的歌
+                Album thisAlbum = allAlbumList.get(albumMap.get(musicInfoModel.getAlbum()));
+                thisAlbum.getMusicList().add(musicInfoModel);
+            }else{
+                List<MusicInfoModel> thisAlbumMusicList = new ArrayList<>();
+                thisAlbumMusicList.add(musicInfoModel);
+                String thisAlbumName = musicInfoModel.getAlbum();
+                allAlbumList.add(new Album(thisAlbumName, thisAlbumMusicList));
+                albumMap.put(thisAlbumName,albumMap.size());
+            }
+
         }while (cursor.moveToNext());
         cursor.close();
+
+        //打印按歌手分类之后的歌曲排序
+        for(Singer singer : allSingerList){
+            //打印歌手分类下的歌单
+            Log.e("歌手:",singer.getSingerName());
+            for(MusicInfoModel musicInfoModel : singer.getMusicList()){
+
+                Log.e("歌手分类下的歌单", " " + musicInfoModel.getMusicName());
+            }
+        }
+        //打印按专辑分类之后的歌曲排序
+        for(Album album : allAlbumList){
+            //打印专辑分类下的歌单
+            Log.e("专辑:",album.getAlbumName());
+            for(MusicInfoModel musicInfoModel : album.getMusicList()){
+                Log.e("专辑分类下的歌单", " " + musicInfoModel.getMusicName());
+            }
+        }
     }
 
     private Bitmap getAlbumArt(int album_id) {
@@ -216,9 +267,17 @@ public class MusicUtil {
 
 
     public static List<MusicInfoModel> getMusicList() {
-        return musicList;
+        return allMusicList;
     }
 
+    public static List<Singer> getAllSingerList() {
+        return allSingerList;
+    }
+
+
+    public static List<Album> getAllAlbumList() {
+        return allAlbumList;
+    }
 
     //判断一首歌是否字母开头
     public static boolean checkFirstIsEnglish(String string){

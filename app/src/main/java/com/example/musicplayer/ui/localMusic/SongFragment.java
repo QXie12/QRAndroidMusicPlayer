@@ -172,7 +172,7 @@ public class SongFragment extends Fragment {
             this.list.clear();
             this.list.addAll(cacheList);
             for(MusicInfoModel musicInfoModel: list){
-                Log.e("打印按歌曲排序完的歌曲",musicInfoModel.getMusicName()+" " +musicInfoModel.getSortSongId() + " " + musicInfoModel.getSortSongName());
+                Log.e("打印按歌曲排序完的歌曲",musicInfoModel.getMusicName()+" " +musicInfoModel.getSortSongId() + " " + musicInfoModel.getSortSongName() + " " + musicInfoModel.getSortSingerId() + " " + musicInfoModel.getSortSingerName());
             }
         }
         return list;

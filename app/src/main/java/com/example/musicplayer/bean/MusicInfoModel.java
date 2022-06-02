@@ -1,7 +1,7 @@
 package com.example.musicplayer.bean;
 
 import android.graphics.Bitmap;
-
+//每一首歌的信息
 public class MusicInfoModel {
 
     private String musicName;//用于显示的歌曲的名字

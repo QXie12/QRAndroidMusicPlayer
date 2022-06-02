@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.musicplayer.R;
 import com.example.musicplayer.bean.MusicInfoModel;
+import com.example.musicplayer.bean.Singer;
 
 import java.util.List;
 
@@ -19,14 +20,17 @@ import java.util.List;
 //单曲每一个recyclerlistitem的adapter
 public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.BaseViewHolder> {
 
-    private List<MusicInfoModel> mDatas;
+//    private List<MusicInfoModel> mDatas;
+    private List<Singer> mDatas;
     private Context mContext;
 
 
-    public SingerAdapter(Context context, List<MusicInfoModel> data) {
+    public SingerAdapter(Context context, List<Singer> data) {
         this.mDatas = data;
         this.mContext = context;
     }
+
+
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -38,28 +42,54 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.BaseViewHo
 
     }
 
+//    @Override
+//    public void onBindViewHolder(BaseViewHolder holder, final int position) {
+//        MusicInfoModel musicInfoModel = mDatas.get(position);
+//        NormalHolder realHolder = (NormalHolder) holder;
+//        realHolder.songName.setText(musicInfoModel.getMusicName());
+//        realHolder.singer.setText(musicInfoModel.getSinger());
+//        if(musicInfoModel.getBitmap() == null){//读不到专辑图片
+//            realHolder.cover.setImageResource(R.drawable.ic_gai);
+//        }else{
+//            realHolder.cover.setImageBitmap(musicInfoModel.getBitmap());
+//        }
+//
+//        Log.e("歌名",musicInfoModel.getMusicName());
+//        Log.e("歌手",musicInfoModel.getSinger());
+//        Log.e("图片",musicInfoModel.getImage()+"");
+//
+//        realHolder.songName.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//            }
+//        });
+//    }
+
     @Override
     public void onBindViewHolder(BaseViewHolder holder, final int position) {
-        MusicInfoModel musicInfoModel = mDatas.get(position);
+        Singer singer = mDatas.get(position);
         NormalHolder realHolder = (NormalHolder) holder;
-        realHolder.songName.setText(musicInfoModel.getMusicName());
-        realHolder.singer.setText(musicInfoModel.getSinger());
-        if(musicInfoModel.getBitmap() == null){//读不到专辑图片
+        realHolder.singername.setText(singer.getSingerName());
+//        realHolder.singer.setText(musicInfoModel.getSinger());
+//        if(musicInfoModel.getBitmap() == null){//读不到专辑图片
             realHolder.cover.setImageResource(R.drawable.ic_gai);
-        }else{
-            realHolder.cover.setImageBitmap(musicInfoModel.getBitmap());
-        }
+//        }else{
+//            realHolder.cover.setImageBitmap(musicInfoModel.getBitmap());
+//        }
 
-        Log.e("歌名",musicInfoModel.getMusicName());
-        Log.e("歌手",musicInfoModel.getSinger());
-        Log.e("图片",musicInfoModel.getImage()+"");
+//        Log.e("歌名",musicInfoModel.getMusicName());
+//        Log.e("歌手",musicInfoModel.getSinger());
+//        Log.e("图片",musicInfoModel.getImage()+"");
 
-        realHolder.songName.setOnClickListener(new View.OnClickListener() {
+        realHolder.singername.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             }
         });
     }
+
+
+
 
     static class BaseViewHolder extends RecyclerView.ViewHolder {
         BaseViewHolder(View itemView) {
@@ -77,15 +107,15 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.BaseViewHo
     }
 
     private class NormalHolder extends BaseViewHolder {
-        private final TextView songName;
-        private final TextView singer;
+        private final TextView singername;
+//        private final TextView singer;
         private final ImageView cover;
 
 
         public NormalHolder(View itemView) {
             super(itemView);
-            songName =  itemView.findViewById(R.id.singer_list_item);
-            singer = itemView.findViewById(R.id.singer_content);
+            singername =  itemView.findViewById(R.id.singer_list_item);
+//            singer = itemView.findViewById(R.id.singer_content);
             cover =  itemView.findViewById(R.id.singer_avatar);
 
 

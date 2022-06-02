@@ -13,9 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.musicplayer.LocalMusicActivity;
+import com.example.musicplayer.LocalSongActivity;
 import com.example.musicplayer.MainActivity;
-import com.example.musicplayer.R;
 import com.example.musicplayer.databinding.FragmentMineBinding;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -71,7 +70,7 @@ public class MineFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 MainActivity mainActivity = (MainActivity) getActivity();
-                intent.setClass(mainActivity, LocalMusicActivity.class);
+                intent.setClass(mainActivity, LocalSongActivity.class);
                 startActivity(intent);
             }
         });
