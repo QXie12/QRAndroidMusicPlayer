@@ -25,12 +25,11 @@
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="244dp"
-        android:layout_height="229dp"
-        android:src="@drawable/avatar2"
+        android:layout_width="200dp"
+        android:layout_height="195dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.586"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/radio_text"
         app:layout_constraintVertical_bias="1.0" />

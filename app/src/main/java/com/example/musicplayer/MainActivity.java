@@ -116,8 +116,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView(){
         //实例化组件
-        mViewPager = binding.appBarMain.tabMain.tabViewPager;
-        mTabLayout = binding.appBarMain.tabMain.tabLayout;
+//        mViewPager = binding.appBarMain.tabMain.tabViewPager;
+//        mTabLayout = binding.appBarMain.tabMain.tabLayout;
+        mViewPager = binding.appBarMain.tabViewPager;
+        mTabLayout = binding.appBarMain.tabLayout;
+
 
         //初始化分页面的 Fragment，并将其添加到列表中
         initFragment();
@@ -141,10 +144,6 @@ public class MainActivity extends AppCompatActivity {
             //将实例化好的 Tab 布局设置给当前的 Tab即可
             mTabLayout.getTabAt(i).setCustomView(view);
         }
-
-
-
-
     }
 
     //添加每个切换页面的Fragment

@@ -123,9 +123,9 @@ public class SongFragment extends Fragment {
     //滚动recyclerview
     private void moveToLetterPosition(String letter) {
         //这里主要是为了跳转到最顶端
-        if ("#".equals(letter)) {
-            letter = "*";
-        }
+//        if ("#".equals(letter)) {
+//            letter = "*";
+//        }
         for (int i = 0; i < list.size(); i++) {
             MusicInfoModel MusicInfoModel = list.get(i);
             if (MusicInfoModel.getSortSongId().toUpperCase().equals(letter)) {

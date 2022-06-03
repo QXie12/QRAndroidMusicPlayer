@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.musicplayer.adapter.MusicFragmentAdapter;
 import com.example.musicplayer.adapter.TabFragmentAdapter;
@@ -32,6 +33,7 @@ public class LocalSongActivity extends AppCompatActivity {
     ActivityLocalsongBinding binding;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
+    private Toolbar toolbar;
     private List<Fragment> mFragments;
 
 
@@ -43,23 +45,22 @@ public class LocalSongActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         binding = ActivityLocalsongBinding.inflate(getLayoutInflater());
+        toolbar = binding.toolbar;
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         setContentView(binding.getRoot());
         Log.e("初始化前","本地音乐");
         initTab();
         Log.e("初始化后","本地音乐");
-        //用于获取本地音乐
-//        if(musicUtil == null){
-//            musicUtil = new MusicUtil(this);
-//        }
         MusicUtil musicUtil= new MusicUtil(this);
-//        MusicFragmentAdapter musicFragmentAdapter = new MusicFragmentAdapter(this, getSupportFragmentManager(),mFragments);
-        //实例化组件
-//        mViewPager = binding.localViewpager;
-//        mViewPager.setAdapter(musicFragmentAdapter);
-//        mTabLayout = binding.localTabLayout;
-//        mTabLayout.setupWithViewPager(mViewPager);
-
-
     }
 
     private void initTab(){
@@ -80,20 +81,6 @@ public class LocalSongActivity extends AppCompatActivity {
         mTabLayout = binding.localTabLayout;
         //将 ViewPager 绑定到 TabLayout上
         mTabLayout.setupWithViewPager(mViewPager);
-
-//        //进行 Tab自定义布局的实例化和添加
-//        for(int i = 0; i < 4; i++){
-//            View view = LayoutInflater.from(this).inflate(R.layout.style_tab, null);
-//            ImageView imageView = (ImageView)view.findViewById(R.id.tabImageView);
-//            TextView textView = (TextView)view.findViewById(R.id.tabTextView);
-//            textView.setText(mTitles[i]);
-//            imageView.setImageResource(mImages[i]);
-//
-//            //将实例化好的 Tab 布局设置给当前的 Tab即可
-//            mTabLayout.getTabAt(i).setCustomView(view);
-//
-//
-//        }
     }
 
     //添加每个切换页面的Fragment

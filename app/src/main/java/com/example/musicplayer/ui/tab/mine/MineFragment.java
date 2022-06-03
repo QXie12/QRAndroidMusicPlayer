@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,8 +14,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
 import com.example.musicplayer.LocalSongActivity;
 import com.example.musicplayer.MainActivity;
+import com.example.musicplayer.R;
 import com.example.musicplayer.databinding.FragmentMineBinding;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -51,19 +54,46 @@ public class MineFragment extends Fragment {
         binding = FragmentMineBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.mainText;
+        mTextView = binding.mainText;
 
         mineViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                textView.setText(s);
+                mTextView.setText(s);
             }
         });
+
+        //顶部banner图片
+        ImageView bannerImage = binding.bannerImage;
+        Glide.with(this)
+                .load(R.drawable.avatar10)
+                .into(bannerImage);
+
+
+//        几个图标
         CircleImageView recommend_music = binding.recommendMusic;
-        CircleImageView local_music = binding.recommendMusic;
-        CircleImageView download_music = binding.recommendMusic;
-        CircleImageView recent_music = binding.recommendMusic;
-        CircleImageView favorite_music = binding.recommendMusic;
+        CircleImageView local_music = binding.localMusic;
+        CircleImageView download_music = binding.downloadMusic;
+        CircleImageView recent_music = binding.recentMusic;
+        CircleImageView favorite_music = binding.favoriteMusic;
+
+        Glide.with(this)
+                .load(R.drawable.ic_radio)
+                .into(recommend_music);
+        Glide.with(this)
+                .load(R.drawable.ic_music)
+                .into(local_music);
+        Glide.with(this)
+                .load(R.drawable.ic_save_alt)
+                .into(download_music);
+        Glide.with(this)
+                .load(R.drawable.ic_play_circle)
+                .into(recent_music);
+        Glide.with(this)
+                .load(R.drawable.ic_favorite)
+                .into(favorite_music);
+
+
 
         recommend_music.setOnClickListener(new View.OnClickListener(){
             @Override

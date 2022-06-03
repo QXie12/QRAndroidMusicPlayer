@@ -16,7 +16,7 @@
         app:layout_constraintVertical_bias="0.1">
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/bannerImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/avatar10" />
@@ -46,6 +46,11 @@
         app:layout_constraintTop_toBottomOf="@+id/lunboLayout"
         app:layout_constraintVertical_bias="0.01">
 
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/recommend_layout"
@@ -226,6 +231,11 @@
                 app:layout_constraintVertical_bias="0.6" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
     </LinearLayout>
 
     <View
@@ -270,22 +280,14 @@
     </ScrollView>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="410dp"
-        android:layout_height="300dp"
-        app:layout_constraintBottom_toBottomOf="@+id/scrollView3"
-        app:layout_constraintEnd_toEndOf="@+id/scrollView3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selectionLayout">
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="410dp"-->
+<!--        android:layout_height="300dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/scrollView3"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/scrollView3"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/selectionLayout">-->
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-
-
-
-
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,12 +52,15 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.BaseViewHold
         Log.e("歌名",musicInfoModel.getMusicName());
         Log.e("歌手",musicInfoModel.getSinger());
         Log.e("图片",musicInfoModel.getImage()+"");
-
+        // todo 点击单曲列表的歌曲跳转
         realHolder.songName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("本首歌的信息",musicInfoModel.getMusicName()+" "+ musicInfoModel.getSinger() + " " + musicInfoModel.getSortSongId());
+
             }
         });
+
     }
 
     static class BaseViewHolder extends RecyclerView.ViewHolder {
