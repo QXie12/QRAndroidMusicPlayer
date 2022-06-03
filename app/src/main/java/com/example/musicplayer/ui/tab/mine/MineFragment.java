@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -71,27 +72,27 @@ public class MineFragment extends Fragment {
 
 
 //        几个图标
-        CircleImageView recommend_music = binding.recommendMusic;
-        CircleImageView local_music = binding.localMusic;
-        CircleImageView download_music = binding.downloadMusic;
-        CircleImageView recent_music = binding.recentMusic;
-        CircleImageView favorite_music = binding.favoriteMusic;
+        Button recommend_music = binding.recommendMusic;
+        Button local_music = binding.localMusic;
+        Button download_music = binding.downloadMusic;
+        Button recent_music = binding.recentMusic;
+        Button favorite_music = binding.favoriteMusic;
 
-        Glide.with(this)
-                .load(R.drawable.ic_radio)
-                .into(recommend_music);
-        Glide.with(this)
-                .load(R.drawable.ic_music)
-                .into(local_music);
-        Glide.with(this)
-                .load(R.drawable.ic_save_alt)
-                .into(download_music);
-        Glide.with(this)
-                .load(R.drawable.ic_play_circle)
-                .into(recent_music);
-        Glide.with(this)
-                .load(R.drawable.ic_favorite)
-                .into(favorite_music);
+//        Glide.with(this)
+//                .load(R.drawable.ic_radio)
+//                .into(recommend_music);
+//        Glide.with(this)
+//                .load(R.drawable.ic_music)
+//                .into(local_music);
+//        Glide.with(this)
+//                .load(R.drawable.ic_save_alt)
+//                .into(download_music);
+//        Glide.with(this)
+//                .load(R.drawable.ic_play_circle)
+//                .into(recent_music);
+//        Glide.with(this)
+//                .load(R.drawable.ic_favorite)
+//                .into(favorite_music);
 
 
 

@@ -50,12 +50,6 @@ public class SingerFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     * @return A new instance of fragment SingerFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static SingerFragment newInstance(int index) {
         SingerFragment fragment = new SingerFragment();
         Bundle bundle = new Bundle();
@@ -95,7 +89,7 @@ public class SingerFragment extends Fragment {
     }
     private void initAdapter() {
         singerList = new ArrayList<>();
-        singerList = MusicUtil.getAllSingerList();
+        singerList = MusicUtil.getSingers();
         for(Singer singer: singerList){
             setSortName(singer);
         }

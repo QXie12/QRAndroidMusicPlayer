@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.musicplayer.R;
 import com.example.musicplayer.bean.Album;
 import com.example.musicplayer.bean.MusicInfoModel;
@@ -21,7 +22,6 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.BaseViewHold
 
 //    private List<MusicInfoModel> mDatas;
     private List<Album> mDatas;
-
     private Context mContext;
 
 
@@ -43,42 +43,30 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.BaseViewHold
     public void onBindViewHolder(BaseViewHolder holder, final int position) {
         Album album = mDatas.get(position);
         NormalHolder realHolder = (NormalHolder) holder;
+        //专辑名
         realHolder.albumName.setText(album.getAlbumName());
-//        realHolder.singer.setText(musicInfoModel.getSinger());
-//        if(musicInfoModel.getBitmap() == null){//读不到专辑图片
-            realHolder.cover.setImageResource(R.drawable.ic_gai);
-//        }else{
-//            realHolder.cover.setImageBitmap(musicInfoModel.getBitmap());
-//        }
+        //专辑详情
+        realHolder.albumDetail.setText(album.getMusicList().size()+" 首 "+ album.getSingerName());
+        //专辑封面
+//        realHolder.cover.setImageResource(R.drawable.ic_album);
+        if(album.getCover() == null){//读不到专辑图片
+            Glide.with(mContext).load(R.drawable.album).into(realHolder.cover);
 
+//            realHolder.cover.setImageResource(R.drawable.ic_album);
+        }else{
+            Glide.with(mContext).load(album.getCover()).into(realHolder.cover);
+
+//            realHolder.cover.setImageBitmap(album.getCover());
+        }
+
+        //todo 谢 跳到专辑二级页面
         realHolder.albumName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             }
         });
     }
-//    @Override
-//    public void onBindViewHolder(BaseViewHolder holder, final int position) {
-//        MusicInfoModel musicInfoModel = mDatas.get(position);
-//        NormalHolder realHolder = (NormalHolder) holder;
-//        realHolder.albumName.setText(musicInfoModel.getMusicName());
-//        realHolder.singer.setText(musicInfoModel.getSinger());
-//        if(musicInfoModel.getBitmap() == null){//读不到专辑图片
-//            realHolder.cover.setImageResource(R.drawable.ic_gai);
-//        }else{
-//            realHolder.cover.setImageBitmap(musicInfoModel.getBitmap());
-//        }
-//
-//        Log.e("歌名",musicInfoModel.getAlbum());
-//        Log.e("歌手",musicInfoModel.getSinger());
-//        Log.e("图片",musicInfoModel.getImage()+"");
-//
-//        realHolder.albumName.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//            }
-//        });
-//    }
+
 
     static class BaseViewHolder extends RecyclerView.ViewHolder {
         BaseViewHolder(View itemView) {
@@ -97,14 +85,14 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.BaseViewHold
 
     private class NormalHolder extends BaseViewHolder {
         private final TextView albumName;
-//        private final TextView singer;
+        private final TextView albumDetail;
         private final ImageView cover;
 
 
         public NormalHolder(View itemView) {
             super(itemView);
             albumName =  itemView.findViewById(R.id.album_list_item);
-//            singer = itemView.findViewById(R.id.album_content);
+            albumDetail = itemView.findViewById(R.id.album_content);
             cover =  itemView.findViewById(R.id.album_avatar);
 
 

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.musicplayer.R;
 import com.example.musicplayer.bean.MusicInfoModel;
 
@@ -44,20 +45,23 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.BaseViewHold
         realHolder.songName.setText(musicInfoModel.getMusicName());
         realHolder.singer.setText(musicInfoModel.getSinger());
         if(musicInfoModel.getBitmap() == null){//读不到专辑图片
-            realHolder.cover.setImageResource(R.drawable.ic_gai);
+//            realHolder.cover.setImageResource(R.drawable.ic_gai);
+            Glide.with(mContext).load(R.drawable.gai).into(realHolder.cover);
+
         }else{
-            realHolder.cover.setImageBitmap(musicInfoModel.getBitmap());
+//            realHolder.cover.setImageBitmap(musicInfoModel.getBitmap());
+            Glide.with(mContext).load(musicInfoModel.getBitmap()).into(realHolder.cover);
+
         }
 
         Log.e("歌名",musicInfoModel.getMusicName());
         Log.e("歌手",musicInfoModel.getSinger());
         Log.e("图片",musicInfoModel.getImage()+"");
-        // todo 点击单曲列表的歌曲跳转
+        // todo 张 点击单曲列表的歌曲跳转
         realHolder.songName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.e("本首歌的信息",musicInfoModel.getMusicName()+" "+ musicInfoModel.getSinger() + " " + musicInfoModel.getSortSongId());
-
             }
         });
 

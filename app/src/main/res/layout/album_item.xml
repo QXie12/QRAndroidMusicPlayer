@@ -10,10 +10,11 @@
 
     <ImageView
         android:id="@+id/album_avatar"
-        android:layout_width="77dp"
-        android:layout_height="75dp"
-        android:layout_marginStart="1dp"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="5dp"
         android:layout_marginEnd="15dp"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/album_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +23,7 @@
 
     <TextView
         android:id="@+id/album_list_item"
-        android:layout_width="192dp"
+        android:layout_width="292dp"
         android:layout_height="0dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/album_content"
@@ -35,6 +36,8 @@
         android:layout_height="0dp"
         android:layout_marginBottom="28dp"
         android:text="author"
+        android:textColor="@color/gray"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/album_avatar"

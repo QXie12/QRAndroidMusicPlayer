@@ -4,10 +4,12 @@ import java.util.List;
 
 //按歌手分类，歌手的名字、这个歌手的相关歌曲列表
 public class Singer {
+    //歌手名字
     private String singerName;
+    //排序专用
     private String sortSingerId;
     private String sortSingerName;
-
+    //歌曲列表
     private List<MusicInfoModel> musicList;
 
     public Singer(String singerName, List<MusicInfoModel> musicList) {

@@ -18,6 +18,7 @@ import com.example.musicplayer.common.MusicUtil;
 import com.example.musicplayer.databinding.ActivityLocalsongBinding;
 import com.example.musicplayer.databinding.ActivityMainBinding;
 import com.example.musicplayer.ui.localMusic.AlbumFragment;
+import com.example.musicplayer.ui.localMusic.FolderFragment;
 import com.example.musicplayer.ui.localMusic.SingerFragment;
 import com.example.musicplayer.ui.localMusic.SongFragment;
 import com.example.musicplayer.ui.tab.library.LibraryFragment;
@@ -37,9 +38,9 @@ public class LocalSongActivity extends AppCompatActivity {
     private List<Fragment> mFragments;
 
 
-    //读取歌曲
-    MusicUtil musicUtil;
-
+//    //读取歌曲
+//    MusicUtil musicUtil;
+//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +61,7 @@ public class LocalSongActivity extends AppCompatActivity {
         Log.e("初始化前","本地音乐");
         initTab();
         Log.e("初始化后","本地音乐");
-        MusicUtil musicUtil= new MusicUtil(this);
+
     }
 
     private void initTab(){
@@ -91,7 +92,7 @@ public class LocalSongActivity extends AppCompatActivity {
 
         mFragments.add(SingerFragment.newInstance(2));
         mFragments.add(AlbumFragment.newInstance(3));
-        mFragments.add(SingerFragment.newInstance(4));
+        mFragments.add(FolderFragment.newInstance(4));
 
     }
 }

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.musicplayer.adapter.TabFragmentAdapter;
+import com.example.musicplayer.common.MusicUtil;
 import com.example.musicplayer.databinding.AppBarMainBinding;
 import com.example.musicplayer.databinding.ContentMainBinding;
 import com.example.musicplayer.ui.tab.mine.MineFragment;
@@ -46,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
 
     private String[] mTitles = {"我的","乐库","电台"};
     private int[] mImages = {R.drawable.ic_menu_slideshow, R.drawable.ic_menu_gallery, R.drawable.ic_menu_camera};
+
+    //读取歌曲
+    MusicUtil musicUtil;
 
 
     @Override
@@ -94,6 +98,9 @@ public class MainActivity extends AppCompatActivity {
 
         //标签页
         initView();
+
+        musicUtil= new MusicUtil(this);
+
 
 
     }

@@ -58,18 +58,18 @@
             android:layout_height="match_parent"
             >
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <Button
                 android:id="@+id/recommend_music"
                 android:layout_width="50dp"
                 android:layout_height="44dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginLeft="5dp"
-
-                android:src="@drawable/ic_radio"
+                android:background="@drawable/ic_radio"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
             <TextView
                 android:id="@+id/recommend_title"
@@ -95,14 +95,14 @@
             android:layout_width="60dp"
             android:layout_height="match_parent">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <Button
                 android:id="@+id/local_music"
                 android:layout_width="50dp"
                 android:layout_height="44dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginLeft="5dp"
+                android:background="@drawable/ic_music"
 
-                android:src="@drawable/ic_music"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -132,14 +132,15 @@
             android:layout_width="60dp"
             android:layout_height="match_parent">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <Button
                 android:id="@+id/download_music"
                 android:layout_width="50dp"
                 android:layout_height="44dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginLeft="5dp"
+                android:background="@drawable/ic_save_alt"
 
-                android:src="@drawable/ic_save_alt"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -169,14 +170,14 @@
             android:layout_width="60dp"
             android:layout_height="match_parent">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <Button
                 android:id="@+id/recent_music"
                 android:layout_width="50dp"
                 android:layout_height="44dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginLeft="5dp"
 
-                android:src="@drawable/ic_play_circle"
+                android:background="@drawable/ic_play_circle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -205,14 +206,14 @@
             android:layout_width="60dp"
             android:layout_height="match_parent">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <Button
                 android:id="@+id/favorite_music"
                 android:layout_width="50dp"
                 android:layout_height="44dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginLeft="5dp"
+                android:background="@drawable/ic_favorite"
 
-                android:src="@drawable/ic_favorite"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"

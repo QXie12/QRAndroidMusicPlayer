@@ -83,7 +83,7 @@ public class AlbumFragment extends Fragment {
     }
     private void initAdapter() {
         albumsList = new ArrayList<>();
-        albumsList = MusicUtil.getAllAlbumList();
+        albumsList = MusicUtil.getAlbums();
         for(Album album: albumsList){
             setSortName(album);
         }

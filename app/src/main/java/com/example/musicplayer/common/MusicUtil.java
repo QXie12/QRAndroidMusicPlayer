@@ -10,6 +10,7 @@ import android.provider.MediaStore.Audio.Media;
 import android.util.Log;
 
 import com.example.musicplayer.bean.Album;
+import com.example.musicplayer.bean.Folder;
 import com.example.musicplayer.bean.MusicInfoModel;
 import com.example.musicplayer.bean.Singer;
 import com.github.stuxuhai.jpinyin.PinyinException;
@@ -29,12 +30,16 @@ public class MusicUtil {
     private static List<Singer> allSingerList = new ArrayList<>();
     //所有专辑分类的歌曲列表
     private static List<Album> allAlbumList = new ArrayList<>();
+    //所有专辑分类的歌曲列表
+    private static List<Folder> allFolderList = new ArrayList<>();
 
 
     //所有歌手列表
     private static HashMap<String,Integer> singerMap = new HashMap<>();
     //所有专辑列表
     private static HashMap<String,Integer> albumMap = new HashMap<>();
+    //所有文件夹列表
+    private static HashMap<String,Integer> folderMap = new HashMap<>();
 
     private Context context;
 
@@ -112,49 +117,73 @@ public class MusicUtil {
 
             //1、将歌曲添加到所有歌曲列表里
             allMusicList.add(musicInfoModel);
-            //2、将歌曲按歌手分分类添加到歌手列表里
-            if(singerMap.get(musicInfoModel.getSinger()) != null){//前面已经加过这个歌手的歌
-                Singer thisSinger = allSingerList.get(singerMap.get(musicInfoModel.getSinger()));
-                thisSinger.getMusicList().add(musicInfoModel);
+
+//            //2、将歌曲按歌手分分类添加到歌手列表里
+//            if(singerMap.get(musicInfoModel.getSinger()) != null){//前面已经加过这个歌手的歌
+//                Singer thisSinger = allSingerList.get(singerMap.get(musicInfoModel.getSinger()));
+//                thisSinger.getMusicList().add(musicInfoModel);
+//            }else{
+//                List<MusicInfoModel> thisSingerMusicList = new ArrayList<>();
+//                thisSingerMusicList.add(musicInfoModel);
+//                String thisSingerName = musicInfoModel.getSinger();
+//                allSingerList.add(new Singer(thisSingerName, thisSingerMusicList));
+//                singerMap.put(thisSingerName,singerMap.size());
+//            }
+//            //将歌曲按专辑分类添加到专辑列表里
+//            if(albumMap.get(musicInfoModel.getAlbum()) != null){//前面已经加过这个专辑的歌
+//                Album thisAlbum = allAlbumList.get(albumMap.get(musicInfoModel.getAlbum()));
+//                thisAlbum.getMusicList().add(musicInfoModel);
+//            }else{
+//                List<MusicInfoModel> thisAlbumMusicList = new ArrayList<>();
+//                thisAlbumMusicList.add(musicInfoModel);
+//                String thisAlbumName = musicInfoModel.getAlbum();
+//                allAlbumList.add(new Album(thisAlbumName, musicInfoModel.getSinger(), musicInfoModel.getBitmap(),thisAlbumMusicList));
+//                albumMap.put(thisAlbumName,albumMap.size());
+//            }
+
+            //将歌曲添加到文件夹列表
+            String prePath = data.substring(0,data.lastIndexOf("/"));
+            Log.e("文件夹地址", prePath);
+            if(folderMap.get(prePath) != null){//前面已经加过这个专辑的歌
+                Folder thisFolder = allFolderList.get(folderMap.get(prePath));
+                thisFolder.getMusicList().add(musicInfoModel);
             }else{
-                List<MusicInfoModel> thisSingerMusicList = new ArrayList<>();
-                thisSingerMusicList.add(musicInfoModel);
-                String thisSingerName = musicInfoModel.getSinger();
-                allSingerList.add(new Singer(thisSingerName, thisSingerMusicList));
-                singerMap.put(thisSingerName,singerMap.size());
+                List<MusicInfoModel> thisFolderMusicList = new ArrayList<>();
+                thisFolderMusicList.add(musicInfoModel);
+                allFolderList.add(new Folder(prePath.substring(prePath.lastIndexOf("/")+1), prePath, thisFolderMusicList));
+                folderMap.put(prePath,folderMap.size());
             }
-            //将歌曲按专辑分类添加到专辑列表里
-            if(albumMap.get(musicInfoModel.getAlbum()) != null){//前面已经加过这个歌手的歌
-                Album thisAlbum = allAlbumList.get(albumMap.get(musicInfoModel.getAlbum()));
-                thisAlbum.getMusicList().add(musicInfoModel);
-            }else{
-                List<MusicInfoModel> thisAlbumMusicList = new ArrayList<>();
-                thisAlbumMusicList.add(musicInfoModel);
-                String thisAlbumName = musicInfoModel.getAlbum();
-                allAlbumList.add(new Album(thisAlbumName, thisAlbumMusicList));
-                albumMap.put(thisAlbumName,albumMap.size());
-            }
+
 
         }while (cursor.moveToNext());
         cursor.close();
 
-        //打印按歌手分类之后的歌曲排序
-        for(Singer singer : allSingerList){
-            //打印歌手分类下的歌单
-            Log.e("歌手:",singer.getSingerName());
-            for(MusicInfoModel musicInfoModel : singer.getMusicList()){
-
-                Log.e("歌手分类下的歌单", " " + musicInfoModel.getMusicName());
-            }
-        }
-        //打印按专辑分类之后的歌曲排序
-        for(Album album : allAlbumList){
+//        //打印按歌手分类之后的歌曲排序
+//        for(Singer singer : allSingerList){
+//            //打印歌手分类下的歌单
+//            Log.e("歌手:",singer.getSingerName());
+//            for(MusicInfoModel musicInfoModel : singer.getMusicList()){
+//
+//                Log.e("歌手分类下的歌单", " " + musicInfoModel.getMusicName());
+//            }
+//        }
+//        //打印按专辑分类之后的歌曲排序
+//        for(Album album : allAlbumList){
+//            //打印专辑分类下的歌单
+//            Log.e("专辑:",album.getAlbumName());
+//            for(MusicInfoModel musicInfoModel : album.getMusicList()){
+//                Log.e("专辑分类下的歌单", " " + musicInfoModel.getMusicName());
+//            }
+//        }
+        //打印按文件夹分类之后的歌曲排序
+        for(Folder folder : allFolderList){
             //打印专辑分类下的歌单
-            Log.e("专辑:",album.getAlbumName());
-            for(MusicInfoModel musicInfoModel : album.getMusicList()){
-                Log.e("专辑分类下的歌单", " " + musicInfoModel.getMusicName());
+            Log.e("文件夹:",folder.getFolderName());
+            for(MusicInfoModel musicInfoModel : folder.getMusicList()){
+                Log.e("文件夹分类下的歌单", " " + musicInfoModel.getMusicName());
             }
         }
+
     }
 
     private Bitmap getAlbumArt(int album_id) {
@@ -173,98 +202,6 @@ public class MusicUtil {
         }
         return bm;
     }
-
-    //把歌曲的各种排序id给设置一下
-//    public static MusicInfoModel setSortId(MusicInfoModel music) throws PinyinException {
-//        //歌曲名排序id
-//        if(checkFirstIsEnglish(music.getMusicName())){
-//            String name = music.getMusicName();
-//            music.setSortSongId(""+Character.toLowerCase(name.charAt(0)));
-//            music.setSortSongName(name);
-//        }else{
-//            String pingYin = PinyinHelper.convertToPinyinString(music.getMusicName(), " ", PinyinFormat.WITHOUT_TONE);
-//            Log.e("转换",pingYin);
-//            music.setSortSongId( pingYin.substring(0, 1));
-//            music.setSortSongName(pingYin);
-//        }
-//        //歌手排序id
-//        if(checkFirstIsEnglish(music.getSinger())){
-//            String singerName = music.getSinger();
-//            music.setSortSingerId(""+Character.toLowerCase(singerName.charAt(0)));
-//            music.setSortSingerName(singerName);
-//        }else{
-//            String pingYin = PinyinHelper.convertToPinyinString(music.getSinger(), " ", PinyinFormat.WITHOUT_TONE);
-//            Log.e("转换",pingYin);
-//            music.setSortSingerId( pingYin.substring(0, 1));
-//            music.setSortSingerName(pingYin);
-//        }
-//        //专辑排序id
-//        if(checkFirstIsEnglish(music.getAlbum())){
-//            String albumName = music.getAlbum();
-//            music.setSortAlbumId(""+Character.toLowerCase(albumName.charAt(0)));
-//            music.setSortAlbumName(albumName);
-//        }else{
-//            String pingYin = PinyinHelper.convertToPinyinString(music.getAlbum(), " ", PinyinFormat.WITHOUT_TONE);
-//            Log.e("转换",pingYin);
-//            music.setSortAlbumId( pingYin.substring(0, 1));
-//            music.setSortAlbumName(pingYin);
-//        }
-
-//        return music;
-//    }
-
-//    public static void  setSortSinger(){
-//        for (MusicInfoModel music : musicList) {
-//            try {
-//                Log.e("判断歌手的排序"," "+music.getSinger()+"第一个字符"+music.getSinger().charAt(0));
-//                String firstChar = music.getSinger().charAt(0)+"";
-//                if(checkFirstIsEnglish(firstChar) || firstChar.matches("[\\u4E00-\\u9FA5]")) {
-//                    if (checkFirstIsEnglish(music.getSinger())) {
-//                        String singerName = music.getSinger();
-//                        music.setSortSingerId("" + Character.toLowerCase(singerName.charAt(0)));
-//                        music.setSortSingerName(singerName);
-//                    } else {
-//                        String pingYin = PinyinHelper.convertToPinyinString(music.getSinger(), " ", PinyinFormat.WITHOUT_TONE);
-//                        Log.e("转换", pingYin);
-//                        music.setSortSingerId(pingYin.substring(0, 1));
-//                        music.setSortSingerName(pingYin);
-//                    }
-////                }
-////                if(music.getSinger().matches("[^\\u4E00-\\u9FA5A-Za-z]")){
-//                    //歌手排序id
-////                    if(music.getSinger().matches("[^A-Za-z]")){
-////                        String pingYin = PinyinHelper.convertToPinyinString(music.getSinger(), " ", PinyinFormat.WITHOUT_TONE);
-////                        music.setSortSingerId(pingYin.substring(0, 1));
-////                        music.setSortSingerName(pingYin);
-////                        Log.e("以开头的歌手",music.getSortSingerId()+" "+music.getSortSingerName());
-////
-////                       }else{
-////                        String singerName = music.getSinger();
-////                        music.setSortSingerId(""+Character.toLowerCase(singerName.charAt(0)));
-////                        music.setSortSingerName(singerName);
-////                        Log.e("以英文开头的歌手",music.getSortSingerId()+" "+music.getSortSingerName());
-////                    }
-//                }else{
-//                    music.setSortSingerId("#");
-//                    music.setSortSingerName(music.getSinger());
-//                    Log.e("以其他开头的歌手",music.getSortSingerId()+" "+music.getSortSingerName());
-//                }
-//            } catch (PinyinException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-
-    //判断一首歌是否字母开头
-//    public static boolean checkFirstIsEnglish(String string){
-//        char c = string.charAt(0);
-//        if((c>='a'&&c<='z')   ||   (c>='A'&&c<='Z')) {
-//            return   true;
-//        }else{
-//            return   false;
-//        }
-//    }
-
 
     public static List<MusicInfoModel> getMusicList() {
         return allMusicList;
@@ -289,4 +226,46 @@ public class MusicUtil {
         }
     }
 
+
+    public static List<Singer> getSingers(){
+        //首次获取，此时静态列表还未创建完毕
+        if(allSingerList.size() == 0){
+            for(MusicInfoModel musicInfoModel : allMusicList){
+                if(singerMap.get(musicInfoModel.getSinger()) != null){//前面已经加过这个歌手的歌
+                    Singer thisSinger = allSingerList.get(singerMap.get(musicInfoModel.getSinger()));
+                    thisSinger.getMusicList().add(musicInfoModel);
+                }else{
+                    List<MusicInfoModel> thisSingerMusicList = new ArrayList<>();
+                    thisSingerMusicList.add(musicInfoModel);
+                    String thisSingerName = musicInfoModel.getSinger();
+                    allSingerList.add(new Singer(thisSingerName, thisSingerMusicList));
+                    singerMap.put(thisSingerName,singerMap.size());
+                }
+            }
+        }
+            return allSingerList;
+    }
+
+    public static List<Album> getAlbums(){
+        //首次获取，此时静态列表还未创建完毕
+        if(allAlbumList.size() == 0){
+            for(MusicInfoModel musicInfoModel : allMusicList){
+                if(albumMap.get(musicInfoModel.getAlbum()) != null){//前面已经加过这个专辑的歌
+                    Album thisAlbum = allAlbumList.get(albumMap.get(musicInfoModel.getAlbum()));
+                    thisAlbum.getMusicList().add(musicInfoModel);
+                }else{
+                    List<MusicInfoModel> thisAlbumMusicList = new ArrayList<>();
+                    thisAlbumMusicList.add(musicInfoModel);
+                    String thisAlbumName = musicInfoModel.getAlbum();
+                    allAlbumList.add(new Album(thisAlbumName, musicInfoModel.getSinger(), musicInfoModel.getBitmap(),thisAlbumMusicList));
+                    albumMap.put(thisAlbumName,albumMap.size());
+                }
+            }
+        }
+        return allAlbumList;
+    }
+
+    public static List<Folder> getAllFolderList() {
+        return allFolderList;
+    }
 }

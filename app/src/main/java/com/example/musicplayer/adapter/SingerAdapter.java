@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.musicplayer.R;
 import com.example.musicplayer.bean.MusicInfoModel;
 import com.example.musicplayer.bean.Singer;
@@ -42,46 +43,20 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.BaseViewHo
 
     }
 
-//    @Override
-//    public void onBindViewHolder(BaseViewHolder holder, final int position) {
-//        MusicInfoModel musicInfoModel = mDatas.get(position);
-//        NormalHolder realHolder = (NormalHolder) holder;
-//        realHolder.songName.setText(musicInfoModel.getMusicName());
-//        realHolder.singer.setText(musicInfoModel.getSinger());
-//        if(musicInfoModel.getBitmap() == null){//读不到专辑图片
-//            realHolder.cover.setImageResource(R.drawable.ic_gai);
-//        }else{
-//            realHolder.cover.setImageBitmap(musicInfoModel.getBitmap());
-//        }
-//
-//        Log.e("歌名",musicInfoModel.getMusicName());
-//        Log.e("歌手",musicInfoModel.getSinger());
-//        Log.e("图片",musicInfoModel.getImage()+"");
-//
-//        realHolder.songName.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//            }
-//        });
-//    }
 
     @Override
     public void onBindViewHolder(BaseViewHolder holder, final int position) {
         Singer singer = mDatas.get(position);
         NormalHolder realHolder = (NormalHolder) holder;
-        realHolder.singername.setText(singer.getSingerName());
-//        realHolder.singer.setText(musicInfoModel.getSinger());
-//        if(musicInfoModel.getBitmap() == null){//读不到专辑图片
-            realHolder.cover.setImageResource(R.drawable.ic_gai);
-//        }else{
-//            realHolder.cover.setImageBitmap(musicInfoModel.getBitmap());
-//        }
-
-//        Log.e("歌名",musicInfoModel.getMusicName());
-//        Log.e("歌手",musicInfoModel.getSinger());
-//        Log.e("图片",musicInfoModel.getImage()+"");
-
-        realHolder.singername.setOnClickListener(new View.OnClickListener() {
+        //歌手名字
+        realHolder.singerName.setText(singer.getSingerName());
+        //歌手的歌曲数量
+        realHolder.singerDetail.setText(singer.getMusicList().size()+"首歌曲");
+        //设置cover
+//        realHolder.cover.setImageResource(R.drawable.ic_singer);
+        Glide.with(mContext).load(R.drawable.singer).into(realHolder.cover);
+        //todo 谢 点击跳到歌手二级页面
+        realHolder.singerName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             }
@@ -107,15 +82,15 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.BaseViewHo
     }
 
     private class NormalHolder extends BaseViewHolder {
-        private final TextView singername;
-//        private final TextView singer;
+        private final TextView singerName;
+        private final TextView singerDetail;
         private final ImageView cover;
 
 
         public NormalHolder(View itemView) {
             super(itemView);
-            singername =  itemView.findViewById(R.id.singer_list_item);
-//            singer = itemView.findViewById(R.id.singer_content);
+            singerName =  itemView.findViewById(R.id.singer_list_item);
+            singerDetail = itemView.findViewById(R.id.singer_content);
             cover =  itemView.findViewById(R.id.singer_avatar);
 
 

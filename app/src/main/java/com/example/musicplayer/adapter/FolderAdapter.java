@@ -10,18 +10,21 @@ import android.content.Context;
 
         import androidx.recyclerview.widget.RecyclerView;
 
-        import com.example.musicplayer.R;
-        import com.example.musicplayer.bean.MusicInfoModel;
+import com.bumptech.glide.Glide;
+import com.example.musicplayer.R;
+import com.example.musicplayer.bean.Album;
+import com.example.musicplayer.bean.Folder;
+import com.example.musicplayer.bean.MusicInfoModel;
 
         import java.util.List;
 //单曲每一个recyclerlistitem的adapter
 public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.BaseViewHolder> {
 
-    private List<MusicInfoModel> mDatas;
+    private List<Folder> mDatas;
     private Context mContext;
 
 
-    public FolderAdapter(Context context, List<MusicInfoModel> data) {
+    public FolderAdapter(Context context, List<Folder> data) {
         this.mDatas = data;
         this.mContext = context;
     }
@@ -38,21 +41,18 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.BaseViewHo
 
     @Override
     public void onBindViewHolder(BaseViewHolder holder, final int position) {
-        MusicInfoModel musicInfoModel = mDatas.get(position);
+        Folder folder = mDatas.get(position);
         NormalHolder realHolder = (NormalHolder) holder;
-        realHolder.songName.setText(musicInfoModel.getMusicName());
-        realHolder.singer.setText(musicInfoModel.getSinger());
-        if(musicInfoModel.getBitmap() == null){//读不到专辑图片
-            realHolder.cover.setImageResource(R.drawable.ic_gai);
-        }else{
-            realHolder.cover.setImageBitmap(musicInfoModel.getBitmap());
-        }
+        //专辑名
+        realHolder.folderName.setText(folder.getFolderName());
+        //专辑详情
+        realHolder.folderPath.setText(folder.getPath());
+        //专辑封面
+//        realHolder.cover.setImageResource(R.drawable.ic_album);
+//        if(folder.getCover() == null){//读不到专辑图片
+        Glide.with(mContext).load(R.drawable.album).into(realHolder.cover);
 
-        Log.e("歌名",musicInfoModel.getMusicName());
-        Log.e("歌手",musicInfoModel.getSinger());
-        Log.e("图片",musicInfoModel.getImage()+"");
-
-        realHolder.songName.setOnClickListener(new View.OnClickListener() {
+        realHolder.folderName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             }
@@ -75,15 +75,15 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.BaseViewHo
     }
 
     private class NormalHolder extends BaseViewHolder {
-        private final TextView songName;
-        private final TextView singer;
+        private final TextView folderName;
+        private final TextView folderPath;
         private final ImageView cover;
 
 
         public NormalHolder(View itemView) {
             super(itemView);
-            songName =  itemView.findViewById(R.id.folder_list_item);
-            singer = itemView.findViewById(R.id.folder_content);
+            folderName =  itemView.findViewById(R.id.folder_list_item);
+            folderPath = itemView.findViewById(R.id.folder_content);
             cover =  itemView.findViewById(R.id.folder_avatar);
 
 
