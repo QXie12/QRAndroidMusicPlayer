@@ -2,16 +2,17 @@ package com.example.musicplayer.bean;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
 import java.util.List;
 //按专辑分分类，包括专辑名，唱专辑的歌手，这个专辑里面收录的歌曲
-public class Album {
+public class Album implements Serializable {
 
     //专辑名字
     private String albumName;
     //歌手名字
     private String singerName;
     //专辑封面
-    private Bitmap cover;
+    private transient Bitmap cover;
     //排序专用
     private String sortAlbumId;
     private String sortAlbumName;

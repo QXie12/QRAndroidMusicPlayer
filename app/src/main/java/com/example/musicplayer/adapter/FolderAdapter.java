@@ -1,7 +1,9 @@
 package com.example.musicplayer.adapter;
 
 import android.content.Context;
-        import android.util.Log;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
@@ -12,11 +14,13 @@ import android.content.Context;
 
 import com.bumptech.glide.Glide;
 import com.example.musicplayer.R;
+import com.example.musicplayer.SecondMusicActivity;
 import com.example.musicplayer.bean.Album;
 import com.example.musicplayer.bean.Folder;
 import com.example.musicplayer.bean.MusicInfoModel;
 
-        import java.util.List;
+import java.io.Serializable;
+import java.util.List;
 //单曲每一个recyclerlistitem的adapter
 public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.BaseViewHolder> {
 
@@ -46,15 +50,27 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.BaseViewHo
         //专辑名
         realHolder.folderName.setText(folder.getFolderName());
         //专辑详情
-        realHolder.folderPath.setText(folder.getPath());
+        realHolder.folderPath.setText(folder.getMusicList().size()+"首 "+ folder.getPath());
         //专辑封面
 //        realHolder.cover.setImageResource(R.drawable.ic_album);
 //        if(folder.getCover() == null){//读不到专辑图片
         Glide.with(mContext).load(R.drawable.album).into(realHolder.cover);
 
-        realHolder.folderName.setOnClickListener(new View.OnClickListener() {
+
+        realHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("本文件夹的信息", folder.getFolderName()+" "+ folder.getPath()+ " " + folder.getMusicList().size());
+//                创建intent
+                Intent myIntent = new Intent(mContext,SecondMusicActivity.class);
+                //传递数据
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("name",folder.getFolderName());
+                bundle.putSerializable("musicList",(Serializable)folder.getMusicList());
+                myIntent.putExtras(bundle);
+                //启动新的intent
+                mContext.startActivity(myIntent);
+
             }
         });
     }

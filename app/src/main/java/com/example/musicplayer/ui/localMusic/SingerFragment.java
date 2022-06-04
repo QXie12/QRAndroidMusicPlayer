@@ -28,11 +28,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SingerFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class SingerFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     //获取左边控件以及侧边字母索引控件

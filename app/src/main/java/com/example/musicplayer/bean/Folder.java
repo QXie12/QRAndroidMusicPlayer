@@ -1,8 +1,9 @@
 package com.example.musicplayer.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Folder {
+public class Folder implements Serializable {
     //文件夹名字
     private String folderName;
     //文件夹路径

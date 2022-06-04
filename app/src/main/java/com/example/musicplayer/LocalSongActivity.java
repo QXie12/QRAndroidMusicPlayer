@@ -88,8 +88,6 @@ public class LocalSongActivity extends AppCompatActivity {
     private void initFragment(){
         mFragments = new ArrayList<>();
         mFragments.add(SongFragment.newInstance(1));
-//        mFragments.add(SongFragment.newInstance(2));
-
         mFragments.add(SingerFragment.newInstance(2));
         mFragments.add(AlbumFragment.newInstance(3));
         mFragments.add(FolderFragment.newInstance(4));

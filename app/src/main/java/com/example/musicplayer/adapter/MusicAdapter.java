@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.musicplayer.R;
 import com.example.musicplayer.bean.MusicInfoModel;
+import com.example.musicplayer.common.MusicUtil;
 
 import java.util.List;
 //单曲每一个recyclerlistitem的adapter
@@ -46,19 +47,25 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.BaseViewHold
         realHolder.singer.setText(musicInfoModel.getSinger());
         if(musicInfoModel.getBitmap() == null){//读不到专辑图片
 //            realHolder.cover.setImageResource(R.drawable.ic_gai);
-            Glide.with(mContext).load(R.drawable.gai).into(realHolder.cover);
-
+            if(MusicUtil.getAlbumArt(musicInfoModel.getImage()) != null){//如果通过id去拿有图
+                musicInfoModel.setBitmap(MusicUtil.getAlbumArt(musicInfoModel.getImage()));
+                Log.e("我通过imageid去拿有图", musicInfoModel.getMusicName()+ " " + musicInfoModel.getBitmap());
+                Glide.with(mContext).load(musicInfoModel.getBitmap()).into(realHolder.cover);
+            }else{
+                Glide.with(mContext).load(R.drawable.gai).into(realHolder.cover);
+            }
         }else{
 //            realHolder.cover.setImageBitmap(musicInfoModel.getBitmap());
             Glide.with(mContext).load(musicInfoModel.getBitmap()).into(realHolder.cover);
-
         }
 
         Log.e("歌名",musicInfoModel.getMusicName());
         Log.e("歌手",musicInfoModel.getSinger());
         Log.e("图片",musicInfoModel.getImage()+"");
-        // todo 张 点击单曲列表的歌曲跳转
-        realHolder.songName.setOnClickListener(new View.OnClickListener() {
+
+
+        // todo 张 点击单曲列表的歌曲跳转 可以通过musicInfoModel获得本首歌曲的相关信息
+        realHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.e("本首歌的信息",musicInfoModel.getMusicName()+" "+ musicInfoModel.getSinger() + " " + musicInfoModel.getSortSongId());

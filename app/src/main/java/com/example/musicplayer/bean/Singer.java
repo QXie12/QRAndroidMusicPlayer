@@ -1,9 +1,10 @@
 package com.example.musicplayer.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 //按歌手分类，歌手的名字、这个歌手的相关歌曲列表
-public class Singer {
+public class Singer implements Serializable {
     //歌手名字
     private String singerName;
     //排序专用

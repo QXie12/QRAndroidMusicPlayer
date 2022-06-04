@@ -13,5 +13,9 @@
     <color name="gray3">#808080</color>
     <color name="gray4">#a0a0a0</color>
 
+<!--    西瓜配色-->
+    <color name="green">#8bcb83</color>
+    <color name="red">#FAFB9A97</color>
+
 
 </resources>

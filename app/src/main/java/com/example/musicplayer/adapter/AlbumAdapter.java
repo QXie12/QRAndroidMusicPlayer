@@ -1,6 +1,8 @@
 package com.example.musicplayer.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.musicplayer.R;
+import com.example.musicplayer.SecondMusicActivity;
 import com.example.musicplayer.bean.Album;
 import com.example.musicplayer.bean.MusicInfoModel;
 
+import java.io.Serializable;
 import java.util.List;
 
 //单曲每一个recyclerlistitem的adapter
@@ -59,12 +63,23 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.BaseViewHold
 //            realHolder.cover.setImageBitmap(album.getCover());
         }
 
-        //todo 谢 跳到专辑二级页面
-        realHolder.albumName.setOnClickListener(new View.OnClickListener() {
+        realHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("本专辑的信息", album.getAlbumName()+" "+ album.getSingerName()+ " " + album.getMusicList().size());
+//                创建intent
+                Intent myIntent = new Intent(mContext,SecondMusicActivity.class);
+                //传递数据
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("name",album.getAlbumName());
+                bundle.putSerializable("musicList",(Serializable)album.getMusicList());
+                myIntent.putExtras(bundle);
+                //启动新的intent
+                mContext.startActivity(myIntent);
+
             }
         });
+
     }
 
 

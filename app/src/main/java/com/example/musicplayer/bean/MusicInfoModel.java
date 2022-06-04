@@ -1,17 +1,20 @@
 package com.example.musicplayer.bean;
 
 import android.graphics.Bitmap;
+
+import java.io.Serializable;
+
 //每一首歌的信息
-public class MusicInfoModel {
+public class MusicInfoModel  implements Serializable {
 
     private String musicName;//用于显示的歌曲的名字
     private String singer;//歌手
     private String album;//专辑
     private int time;//歌曲时长
     private long size;//歌曲所占空间大小
-    private Bitmap bitmap;//专辑图片
+    private transient  Bitmap bitmap;//专辑图片
     private String path;//歌曲地址
-    private int image;//歌曲封面图片
+    private int imageId;//歌曲封面图片
 
 
     private String sortSongId;//用于排序的音乐id 在这里是歌曲拼音的首字母
@@ -33,7 +36,7 @@ public class MusicInfoModel {
         this.singer = singer;
         this.album = album;
         this.time = time;
-        this.image = image;
+        this.imageId = image;
     }
 
 
@@ -142,11 +145,11 @@ public class MusicInfoModel {
     }
 
     public int getImage() {
-        return image;
+        return imageId;
     }
 
     public void setImage(int image) {
-        this.image = image;
+        this.imageId = image;
     }
 
 

@@ -1,6 +1,8 @@
 package com.example.musicplayer.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.musicplayer.R;
-import com.example.musicplayer.bean.MusicInfoModel;
+import com.example.musicplayer.SecondMusicActivity;
 import com.example.musicplayer.bean.Singer;
 
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -24,6 +27,9 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.BaseViewHo
 //    private List<MusicInfoModel> mDatas;
     private List<Singer> mDatas;
     private Context mContext;
+
+//    private OnItemClickListener myClickListener;
+//    private OnItemLongClickListener myLongClickListener;
 
 
     public SingerAdapter(Context context, List<Singer> data) {
@@ -53,17 +59,24 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.BaseViewHo
         //歌手的歌曲数量
         realHolder.singerDetail.setText(singer.getMusicList().size()+"首歌曲");
         //设置cover
-//        realHolder.cover.setImageResource(R.drawable.ic_singer);
         Glide.with(mContext).load(R.drawable.singer).into(realHolder.cover);
-        //todo 谢 点击跳到歌手二级页面
-        realHolder.singerName.setOnClickListener(new View.OnClickListener() {
+        realHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("本歌手的信息",singer.getSingerName()+" "+ singer.getMusicList().size() + " " +singer.getMusicList().get(0).getBitmap());
+//                创建intent
+                Intent myIntent = new Intent(mContext,SecondMusicActivity.class);
+                //传递数据
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("name",singer.getSingerName());
+                bundle.putSerializable("musicList",(Serializable)singer.getMusicList());
+                myIntent.putExtras(bundle);
+                //启动新的intent
+                mContext.startActivity(myIntent);
             }
+
         });
     }
-
-
 
 
     static class BaseViewHolder extends RecyclerView.ViewHolder {
@@ -92,9 +105,25 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.BaseViewHo
             singerName =  itemView.findViewById(R.id.singer_list_item);
             singerDetail = itemView.findViewById(R.id.singer_content);
             cover =  itemView.findViewById(R.id.singer_avatar);
-
-
         }
     }
+
+//
+//    public void setOnItemClickListener(OnItemClickListener myClickListener) {
+//        this.myClickListener = myClickListener;
+//    }
+//
+//    public void setOnLongClickListener(OnItemLongClickListener myLongClickListener) {
+//        this.myLongClickListener = myLongClickListener;
+//    }
+//
+//    //定义接口，创建回调函数 添加点击事件
+//    public interface OnItemClickListener {//单击
+//        public void onClick(View parent, int position);
+//    }
+//    public interface OnItemLongClickListener {//长按
+//        public boolean onLongClick(View parent, int position);
+//    }
+
 
 }

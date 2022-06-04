@@ -44,7 +44,7 @@ public class MusicUtil {
     private Context context;
 
 
-    ContentResolver contentResolver;
+    private static ContentResolver contentResolver;
     //Uri，指向external的database
     private Uri contentUri = Media.EXTERNAL_CONTENT_URI;
     //projection：选择的列; where：过滤条件; sortOrder：排序。
@@ -99,11 +99,11 @@ public class MusicUtil {
             int duration=cursor.getInt(durationCol);//总播放时长
             long size=cursor.getLong(sizeCol);//文件大小
             int albumId = cursor.getInt(albumIdCol);
-            Log.e("1、展示的名字",title+" "+ album+ " " +displayName);
+            Log.e("1、展示的名字",title+" "+ album+ " " +displayName +" " + albumId);
             Log.e("2、读取到的歌曲","歌曲id:"+id+"歌曲名称:"+title+"歌曲专辑:"+album+"歌曲路径:" +data+"歌手名:"+singer+"发行日期:"+year+"总播放时长:"+duration+"文件大小:"+size);
 
 
-            MusicInfoModel musicInfoModel = new MusicInfoModel(title,singer,album,duration,R.drawable.ic_gai);
+            MusicInfoModel musicInfoModel = new MusicInfoModel(title,singer,album,duration,albumId);
             //处理有时候歌曲名异常显示的情况，先分割出来歌曲名和歌手名
             if (title.contains("-")) {
                 String[] str = title.split("-");
@@ -114,6 +114,7 @@ public class MusicUtil {
             }
             //设置专辑封面
             musicInfoModel.setBitmap(getAlbumArt(albumId));
+            Log.e("5、这首歌的歌封面是"," "+musicInfoModel.getBitmap());
 
             //1、将歌曲添加到所有歌曲列表里
             allMusicList.add(musicInfoModel);
@@ -186,7 +187,7 @@ public class MusicUtil {
 
     }
 
-    private Bitmap getAlbumArt(int album_id) {
+    public static Bitmap getAlbumArt(int album_id) {
         String mUriAlbums = "content://media/external/audio/albums";
         String[] projection = new String[]{"album_art"};
         Cursor cur = contentResolver.query(Uri.parse(mUriAlbums + "/" + Integer.toString(album_id)), projection, null, null, null);
@@ -234,10 +235,13 @@ public class MusicUtil {
                 if(singerMap.get(musicInfoModel.getSinger()) != null){//前面已经加过这个歌手的歌
                     Singer thisSinger = allSingerList.get(singerMap.get(musicInfoModel.getSinger()));
                     thisSinger.getMusicList().add(musicInfoModel);
+                    Log.e("此时歌曲有封面吗？",musicInfoModel.getBitmap()+" ");
+
                 }else{
                     List<MusicInfoModel> thisSingerMusicList = new ArrayList<>();
                     thisSingerMusicList.add(musicInfoModel);
                     String thisSingerName = musicInfoModel.getSinger();
+                    Log.e("此时歌曲有封面吗？",musicInfoModel.getBitmap()+" ");
                     allSingerList.add(new Singer(thisSingerName, thisSingerMusicList));
                     singerMap.put(thisSingerName,singerMap.size());
                 }

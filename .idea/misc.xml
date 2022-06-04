@@ -33,10 +33,11 @@
         <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/drawable/side_nav_bar.xml" value="0.1855" />
         <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/activity_localsong.xml" value="0.1625" />
         <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/activity_second_music.xml" value="0.18697916666666667" />
         <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/album_item.xml" value="0.2109375" />
         <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/app_bar_main.xml" value="0.264" />
         <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/content_main.xml" value="0.10400000000000001" />
-        <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/folder_item.xml" value="0.184375" />
+        <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/folder_item.xml" value="0.536" />
         <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/fragment_album.xml" value="0.221875" />
         <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/fragment_folder.xml" value="0.221875" />
         <entry key="..\:/Android-Project/MusicPlayer/app/src/main/res/layout/fragment_gallery.xml" value="0.176" />
