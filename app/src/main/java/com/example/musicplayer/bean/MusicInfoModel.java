@@ -39,8 +39,16 @@ public class MusicInfoModel  implements Serializable {
         this.imageId = image;
     }
 
+    public MusicInfoModel(String musicName, String singer, String album, int time, int image, String path) {
+        this.musicName = musicName;
+        this.singer = singer;
+        this.album = album;
+        this.time = time;
+        this.imageId = image;
+        this.path = path;
+    }
 
-    //创建排名的时候所需要的构造函数：音乐名、排序的第一个字母、排序名、歌手名、专辑名、持续时间、专辑、图片
+
 //    public MusicInfoModel(String musicName, String sortId, String sortName, String singer, String album, int time, int image) {
 //        this.musicName = musicName;
 //        this.sortId = sortId;

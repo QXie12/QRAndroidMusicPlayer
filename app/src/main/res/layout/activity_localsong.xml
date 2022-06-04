@@ -25,7 +25,6 @@
             app:navigationIcon="@drawable/ic_arrow_back"
             app:popupTheme="@style/Widget.AppCompat.PopupMenu.Overflow"
             app:title="本地音乐"
-
             />
 </com.google.android.material.appbar.AppBarLayout>
 

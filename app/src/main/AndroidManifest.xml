@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.musicplayer">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -12,6 +12,7 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:largeHeap="true"
         android:theme="@style/Theme.MusicPlayer">
 
         <activity
@@ -25,22 +26,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".HomeActivity"
             android:exported="false" />
-
         <activity
             android:name=".LocalSongActivity"
             android:exported="false"
             android:theme="@style/Theme.MusicPlayer.NoActionBar" />
-
         <activity
             android:name=".SecondMusicActivity"
             android:exported="false"
-            android:theme="@style/Theme.MusicPlayer.NoActionBar"
-            />
+            android:theme="@style/Theme.MusicPlayer.NoActionBar" />
 
+        <activity
+            android:name=".RecentActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MusicPlayer.NoActionBar"/>
     </application>
 
 </manifest>

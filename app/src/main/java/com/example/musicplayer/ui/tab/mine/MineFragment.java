@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.example.musicplayer.LocalSongActivity;
 import com.example.musicplayer.MainActivity;
 import com.example.musicplayer.R;
+import com.example.musicplayer.RecentActivity;
 import com.example.musicplayer.databinding.FragmentMineBinding;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -71,7 +72,7 @@ public class MineFragment extends Fragment {
                 .into(bannerImage);
 
 
-//        几个图标
+//        几个Button
         Button recommend_music = binding.recommendMusic;
         Button local_music = binding.localMusic;
         Button download_music = binding.downloadMusic;
@@ -102,6 +103,16 @@ public class MineFragment extends Fragment {
                 Intent intent = new Intent();
                 MainActivity mainActivity = (MainActivity) getActivity();
                 intent.setClass(mainActivity, LocalSongActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        recent_music.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                MainActivity mainActivity = (MainActivity) getActivity();
+                intent.setClass(mainActivity, RecentActivity.class);
                 startActivity(intent);
             }
         });

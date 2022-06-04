@@ -79,6 +79,7 @@ public class SongFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
     }
+
     private void initAdapter() {
 //        拿到了音乐列表
         list = new ArrayList<>();

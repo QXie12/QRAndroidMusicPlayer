@@ -45,15 +45,24 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.BaseViewHold
         NormalHolder realHolder = (NormalHolder) holder;
         realHolder.songName.setText(musicInfoModel.getMusicName());
         realHolder.singer.setText(musicInfoModel.getSinger());
-        if(musicInfoModel.getBitmap() == null){//读不到专辑图片
+        if(musicInfoModel.getBitmap() == null){//读不到专辑图片,有可能是因为bitmap不能序列化的原因
 //            realHolder.cover.setImageResource(R.drawable.ic_gai);
-            if(MusicUtil.getAlbumArt(musicInfoModel.getImage()) != null){//如果通过id去拿有图
-                musicInfoModel.setBitmap(MusicUtil.getAlbumArt(musicInfoModel.getImage()));
-                Log.e("我通过imageid去拿有图", musicInfoModel.getMusicName()+ " " + musicInfoModel.getBitmap());
+//            if(MusicUtil.getAlbumArt(musicInfoModel.getImage()) != null){//如果通过id去拿有图
+//                musicInfoModel.setBitmap(MusicUtil.getAlbumArt(musicInfoModel.getImage()));
+//                Log.e("我通过imageid去拿有图", musicInfoModel.getMusicName()+ " " + musicInfoModel.getBitmap());
+//                Glide.with(mContext).load(musicInfoModel.getBitmap()).into(realHolder.cover);
+//            }else{
+//                Glide.with(mContext).load(R.drawable.gai).into(realHolder.cover);
+//            }
+            if(MusicUtil.getAlbumArtByPath(musicInfoModel.getPath()) != null){//如果通过id去拿有图
+                musicInfoModel.setBitmap(MusicUtil.getAlbumArtByPath(musicInfoModel.getPath()));
+                Log.e("我通过path去拿有图", musicInfoModel.getMusicName()+ " " + musicInfoModel.getBitmap());
                 Glide.with(mContext).load(musicInfoModel.getBitmap()).into(realHolder.cover);
             }else{
                 Glide.with(mContext).load(R.drawable.gai).into(realHolder.cover);
             }
+
+
         }else{
 //            realHolder.cover.setImageBitmap(musicInfoModel.getBitmap());
             Glide.with(mContext).load(musicInfoModel.getBitmap()).into(realHolder.cover);

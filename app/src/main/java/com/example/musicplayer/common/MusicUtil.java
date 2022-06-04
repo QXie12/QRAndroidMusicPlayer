@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.provider.MediaStore.Audio.Media;
 import android.util.Log;
@@ -93,17 +94,17 @@ public class MusicUtil {
             String title=cursor.getString(titleCol);//歌曲名称
             String album=cursor.getString(albumCol);//歌曲专辑名
             String singer=cursor.getString(artistCol);//歌手名
-            String data=cursor.getString(dataCol);//文件全路径
+            String path=cursor.getString(dataCol);//文件全路径
             String displayName=cursor.getString(displayNameCol);//文件全名称
             String year=cursor.getString(yearCol);//发行日期
             int duration=cursor.getInt(durationCol);//总播放时长
             long size=cursor.getLong(sizeCol);//文件大小
             int albumId = cursor.getInt(albumIdCol);
             Log.e("1、展示的名字",title+" "+ album+ " " +displayName +" " + albumId);
-            Log.e("2、读取到的歌曲","歌曲id:"+id+"歌曲名称:"+title+"歌曲专辑:"+album+"歌曲路径:" +data+"歌手名:"+singer+"发行日期:"+year+"总播放时长:"+duration+"文件大小:"+size);
+            Log.e("2、读取到的歌曲","歌曲id:"+id+"歌曲名称:"+title+"歌曲专辑:"+album+"歌曲路径:" +path+"歌手名:"+singer+"发行日期:"+year+"总播放时长:"+duration+"文件大小:"+size);
 
 
-            MusicInfoModel musicInfoModel = new MusicInfoModel(title,singer,album,duration,albumId);
+            MusicInfoModel musicInfoModel = new MusicInfoModel(title,singer,album,duration,albumId,path);
             //处理有时候歌曲名异常显示的情况，先分割出来歌曲名和歌手名
             if (title.contains("-")) {
                 String[] str = title.split("-");
@@ -113,7 +114,9 @@ public class MusicUtil {
                 Log.e("4、这首歌的歌手是"," "+musicInfoModel.getSinger());
             }
             //设置专辑封面
-            musicInfoModel.setBitmap(getAlbumArt(albumId));
+//            musicInfoModel.setBitmap(getAlbumArt(albumId));
+
+            musicInfoModel.setBitmap(getAlbumArtByPath(path));
             Log.e("5、这首歌的歌封面是"," "+musicInfoModel.getBitmap());
 
             //1、将歌曲添加到所有歌曲列表里
@@ -143,7 +146,7 @@ public class MusicUtil {
 //            }
 
             //将歌曲添加到文件夹列表
-            String prePath = data.substring(0,data.lastIndexOf("/"));
+            String prePath = path.substring(0,path.lastIndexOf("/"));
             Log.e("文件夹地址", prePath);
             if(folderMap.get(prePath) != null){//前面已经加过这个专辑的歌
                 Folder thisFolder = allFolderList.get(folderMap.get(prePath));
@@ -187,6 +190,7 @@ public class MusicUtil {
 
     }
 
+    //安卓10以下使用
     public static Bitmap getAlbumArt(int album_id) {
         String mUriAlbums = "content://media/external/audio/albums";
         String[] projection = new String[]{"album_art"};
@@ -203,6 +207,22 @@ public class MusicUtil {
         }
         return bm;
     }
+
+    //通过路径获取封面
+    public static Bitmap getAlbumArtByPath(String path){
+        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+        mediaMetadataRetriever.setDataSource(path);
+        Bitmap songImage;
+        try {
+            byte [] streamPicture = mediaMetadataRetriever.getEmbeddedPicture();
+            songImage = BitmapFactory
+                    .decodeByteArray(streamPicture, 0, streamPicture.length);
+        } catch (Exception e) {
+            songImage = null;
+        }
+        return songImage;
+    }
+
 
     public static List<MusicInfoModel> getMusicList() {
         return allMusicList;

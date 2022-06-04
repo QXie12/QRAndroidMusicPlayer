@@ -2,6 +2,7 @@ package com.example.musicplayer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -70,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
+//        Toolbar toolbar = binding.appBarMain.toolbar;
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -96,12 +101,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+//        drawer.openDrawer(Gravity.LEFT);
+//        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this,drawer,toolbar,R.string.open,R.string.close);
+//        drawerToggle.syncState();
+//        drawer.addDrawerListener(drawerToggle);
+
         //标签页
         initView();
 
         musicUtil= new MusicUtil(this);
-
-
 
     }
 
@@ -123,8 +131,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView(){
         //实例化组件
-//        mViewPager = binding.appBarMain.tabMain.tabViewPager;
-//        mTabLayout = binding.appBarMain.tabMain.tabLayout;
         mViewPager = binding.appBarMain.tabViewPager;
         mTabLayout = binding.appBarMain.tabLayout;
 
