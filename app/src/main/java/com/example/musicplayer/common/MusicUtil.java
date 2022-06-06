@@ -14,6 +14,7 @@ import com.example.musicplayer.bean.Album;
 import com.example.musicplayer.bean.Folder;
 import com.example.musicplayer.bean.MusicInfoModel;
 import com.example.musicplayer.bean.Singer;
+import com.example.musicplayer.bean.SongList;
 import com.github.stuxuhai.jpinyin.PinyinException;
 import com.github.stuxuhai.jpinyin.PinyinFormat;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
@@ -33,7 +34,19 @@ public class MusicUtil {
     private static List<Album> allAlbumList = new ArrayList<>();
     //所有专辑分类的歌曲列表
     private static List<Folder> allFolderList = new ArrayList<>();
+    //所有歌单的列表
+    private static List<SongList> allSongList = new ArrayList<>();
 
+    //维护最近播放列表
+    private static List<MusicInfoModel> allRecentMusicList = new ArrayList<>();
+    //最近播放歌曲的hashmap
+    private static HashMap<Integer,String> recentSongMap = new HashMap<>();
+
+    //维护我的最爱歌单
+    private static List<MusicInfoModel> allFavoriteMusicList = new ArrayList<>();
+    private static SongList myFavoriteSongList = new SongList("我的最爱",allFavoriteMusicList);
+    //我的最爱播放歌曲的hashmap
+    private static HashMap<Integer,String> favoriteSongMap = new HashMap<>();
 
     //所有歌手列表
     private static HashMap<String,Integer> singerMap = new HashMap<>();
@@ -104,7 +117,7 @@ public class MusicUtil {
             Log.e("2、读取到的歌曲","歌曲id:"+id+"歌曲名称:"+title+"歌曲专辑:"+album+"歌曲路径:" +path+"歌手名:"+singer+"发行日期:"+year+"总播放时长:"+duration+"文件大小:"+size);
 
 
-            MusicInfoModel musicInfoModel = new MusicInfoModel(title,singer,album,duration,albumId,path);
+            MusicInfoModel musicInfoModel = new MusicInfoModel(title,singer,album,duration,albumId,path,id);
             //处理有时候歌曲名异常显示的情况，先分割出来歌曲名和歌手名
             if (title.contains("-")) {
                 String[] str = title.split("-");
@@ -157,6 +170,9 @@ public class MusicUtil {
                 allFolderList.add(new Folder(prePath.substring(prePath.lastIndexOf("/")+1), prePath, thisFolderMusicList));
                 folderMap.put(prePath,folderMap.size());
             }
+
+            //设置歌曲排序id
+            MusicUtil.setSortSong(musicInfoModel);
 
 
         }while (cursor.moveToNext());
@@ -252,6 +268,7 @@ public class MusicUtil {
         //首次获取，此时静态列表还未创建完毕
         if(allSingerList.size() == 0){
             for(MusicInfoModel musicInfoModel : allMusicList){
+                System.out.println(musicInfoModel.getMusicName()+" "+musicInfoModel.getId());
                 if(singerMap.get(musicInfoModel.getSinger()) != null){//前面已经加过这个歌手的歌
                     Singer thisSinger = allSingerList.get(singerMap.get(musicInfoModel.getSinger()));
                     thisSinger.getMusicList().add(musicInfoModel);
@@ -289,7 +306,153 @@ public class MusicUtil {
         return allAlbumList;
     }
 
+    //读取到本地所有分类文件夹
     public static List<Folder> getAllFolderList() {
         return allFolderList;
+    }
+
+    //todo 从数据库中读取到所有我创建的歌单 目前自己创建的歌单是读取了所有的歌
+    public static List<SongList> getAllSongList() {
+//        if(allSongList.size() == 0) {
+//            for (int i = 0; i < 3; i++) {
+////            List<MusicInfoModel> musicInfoModels =
+//                SongList songList = new SongList("我是歌单"+i + " ", allMusicList);
+//                allSongList.add(songList);
+//            }
+//        }
+        return allSongList;
+    }
+
+    //todo 创建歌单向数据库中增加歌单数据
+    public static void addSongList(SongList songList){
+        allSongList.add(songList);
+    }
+
+    //通过歌单名字来找歌单
+    public static SongList findSongListBySongListName(String name){
+        if(name.equals("我的最爱")){
+            return myFavoriteSongList;
+        }else{
+            //todo 此处应该是要去数据库中拿到这个歌单
+            for(SongList songList: allSongList){
+                if(songList.getSongListName().equals(name)){
+                    return songList;
+                }
+            }
+        }
+        return null;
+    }
+
+    //找到歌单，并返回这个歌单里面的歌曲
+    public static List<MusicInfoModel> findMusicListBySongListName(String songListName){
+        //todo 此处应该是要去数据库中拿到这个歌单里面的歌曲
+        if(songListName.equals("我的最爱")){
+            return myFavoriteSongList.getMusicList();
+        }else{
+            //todo 此处应该是要去数据库中拿到这个歌单
+            for(SongList songList: allSongList){
+                if(songList.getSongListName().equals(songListName)){
+                    return songList.getMusicList();
+                }
+            }
+        }
+        return null;
+    }
+
+    //获取最近播放的歌曲列表
+    public static List<MusicInfoModel> getAllRecentMusicList() {
+        return allRecentMusicList;
+    }
+    //todo 向最近播放歌曲列表中添加歌曲
+    public static void addRecentMusic(MusicInfoModel musicInfoModel){
+        //如果列表中已经有了这首歌，就把它添加到列表末端
+        int id = musicInfoModel.getId();
+        System.out.println("这首歌的id是"+musicInfoModel.getId());
+        if(recentSongMap.get(id) != null){//todo 这一部分有问题
+            int index = -1;
+            for (int i = allRecentMusicList.size()-1 ; i >= 0 ; i--){
+                if(allRecentMusicList.get(i).getMusicName().equals(musicInfoModel.getMusicName())){
+                    System.out.println("要移除掉这首歌"+allRecentMusicList.get(i).getMusicName());
+                    index = i;
+                    break;
+                }
+            }
+            if(index >-1){
+                allRecentMusicList.remove(index);
+                System.out.println("移除完了");
+            }
+        }else{//列表中没有，直接添加到末端
+            recentSongMap.put(musicInfoModel.getId(),musicInfoModel.getMusicName());//放到hashmap中
+        }
+        allRecentMusicList.add(musicInfoModel);
+        //打印一下当前的最近播放列表
+        for (int i = allRecentMusicList.size()-1 ; i >= 0 ; i--){
+            Log.e("最近播放列表"+i ,allRecentMusicList.get(i).getMusicName());
+        }
+    }
+
+    //获取我的最爱的歌曲列表
+    public static List<MusicInfoModel> getAllFavoriteMusicList() {
+        return allFavoriteMusicList;
+    }
+    //todo 向我的最爱列表中添加歌曲
+    public static boolean addFavoriteMusic(MusicInfoModel musicInfoModel){
+        //如果列表中已经有了这首歌，就把它添加到列表末端
+        int id = musicInfoModel.getId();
+        System.out.println("这是我的最爱这首歌的id是"+musicInfoModel.getId());
+        for(MusicInfoModel musicInfoModel1 : myFavoriteSongList.getMusicList()){
+            if(musicInfoModel1.getMusicName().equals(musicInfoModel.getMusicName())){
+                Log.e("已经添加过了",musicInfoModel.getMusicName());
+                return false;
+            }
+        }
+        //没有添加过
+        myFavoriteSongList.getMusicList().add(musicInfoModel);
+        return true;
+//        if(favoriteSongMap.get(id) != null){
+//            int index = -1;
+//            for (int i = allFavoriteMusicList.size()-1 ; i >= 0 ; i--){
+//                if(allFavoriteMusicList.get(i).getMusicName().equals(musicInfoModel.getMusicName())){
+//                    System.out.println("要移除掉这首歌"+allFavoriteMusicList.get(i).getMusicName());
+//                    index = i;
+//                    break;
+//                }
+//            }
+//            if(index >-1){
+//                allFavoriteMusicList.remove(index);
+//                System.out.println("移除完了");
+//            }
+//        }else{//列表中没有，直接添加到末端
+//            favoriteSongMap.put(musicInfoModel.getId(),musicInfoModel.getMusicName());//放到hashmap中
+//        }
+//        allFavoriteMusicList.add(musicInfoModel);
+//        //打印一下当前的最近播放列表
+//        for (int i = allFavoriteMusicList.size()-1 ; i >= 0 ; i--){
+//            Log.e("最爱的歌"+i ,allFavoriteMusicList.get(i).getMusicName());
+//        }
+    }
+
+    //获得我的最爱歌单
+    public static SongList getMyFavoriteSongList() {
+        return myFavoriteSongList;
+    }
+
+
+
+    public static void setSortSong(MusicInfoModel music){
+        if(MusicUtil.checkFirstIsEnglish(music.getMusicName())){
+            String name = music.getMusicName();
+            music.setSortSongId(""+Character.toLowerCase(name.charAt(0)));
+            music.setSortSongName(name);
+        }else{
+            try {
+                String pingYin = PinyinHelper.convertToPinyinString(music.getMusicName(), " ", PinyinFormat.WITHOUT_TONE);
+                Log.e("转换",pingYin);
+                music.setSortSongId( pingYin.substring(0, 1));
+                music.setSortSongName(pingYin);
+            } catch (PinyinException e){
+                e.printStackTrace();
+            }
+        }
     }
 }

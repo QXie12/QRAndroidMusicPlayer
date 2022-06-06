@@ -17,6 +17,7 @@ import com.example.musicplayer.R;
 import com.example.musicplayer.SecondMusicActivity;
 import com.example.musicplayer.bean.Album;
 import com.example.musicplayer.bean.MusicInfoModel;
+import com.example.musicplayer.common.MusicUtil;
 
 import java.io.Serializable;
 import java.util.List;
@@ -62,6 +63,13 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.BaseViewHo
             }
         });
 
+        realHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //todo 最近播放列表里面的歌点击也会添加到list里面 此处要打开一个新的activity，返回之后再刷新才看到新的list
+                MusicUtil.addRecentMusic(musicInfoModel);
+            }
+        });
     }
 
 

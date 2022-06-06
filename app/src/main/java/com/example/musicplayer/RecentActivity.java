@@ -20,7 +20,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//最近播放列表界面的activity，其中包含三个fragment，分别表示最近播放的单曲、最近播放的专辑、最近播放的歌单
 public class RecentActivity extends AppCompatActivity {
     private ActivityRecentBinding binding;
     private ViewPager mViewPager;
@@ -73,6 +73,7 @@ public class RecentActivity extends AppCompatActivity {
     //添加每个切换页面的Fragment
     private void initFragment(){
         mFragments = new ArrayList<>();
+        //todo 最近播放的单曲、专辑、歌单
         mFragments.add(RecentSongFragment.newInstance(1));
         mFragments.add(SingerFragment.newInstance(2));
         mFragments.add(AlbumFragment.newInstance(3));

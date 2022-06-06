@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.musicplayer.SongListActivity">
+    <item
+        android:id="@+id/add_settings"
+        android:orderInCategory="100"
+        android:title="添加歌曲"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/sort_settings"
+        android:orderInCategory="100"
+        android:title="选择排序方式"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/download_settings"
+        android:orderInCategory="100"
+        android:title="全部下载"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/calendar"
+        android:icon="@drawable/ic_favorite"
+        android:orderInCategory="90"
+        android:title="选择日期"
+        app:showAsAction="ifRoom" />
+</menu>

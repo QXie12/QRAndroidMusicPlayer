@@ -2,10 +2,14 @@ package com.example.musicplayer.ui.localMusic;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -64,6 +68,10 @@ public class SongFragment extends Fragment {
 
         //获得recyclerList和侧边栏
         recyclerView = rootView.findViewById(R.id.song_list);
+        //尝试增加上下文
+        registerForContextMenu(recyclerView);
+
+
         letterSideView = rootView.findViewById(R.id.songIndexView);
         //管理视图渲染，线性的
         layoutManager = new LinearLayoutManager(getContext());
@@ -74,6 +82,44 @@ public class SongFragment extends Fragment {
         initListener();
         return rootView;
     }
+
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+//        super.onCreateContextMenu(menu, v, menuInfo);
+//        number = (String) recyclerView
+//                .getItemAtPosition(((AdapterView.AdapterContextMenuInfo) menuInfo).position);//获取listview的item对象
+//        getMenuInflater().inflate(R.menu.context_menu, menu);
+        getActivity().getMenuInflater().inflate(R.menu.music_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+//        if (item.getItemId() == R.id.menu_item1) {
+//
+//            Toast.makeText(this, number, Toast.LENGTH_SHORT).show();
+//        } else if (item.getItemId() == R.id.menu_item2) {
+//            Toast.makeText(this, "选项2被选择了", Toast.LENGTH_SHORT).show();
+//        }
+//        return super.onContextItemSelected(item);
+
+        if (getUserVisibleHint()) {// 这个方法是判断当前页面是哪一个页面的返回false就是不在当前页面
+            if (item.getItemId() == R.id.delete) {
+                MusicInfoModel musicInfoModel = list.get(musicAdapter.getmPosition());// 通过adapter的getposition获得当前点击的是第几条,针对某条做相应操作.
+                Log.e("要删除",musicInfoModel.getMusicName());
+            }else if (item.getItemId() == R.id.edit) {
+                MusicInfoModel musicInfoModel = list.get(musicAdapter.getmPosition());
+                Log.e("要编辑",musicInfoModel.getMusicName());
+
+            }
+            return true;
+        }
+        return false;
+
+    }
+
 
     @Override
     public void onDestroyView() {
@@ -149,19 +195,6 @@ public class SongFragment extends Fragment {
                 }catch (PinyinException e){
                     e.printStackTrace();
                 }
-//                try {
-//                    if(checkFirstIsEnglish(musicModel.getMusicName())){
-//                        String name = musicModel.getMusicName();
-//                        cacheList.add(new MusicInfoModel(musicModel.getMusicName(), ""+Character.toLowerCase(name.charAt(0)), name, musicModel.getSinger(), musicModel.getAlbum(), musicModel.getTime(), musicModel.getImage()));
-//
-//                    }else{
-//                        String pingYin = PinyinHelper.convertToPinyinString(musicModel.getMusicName(), " ", PinyinFormat.WITHOUT_TONE);
-//                        Log.e("转换",pingYin);
-//                        cacheList.add(new MusicInfoModel(musicModel.getMusicName(), pingYin.substring(0, 1), pingYin, musicModel.getSinger(), musicModel.getAlbum(), musicModel.getTime(), musicModel.getImage()));
-//                    }
-//                } catch (PinyinException e) {
-//                    e.printStackTrace();
-//                }
             }
             //排序
             Collections.sort(cacheList, new Comparator<MusicInfoModel>() {

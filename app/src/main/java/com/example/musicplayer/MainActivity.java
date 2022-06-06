@@ -22,6 +22,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -39,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
+//主Activity，包含三个底边的tab和一个侧边栏
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -109,17 +110,33 @@ public class MainActivity extends AppCompatActivity {
         //标签页
         initView();
 
-        musicUtil= new MusicUtil(this);
+        if(MusicUtil.getMusicList().size()>0){
 
+        }else{
+            musicUtil= new MusicUtil(this);
+        }
     }
 
 
+    //菜单栏
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.main, menu);
+//        return true;
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView =
+                (SearchView) searchItem.getActionView();
+
+        // Configure the search info and add any event listeners...
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

@@ -38,7 +38,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="4dp"
         android:text="歌手 03:36"
-        android:textSize="12dp"
+        android:textSize="12sp"
         android:textColor="@color/gray"
 
         app:layout_constraintBottom_toBottomOf="parent"

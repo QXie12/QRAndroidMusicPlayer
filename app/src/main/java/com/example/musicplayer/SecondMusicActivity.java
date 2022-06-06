@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
+//二级播放页面的activity
 public class SecondMusicActivity extends AppCompatActivity {
     //页面相关内容
     private Toolbar toolbar;

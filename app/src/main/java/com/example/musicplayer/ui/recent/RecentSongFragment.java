@@ -2,6 +2,7 @@ package com.example.musicplayer.ui.recent;
 
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +23,7 @@ import com.example.musicplayer.ui.localMusic.AlbumFragment;
 import com.example.musicplayer.widget.MyItemDecoration;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -32,6 +34,7 @@ public class RecentSongFragment extends Fragment {
     RecyclerView recyclerView;
     //todo 最近播放的音乐list，应该是要按时间排序的
     private List<MusicInfoModel> list;
+    private CardView cardView;
 
     //页面recyclerview的适配器
     private RecentAdapter recentAdapter;
@@ -63,6 +66,8 @@ public class RecentSongFragment extends Fragment {
         //管理视图渲染，线性的
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
+        //播放栏
+        cardView = rootView.findViewById(R.id.recent_play);
         //初始化Adapter
         initAdapter();
         return rootView;
@@ -71,14 +76,18 @@ public class RecentSongFragment extends Fragment {
     private void initAdapter() {
         //todo 拿到最近播放的歌曲列表
         list = new ArrayList<>();
-        list = MusicUtil.getMusicList();
+        list = MusicUtil.getAllRecentMusicList();
 
-        Collections.sort(list, new Comparator<MusicInfoModel>() {
-            @Override
-            public int compare(MusicInfoModel o1, MusicInfoModel o2) {
-                return o1.getSortSongId().compareToIgnoreCase(o2.getSortSongId());
-            }
-        });
+        if(list == null || list.size() <=0){
+            cardView.setVisibility(View.INVISIBLE);
+        }
+        Collections.reverse(list);
+//        Collections.sort(list, new Comparator<MusicInfoModel>() {
+//            @Override
+//            public int compare(MusicInfoModel o1, MusicInfoModel o2) {
+//                return o1.getSortSongId().compareToIgnoreCase(o2.getSortSongId());
+//            }
+//        });
 
 
 //        //设置分割线
@@ -99,7 +108,4 @@ public class RecentSongFragment extends Fragment {
         recentAdapter = new RecentAdapter(getContext(), list);
         recyclerView.setAdapter(recentAdapter);
     }
-
-
-
 }

@@ -28,7 +28,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//本地音乐打开的activiyt，其中包含三个fragment，分别按照名字、歌手、专辑分类，其中歌手和专辑分类有二级页面
 public class LocalSongActivity extends AppCompatActivity {
 
     ActivityLocalsongBinding binding;

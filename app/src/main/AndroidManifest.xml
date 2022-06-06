@@ -8,13 +8,22 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="西瓜音乐"
+        android:largeHeap="true"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:largeHeap="true"
         android:theme="@style/Theme.MusicPlayer">
-
+        <activity
+            android:name=".MusicListActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MusicPlayer.NoActionBar"
+            />
+        <activity
+            android:name=".SongListActivity"
+            android:exported="false"
+            android:label="@string/title_activity_song_list"
+            android:theme="@style/Theme.MusicPlayer.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -37,11 +46,10 @@
             android:name=".SecondMusicActivity"
             android:exported="false"
             android:theme="@style/Theme.MusicPlayer.NoActionBar" />
-
         <activity
             android:name=".RecentActivity"
             android:exported="false"
-            android:theme="@style/Theme.MusicPlayer.NoActionBar"/>
+            android:theme="@style/Theme.MusicPlayer.NoActionBar" />
     </application>
 
 </manifest>

@@ -11,6 +11,7 @@ public class MusicInfoModel  implements Serializable {
     private String singer;//歌手
     private String album;//专辑
     private int time;//歌曲时长
+    private int id;//歌曲id
     private long size;//歌曲所占空间大小
     private transient  Bitmap bitmap;//专辑图片
     private String path;//歌曲地址
@@ -37,6 +38,16 @@ public class MusicInfoModel  implements Serializable {
         this.album = album;
         this.time = time;
         this.imageId = image;
+    }
+
+    public MusicInfoModel(String musicName, String singer, String album, int time, int image, String path,int id) {
+        this.musicName = musicName;
+        this.singer = singer;
+        this.album = album;
+        this.time = time;
+        this.imageId = image;
+        this.path = path;
+        this.id = id;
     }
 
     public MusicInfoModel(String musicName, String singer, String album, int time, int image, String path) {
@@ -184,5 +195,13 @@ public class MusicInfoModel  implements Serializable {
 
     public void setAlbum(String album) {
         this.album = album;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

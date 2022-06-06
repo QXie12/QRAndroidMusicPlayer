@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/add_music_song"
+    android:layout_width="match_parent"
+    android:layout_height="76dp"
+    android:gravity="center_vertical"
+    >
+
+
+    <ImageView
+        android:id="@+id/music_avatar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="15dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/item_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/avatar1" />
+
+    <TextView
+        android:id="@+id/music_list_item"
+        android:layout_width="292dp"
+        android:layout_height="0dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/music_item_content"
+        app:layout_constraintStart_toStartOf="@+id/music_item_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/music_item_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="28dp"
+        android:text="author"
+        android:textColor="@color/gray"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/music_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/music_list_item" />
+
+    <ImageView
+        android:id="@+id/add_song_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="62dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/music_item_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.472"
+        app:srcCompat="@drawable/ic_new_add" />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

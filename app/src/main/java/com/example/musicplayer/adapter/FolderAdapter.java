@@ -61,7 +61,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.BaseViewHo
             @Override
             public void onClick(View v) {
                 Log.e("本文件夹的信息", folder.getFolderName()+" "+ folder.getPath()+ " " + folder.getMusicList().size());
-//                创建intent
+                //创建intent，打开二级页面
                 Intent myIntent = new Intent(mContext,SecondMusicActivity.class);
                 //传递数据
                 Bundle bundle = new Bundle();

@@ -14,13 +14,28 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.example.musicplayer.LocalSongActivity;
 import com.example.musicplayer.MainActivity;
 import com.example.musicplayer.R;
 import com.example.musicplayer.RecentActivity;
+import com.example.musicplayer.SecondMusicActivity;
+import com.example.musicplayer.SongListActivity;
+import com.example.musicplayer.adapter.SongListFragmentAdapter;
+import com.example.musicplayer.adapter.TabFragmentAdapter;
+import com.example.musicplayer.bean.SongList;
+import com.example.musicplayer.common.MusicUtil;
 import com.example.musicplayer.databinding.FragmentMineBinding;
+import com.example.musicplayer.ui.SongList.MySongListFragment;
+import com.example.musicplayer.ui.tab.library.LibraryFragment;
+import com.example.musicplayer.ui.tab.radio.RadioFragment;
+import com.google.android.material.tabs.TabLayout;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -30,6 +45,11 @@ public class MineFragment extends Fragment {
     private TextView mTextView;
     private MineViewModel mineViewModel;
     private FragmentMineBinding binding;
+
+    //下面的tab
+    private List<Fragment> mFragments;
+    private ViewPager mViewPager;
+    private TabLayout mTabLayout;
 
     public static MineFragment newInstance(int index){
         MineFragment fragment = new MineFragment();
@@ -48,12 +68,15 @@ public class MineFragment extends Fragment {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
         mineViewModel.setIndex(index);
+
+
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentMineBinding.inflate(inflater, container, false);
+
         View root = binding.getRoot();
 
         mTextView = binding.mainText;
@@ -72,32 +95,15 @@ public class MineFragment extends Fragment {
                 .into(bannerImage);
 
 
-//        几个Button
+//        上方几个Button
         Button recommend_music = binding.recommendMusic;
         Button local_music = binding.localMusic;
         Button download_music = binding.downloadMusic;
         Button recent_music = binding.recentMusic;
         Button favorite_music = binding.favoriteMusic;
 
-//        Glide.with(this)
-//                .load(R.drawable.ic_radio)
-//                .into(recommend_music);
-//        Glide.with(this)
-//                .load(R.drawable.ic_music)
-//                .into(local_music);
-//        Glide.with(this)
-//                .load(R.drawable.ic_save_alt)
-//                .into(download_music);
-//        Glide.with(this)
-//                .load(R.drawable.ic_play_circle)
-//                .into(recent_music);
-//        Glide.with(this)
-//                .load(R.drawable.ic_favorite)
-//                .into(favorite_music);
-
-
-
-        recommend_music.setOnClickListener(new View.OnClickListener(){
+        //查看本地音乐的按钮
+        local_music.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
@@ -107,6 +113,7 @@ public class MineFragment extends Fragment {
             }
         });
 
+        //点击最近播放按钮
         recent_music.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -116,8 +123,27 @@ public class MineFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        //todo 点击我的最爱按钮，需要更改传递的歌单封面、歌单名称、歌单list信息
+        favorite_music.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                MainActivity mainActivity = (MainActivity) getActivity();
+                Intent myIntent = new Intent(mainActivity, SongListActivity.class);
+                //传递数据
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("SongList",(Serializable) MusicUtil.getMyFavoriteSongList());
 
+//                bundle.putSerializable("songListName","我的最爱");
+//                bundle.putSerializable("cover",R.drawable.avatar10);
+//                bundle.putSerializable("musicList", (Serializable) MusicUtil.getAllFavoriteMusicList());
+                myIntent.putExtras(bundle);
+                //启动新的intent
+                startActivity(myIntent);
+            }
+        });
 
+        //标签页
+        initView();
 
         return root;
     }
@@ -127,7 +153,35 @@ public class MineFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-    
+
+    private void initView(){
+        //实例化组件
+        mViewPager = binding.songListViewPager;
+        mTabLayout = binding.songListTablayout;
+
+        //初始化分页面的 Fragment，并将其添加到列表中
+        initFragment();
+        List<String> title_list = new ArrayList<>();
+        title_list.add("自建歌单");
+        title_list.add("收藏歌单");
+
+
+        //实例化 FragmentPagerAdapter 并将 Fragment 列表传入
+        SongListFragmentAdapter adapter = new SongListFragmentAdapter(getContext(), getChildFragmentManager(), mFragments,title_list);
+        //将实例化好的 Adapter 设置到 ViewPager 中
+        mViewPager.setAdapter(adapter);
+        //将 ViewPager 绑定到 TabLayout上
+        mTabLayout.setupWithViewPager(mViewPager);
+        }
+
+
+    //添加每个切换页面的Fragment
+    private void initFragment(){
+        mFragments = new ArrayList<>();
+        //todo 收藏歌单标签页待完成
+        mFragments.add(MySongListFragment.newInstance(1));
+        mFragments.add(MySongListFragment.newInstance(2));
+    }
     
     
     

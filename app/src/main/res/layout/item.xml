@@ -45,6 +45,27 @@
         app:layout_constraintStart_toEndOf="@+id/avatar"
         app:layout_constraintTop_toBottomOf="@+id/list_item" />
 
+    <ImageView
+        android:id="@+id/aixin"
+        android:layout_width="30dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="62dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/item_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.472"
+        app:srcCompat="@drawable/ic_aixin" />
+
+    <ImageView
+        android:id="@+id/more"
+        android:layout_width="30dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="22dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/item_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.472"
+        app:srcCompat="@drawable/ic_more_vert" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
