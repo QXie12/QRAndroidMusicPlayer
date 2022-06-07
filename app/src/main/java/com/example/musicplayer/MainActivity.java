@@ -2,8 +2,11 @@ package com.example.musicplayer;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.musicplayer.adapter.TabFragmentAdapter;
+import com.example.musicplayer.bean.SongList;
 import com.example.musicplayer.common.MusicUtil;
 import com.example.musicplayer.databinding.AppBarMainBinding;
 import com.example.musicplayer.databinding.ContentMainBinding;
@@ -82,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             music_name.setText(String.valueOf(msg.getData().get("musicName")));
             music_singer.setText(String.valueOf(msg.getData().get("singer")));
-            main_isPlay.setImageResource(R.drawable.ic_music_on); //音乐开始播放
+            main_isPlay.setImageResource(R.drawable.ic_stop); //音乐开始播放
             return false;
         }
     });
@@ -106,6 +110,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                        .setAction("Action", null).show();
 //            }
 //        });
+        IntentFilter filter = new IntentFilter(MusicListActivity.action);
+        registerReceiver(broadcastReceiver, filter);
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
@@ -130,11 +136,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
                 //点击暂停/播放
                 if(MusicService.isPlay){
-                    main_isPlay.setImageResource(R.drawable.music_suspend); //点击暂停
+                    main_isPlay.setImageResource(R.drawable.ic_play); //点击暂停
                     MusicService.isPlay = false;
                     mm.pause();
                 }else {
-                    main_isPlay.setImageResource(R.drawable.ic_music_on); //开始播放
+                    main_isPlay.setImageResource(R.drawable.ic_stop); //开始播放
                     if(!mm.isChanged()){
                         mm.play(); //第一首歌初始化需要
                     }else{
@@ -174,9 +180,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(MusicUtil.getMusicList().size()>0){
 
         }else{
-            musicUtil= new MusicUtil(this);
+            musicUtil= new MusicUtil(getApplicationContext());
         }
     }
+
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO Auto-generated method stub
+            Bundle bundle = intent.getExtras();
+            Log.d(TAG,"我接收到消息！");
+        }
+    };
 
     ServiceConnection sc = new ServiceConnection() {
         @Override
@@ -199,11 +215,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 music_name.setText(mm.getSongName());
                 music_singer.setText(mm.getSinger());
                 if(MusicService.isPlay){
-                    main_isPlay.setImageResource(R.drawable.ic_music_on);//当前正在播放
+                    main_isPlay.setImageResource(R.drawable.ic_stop);//当前正在播放
                 }else {
                     //设置成暂停的图片
                     //TODO 这里图片待改
-                    main_isPlay.setImageResource(R.drawable.music_suspend);//暂停了
+                    main_isPlay.setImageResource(R.drawable.ic_play);//暂停了
                 }
             }
 

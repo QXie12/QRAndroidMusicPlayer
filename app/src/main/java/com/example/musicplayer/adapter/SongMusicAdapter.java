@@ -19,6 +19,7 @@ import com.example.musicplayer.MusicListActivity;
 import com.example.musicplayer.R;
 import com.example.musicplayer.bean.MusicInfoModel;
 import com.example.musicplayer.common.MusicUtil;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -70,9 +71,23 @@ public class SongMusicAdapter extends RecyclerView.Adapter<SongMusicAdapter.Base
             public void onClick(View v) {
                 Log.e("要把这首歌曲添加到歌单里面",musicInfoModel.getMusicName()+" "+ musicInfoModel.getSinger() + " " + musicInfoModel.getSortSongId()+musicInfoModel.getId());
                 //todo 要把这一首歌曲添加到这个歌单里面
-                MusicListActivity.addMusicToThisSongList(musicInfoModel);
+//                MusicListActivity.addMusicToThisSongList(musicInfoModel);
 //                MusicListActivity.getSongList().getMusicList().add(musicInfoModel);
                 Log.e("添加完毕",MusicListActivity.getSongList().getMusicList()+" "+MusicListActivity.getSongList().getMusicList().size()+MusicListActivity.getSongList().getSongListName());
+
+//                MusicListActivity.addMusicToThisSongList(musicInfoModel)
+                if(MusicListActivity.addMusicToThisSongList(musicInfoModel)){
+                    Snackbar.make(v, "已添加到歌单" +MusicListActivity.getSongList().getSongListName(), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null)
+                            .setBackgroundTint(mContext.getResources().getColor(R.color.green))
+                            .show();
+                }else{
+                    Snackbar.make(v, "歌单已包含此歌曲", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null)
+                            .setBackgroundTint(mContext.getResources().getColor(R.color.red))
+                            .show();
+                }
+
             }
         });
     }

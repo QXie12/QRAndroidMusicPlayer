@@ -1,10 +1,13 @@
 package com.example.musicplayer.ui.tab.mine;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -51,6 +54,10 @@ public class MineFragment extends Fragment {
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
 
+    //动画
+    private AnimationDrawable AD;
+    ImageView bannerImage;
+
     public static MineFragment newInstance(int index){
         MineFragment fragment = new MineFragment();
         Bundle bundle = new Bundle();
@@ -89,10 +96,14 @@ public class MineFragment extends Fragment {
         });
 
         //顶部banner图片
-        ImageView bannerImage = binding.bannerImage;
-        Glide.with(this)
-                .load(R.drawable.avatar10)
-                .into(bannerImage);
+        bannerImage = binding.bannerImage;
+//        Glide.with(this)
+//                .load(R.drawable.avatar10)
+//                .into(bannerImage);
+        bannerImage.setImageResource(R.drawable.fengmian_animation_list);
+
+        AD = (AnimationDrawable) bannerImage.getDrawable();
+        AD.setOneShot(false);
 
 
 //        上方几个Button
@@ -181,6 +192,23 @@ public class MineFragment extends Fragment {
         //todo 收藏歌单标签页待完成
         mFragments.add(MySongListFragment.newInstance(1));
         mFragments.add(MySongListFragment.newInstance(2));
+    }
+
+    @Override
+     public void onStart(){
+        startAnimation();
+        super.onStart();
+    }
+
+    private void startAnimation() {
+        AD.start();
+        Animation trans = new TranslateAnimation(Animation.RELATIVE_TO_SELF,0,
+                Animation.RELATIVE_TO_SELF,0,
+                Animation.RELATIVE_TO_SELF,0,
+                Animation.RELATIVE_TO_SELF,0);
+        trans.setDuration(1000);
+        trans.setRepeatCount(Animation.INFINITE);
+        bannerImage.startAnimation(trans);
     }
     
     

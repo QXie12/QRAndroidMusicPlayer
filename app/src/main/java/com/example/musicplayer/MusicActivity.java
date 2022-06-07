@@ -143,10 +143,10 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
                 playStatus.setImageDrawable(getResources().getDrawable(R.drawable.music_suiji)); //随机播放
 
             if(MusicService.isPlay){
-                playButton.setImageDrawable(getResources().getDrawable(R.drawable.music_play));
+                playButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_stop));
             }
             else
-                playButton.setImageDrawable(getResources().getDrawable(R.drawable.music_suspend));
+                playButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_play));
             try {
                 seekBar.setMax(mm.getDuration());
                 System.out.println("歌曲时长:"+mm.getDuration());
@@ -189,7 +189,7 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
         switch (view.getId()){
             case R.id.play_Song:
                 if (!MusicService.isPlay){
-                    ((ImageButton)view).setImageDrawable(getResources().getDrawable(R.drawable.music_play));
+                    ((ImageButton)view).setImageDrawable(getResources().getDrawable(R.drawable.ic_stop));
                     if(!mm.isChanged()){
                         mm.play(); //第一首歌初始化需要
                     }else{
@@ -200,7 +200,7 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
                     System.out.println("....");
 //                    timer();
                 }else if(MusicService.isPlay) {
-                    ((ImageButton)view).setImageDrawable(getResources().getDrawable(R.drawable.music_suspend));
+                    ((ImageButton)view).setImageDrawable(getResources().getDrawable(R.drawable.ic_play));
                     MusicService.isPlay = false;
                     mm.pause();
                     mm.timer_cancel();
@@ -210,12 +210,12 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
             case R.id.next_Song:
                 //切下一首
                 mm.nextSong();
-                playButton.setImageResource(R.drawable.music_play);
+                playButton.setImageResource(R.drawable.ic_stop);
                 break;
             case R.id.pre_Song:
                 //切上一首
                 mm.preSong();
-                playButton.setImageResource(R.drawable.music_play);
+                playButton.setImageResource(R.drawable.ic_stop);
                 break;
             case R.id.music_return:
                 mm.close_timer();

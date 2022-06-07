@@ -56,7 +56,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.BaseVi
         //歌单封面
 //        realHolder.cover.setImageResource(R.drawable.ic_album);
         if(songList.getCover() == null){//读不到专辑图片
-            Glide.with(mContext).load(R.drawable.album).into(realHolder.cover);
+            Glide.with(mContext).load(R.drawable.songlist).into(realHolder.cover);
         }else{
             Glide.with(mContext).load(songList.getCover()).into(realHolder.cover);
         }

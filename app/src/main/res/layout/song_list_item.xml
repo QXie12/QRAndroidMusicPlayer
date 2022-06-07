@@ -16,6 +16,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
+        app:cardElevation="0dp"
+        app:cardMaxElevation="0dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView

@@ -19,7 +19,7 @@
         app:showAsAction="never" />
     <item
         android:id="@+id/calendar"
-        android:icon="@drawable/ic_favorite"
+        android:icon="@drawable/ic_aixin"
         android:orderInCategory="90"
         android:title="选择日期"
         app:showAsAction="ifRoom" />

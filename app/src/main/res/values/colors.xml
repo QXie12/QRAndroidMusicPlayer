@@ -14,8 +14,12 @@
     <color name="gray4">#a0a0a0</color>
 
 <!--    西瓜配色-->
-    <color name="green">#8bcb83</color>
+    <color name="green1">#8bcb83</color>
+    <color name="green">#C4E3BA</color>
+
+<!--    effaef-->
     <color name="red">#FAFB9A97</color>
+    <color name="pink">#f2d4d0</color>
 
 
 </resources>

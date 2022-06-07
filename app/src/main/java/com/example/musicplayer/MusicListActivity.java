@@ -165,8 +165,12 @@ public class MusicListActivity extends AppCompatActivity {
         return allMusic;
     }
 
-    public static void addMusicToThisSongList(MusicInfoModel musicInfoModel){
-        songList.getMusicList().add(musicInfoModel);
+    public static boolean addMusicToThisSongList(MusicInfoModel musicInfoModel){
+        return MusicUtil.addNormalMusic(songList,musicInfoModel);
+//        songList.getMusicList().add(musicInfoModel);
+//        //todo 还要操作一次数据库
+//        MusicUtil.addSongToSongList(songList.getSongListName(),musicInfoModel);
+
     }
 
     public static SongList getSongList(){

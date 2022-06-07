@@ -1,4 +1,13 @@
 package com.example.musicplayer.common;
+import com.example.musicplayer.DAO.SongDao;
+import com.example.musicplayer.DAO.SongListDao;
+import com.example.musicplayer.DAO.SongListWithSongCrossRefDao;
+import com.example.musicplayer.DAO.UserDao;
+import com.example.musicplayer.Entity.MyDataBase;
+import com.example.musicplayer.Entity.Song;
+import com.example.musicplayer.Entity.SongListWithSongCrossRef;
+import com.example.musicplayer.Entity.User;
+import com.example.musicplayer.Entity.UserWithSongLists;
 import com.example.musicplayer.R;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -26,6 +35,9 @@ import java.util.regex.Pattern;
 
 //读取本地音乐
 public class MusicUtil {
+    private static String username = "xiez";
+    private static String password = "xiez";
+
     //所有歌曲列表
     private static List<MusicInfoModel> allMusicList = new ArrayList<>();
     //所有分类歌手歌曲列表
@@ -55,7 +67,13 @@ public class MusicUtil {
     //所有文件夹列表
     private static HashMap<String,Integer> folderMap = new HashMap<>();
 
+    //上下文以及数据库
     private Context context;
+    static MyDataBase myDataBase ;
+    static UserDao userDao;
+    static SongDao songDao;
+    static SongListDao songListDao;
+    static SongListWithSongCrossRefDao songListWithSongCrossRefDao;
 
 
     private static ContentResolver contentResolver;
@@ -78,6 +96,14 @@ public class MusicUtil {
     //使用构造函数去获取本地所有的歌曲
     public MusicUtil(Context context){
         this.context = context;
+        //创建数据库对象
+        myDataBase = MyDataBase.getInstance(context.getApplicationContext());
+        songDao = myDataBase.songDao();
+        songListDao = myDataBase.songListDao();
+        userDao = myDataBase.userDao();
+        songListWithSongCrossRefDao = myDataBase.songListWithSongCrossRefDao();
+
+        /*---------------------从本地拿取所有的音乐----------------- */
         //创建ContentResolve对象
         contentResolver = context.getContentResolver();
         //创建游标 参数意义
@@ -158,7 +184,7 @@ public class MusicUtil {
 //                albumMap.put(thisAlbumName,albumMap.size());
 //            }
 
-            //将歌曲添加到文件夹列表
+            //4、将歌曲添加到文件夹列表
             String prePath = path.substring(0,path.lastIndexOf("/"));
             Log.e("文件夹地址", prePath);
             if(folderMap.get(prePath) != null){//前面已经加过这个专辑的歌
@@ -178,33 +204,111 @@ public class MusicUtil {
         }while (cursor.moveToNext());
         cursor.close();
 
-//        //打印按歌手分类之后的歌曲排序
-//        for(Singer singer : allSingerList){
-//            //打印歌手分类下的歌单
-//            Log.e("歌手:",singer.getSingerName());
-//            for(MusicInfoModel musicInfoModel : singer.getMusicList()){
-//
-//                Log.e("歌手分类下的歌单", " " + musicInfoModel.getMusicName());
-//            }
-//        }
-//        //打印按专辑分类之后的歌曲排序
-//        for(Album album : allAlbumList){
-//            //打印专辑分类下的歌单
-//            Log.e("专辑:",album.getAlbumName());
-//            for(MusicInfoModel musicInfoModel : album.getMusicList()){
-//                Log.e("专辑分类下的歌单", " " + musicInfoModel.getMusicName());
-//            }
-//        }
-        //打印按文件夹分类之后的歌曲排序
-        for(Folder folder : allFolderList){
-            //打印专辑分类下的歌单
-            Log.e("文件夹:",folder.getFolderName());
-            for(MusicInfoModel musicInfoModel : folder.getMusicList()){
-                Log.e("文件夹分类下的歌单", " " + musicInfoModel.getMusicName());
-            }
-        }
+        //初始化用户
+        initUser(username,password);
+        //初始化本地音乐
+        initUserAllSongList(username);
+
 
     }
+
+    /************数据库连接相关**********/
+    //初始化用户
+    private static void initUser(String name, String password){
+        //正常流程要插入用户，并创建一个我的最爱歌单、最近播放歌单
+        //todo Song增加一个属性 long lastPlay 上一次播放的时间 初始值为-1
+//        1. 插入用户
+        if(userDao.findByNameAndPassword(username,password) != null){//已经创建默认的用户
+//            不做任何操作
+            System.out.println("我已经有这个用户了");
+        }else{
+            userDao.insertUser(new User(name,password));//插入一个默认的用户
+        }
+        System.out.println(1);
+//        2. 将本地歌曲导入到数据库中
+        if(songDao.getAllSongs().size() == 0){
+            for(MusicInfoModel musicInfoModel : allMusicList){
+                songDao.insertSong(new Song(musicInfoModel.getPath(), musicInfoModel.getId(),musicInfoModel.getMusicName()));
+            }
+        }
+        System.out.println(2);
+        //3、创建两个默认歌单
+        if(songListDao.getSongListById("我的最爱") == null){
+            songListDao.insertSongList(new com.example.musicplayer.Entity.SongList("我的最爱",name,"我的最爱"));
+        }
+        if(songListDao.getSongListById("最近播放") == null){
+            songListDao.insertSongList(new com.example.musicplayer.Entity.SongList("最近播放",name,"最近播放"));
+        }
+        System.out.println(3);
+    }
+
+    //todo 初始化时获取用户的歌单的信息   对应于后面的这个方法  getAllSongList
+    private void initUserAllSongList(String username){
+        List<UserWithSongLists> userWithSongLists = userDao.getUserWithSongLists();//获取所有用户歌单信息
+        System.out.println(4);
+//        通过获取的信息来实例化本地的allSongList
+        for (UserWithSongLists usersong: userWithSongLists) {//  用户---歌单
+            if(usersong.getUser().getUserName().equals(username)){//如果是这个用户绑定的歌单
+                for(com.example.musicplayer.Entity.SongList songList : usersong.getSongLists()){//  这个用户下的每一个歌单
+                    //对于这个用户的所有的歌单
+//                    1、 拿到歌单名字
+                    String songlistname  = songList.getSong_list_name();
+                    //2、 去找这个歌单的所有的歌
+                    //存储歌曲列表
+                    List<MusicInfoModel> musicInfoModels = new ArrayList<>();
+                    //db
+                    List<String> songPaths =  songListWithSongCrossRefDao.getSongsBySongList(songlistname);
+                    System.out.println("打印找到的所有的歌路径");
+                    for(int i = 0 ; i < songPaths.size() ; i++){
+                        System.out.println(songPaths.get(i));
+                        musicInfoModels.add(findMusicInfoByPath(songPaths.get(i)));
+                    }
+                    //装载到本地所有歌单对象中
+                    SongList localSongList =new SongList(songlistname,musicInfoModels);
+                    if(songlistname.equals("我的最爱")){//我的最爱歌单，加载到本地的我的最爱歌单里面
+                        myFavoriteSongList = localSongList;
+                    }else if(songlistname.equals("最近播放")){//todo 最近播放歌单，加载到本地的最近播放歌单里面
+//                        allRecentMusicList = musicInfoModels;
+                    }else{//其他歌单
+                        allSongList.add(localSongList);//加载到本地显示的进来
+                    }
+                }
+            }
+        }
+    }
+    //新建歌单
+    private static void insertSongList(SongList songList, String username){
+        //插入歌单
+        //插入一个歌单 用户与歌单绑定
+        System.out.println(5);
+        songListDao.insertSongList(new com.example.musicplayer.Entity.SongList(songList.getSongListName(),username,songList.getSongListName()));
+        Log.e(songList.getSongListName(),songListDao.getAllSongList().size()+"");
+        //插入歌单歌曲的联系 歌单与歌曲绑定
+        for (MusicInfoModel musicInfoModel: songList.getMusicList()){
+            songListWithSongCrossRefDao.insertSongListWithSongCrossRef(new SongListWithSongCrossRef(songList.getSongListName(),musicInfoModel.getPath()));
+            Log.e("新建歌单",musicInfoModel.getMusicName()+songList.getSongListName());
+            System.out.println(6);
+        }
+    }
+    //向歌单中添加歌曲
+    private static void addSongToSongList(String SongListName, MusicInfoModel musicInfoModel){
+        songListWithSongCrossRefDao.insertSongListWithSongCrossRef(new SongListWithSongCrossRef(SongListName,musicInfoModel.getPath()));
+        System.out.println("向歌单中添加信息"+7);
+    }
+
+    //向歌单中删除歌曲
+    private static void deleteSongFromSongList(String SongListName, MusicInfoModel musicInfoModel){
+        songListWithSongCrossRefDao.delete(new SongListWithSongCrossRef(SongListName,musicInfoModel.getPath()));
+        System.out.println("向歌单中删除信息"+8);
+    }
+
+
+    /*************************数据库连接相关************/
+
+
+
+
+
     //安卓10以下使用
     public static Bitmap getAlbumArt(int album_id) {
         String mUriAlbums = "content://media/external/audio/albums";
@@ -223,7 +327,7 @@ public class MusicUtil {
         return bm;
     }
 
-    //通过路径获取封面
+    //通过路径获取封面 安卓通用
     public static Bitmap getAlbumArtByPath(String path){
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         mediaMetadataRetriever.setDataSource(path);
@@ -239,15 +343,16 @@ public class MusicUtil {
     }
 
 
+    //返回本地所有音乐的list
     public static List<MusicInfoModel> getMusicList() {
         return allMusicList;
     }
 
+    //返回所有歌手的list
     public static List<Singer> getAllSingerList() {
         return allSingerList;
     }
-
-
+    //返回所有专辑的list
     public static List<Album> getAllAlbumList() {
         return allAlbumList;
     }
@@ -263,6 +368,7 @@ public class MusicUtil {
     }
 
 
+    //返回singer二级页面的内容，即二级页面的singers
     public static List<Singer> getSingers(){
         //首次获取，此时静态列表还未创建完毕
         if(allSingerList.size() == 0){
@@ -272,7 +378,6 @@ public class MusicUtil {
                     Singer thisSinger = allSingerList.get(singerMap.get(musicInfoModel.getSinger()));
                     thisSinger.getMusicList().add(musicInfoModel);
                     Log.e("此时歌曲有封面吗？",musicInfoModel.getBitmap()+" ");
-
                 }else{
                     List<MusicInfoModel> thisSingerMusicList = new ArrayList<>();
                     thisSingerMusicList.add(musicInfoModel);
@@ -283,9 +388,11 @@ public class MusicUtil {
                 }
             }
         }
-            return allSingerList;
+        return allSingerList;
     }
 
+
+    //返回album二级页面的内容，即二级页面的albums
     public static List<Album> getAlbums(){
         //首次获取，此时静态列表还未创建完毕
         if(allAlbumList.size() == 0){
@@ -310,24 +417,19 @@ public class MusicUtil {
         return allFolderList;
     }
 
-    //todo 从数据库中读取到所有我创建的歌单 目前自己创建的歌单是读取了所有的歌
+    //todo 从数据库中读取到所有这个用户创建的歌单
     public static List<SongList> getAllSongList() {
-//        if(allSongList.size() == 0) {
-//            for (int i = 0; i < 3; i++) {
-////            List<MusicInfoModel> musicInfoModels =
-//                SongList songList = new SongList("我是歌单"+i + " ", allMusicList);
-//                allSongList.add(songList);
-//            }
-//        }
         return allSongList;
     }
 
-    //todo 创建歌单向数据库中增加歌单数据
-    public static void addSongList(SongList songList){
-        allSongList.add(songList);
-    }
 
-    //通过歌单名字来找歌单
+    //todo 用户创建歌单，1、向数据库中增加歌单数据 2、将这个歌单加入到MusicUtil的静态歌单列表
+    public static void addSongList(SongList songList){
+        allSongList.add(songList);//先添加到本地
+        insertSongList(songList,username);//添加到数据库
+
+    }
+    //从本地的歌单列表中，通过歌单名字来找歌单
     public static SongList findSongListBySongListName(String name){
         if(name.equals("我的最爱")){
             return myFavoriteSongList;
@@ -342,13 +444,11 @@ public class MusicUtil {
         return null;
     }
 
-    //找到歌单，并返回这个歌单里面的歌曲
+    //从本地找到歌单，并返回这个歌单里面的歌曲
     public static List<MusicInfoModel> findMusicListBySongListName(String songListName){
-        //todo 此处应该是要去数据库中拿到这个歌单里面的歌曲
         if(songListName.equals("我的最爱")){
             return myFavoriteSongList.getMusicList();
         }else{
-            //todo 此处应该是要去数据库中拿到这个歌单
             for(SongList songList: allSongList){
                 if(songList.getSongListName().equals(songListName)){
                     return songList.getMusicList();
@@ -357,11 +457,11 @@ public class MusicUtil {
         }
         return null;
     }
-
-    //获取最近播放的歌曲列表
+    //todo 数据库的实现？获取最近播放的歌曲列表
     public static List<MusicInfoModel> getAllRecentMusicList() {
         return allRecentMusicList;
     }
+
     //todo 向最近播放歌曲列表中添加歌曲
     public static void addRecentMusic(MusicInfoModel musicInfoModel){
         //如果列表中已经有了这首歌，就把它添加到列表末端
@@ -394,12 +494,23 @@ public class MusicUtil {
     public static List<MusicInfoModel> getAllFavoriteMusicList() {
         return allFavoriteMusicList;
     }
+
+    //todo 需要操作数据库 移除歌单中的歌曲
     public static boolean deleteFavoriteMusic(MusicInfoModel musicInfoModel){
-        myFavoriteSongList.getMusicList().remove(musicInfoModel);
+        for(MusicInfoModel musicInfoModel1 : myFavoriteSongList.getMusicList()){
+            if(musicInfoModel1.getMusicName().equals(musicInfoModel.getMusicName())){
+                Log.e("我在MusicUtil里面要移除这首歌的喜欢了",musicInfoModel.getMusicName());
+                myFavoriteSongList.getMusicList().remove(musicInfoModel1);
+                //todo 操作数据库
+                deleteSongFromSongList("我的最爱",musicInfoModel);
+                return false;
+            }
+        }
         return true;
     }
     //todo 向我的最爱列表中添加歌曲
     public static boolean addFavoriteMusic(MusicInfoModel musicInfoModel){
+//        1、本地添加
         //如果列表中已经有了这首歌，就把它添加到列表末端
         int id = musicInfoModel.getId();
         System.out.println("这是我的最爱这首歌的id是"+musicInfoModel.getId());
@@ -411,29 +522,26 @@ public class MusicUtil {
         }
         //没有添加过
         myFavoriteSongList.getMusicList().add(musicInfoModel);
+
+//        2、数据库添加
+        addSongToSongList("我的最爱",musicInfoModel);
         return true;
-//        if(favoriteSongMap.get(id) != null){
-//            int index = -1;
-//            for (int i = allFavoriteMusicList.size()-1 ; i >= 0 ; i--){
-//                if(allFavoriteMusicList.get(i).getMusicName().equals(musicInfoModel.getMusicName())){
-//                    System.out.println("要移除掉这首歌"+allFavoriteMusicList.get(i).getMusicName());
-//                    index = i;
-//                    break;
-//                }
-//            }
-//            if(index >-1){
-//                allFavoriteMusicList.remove(index);
-//                System.out.println("移除完了");
-//            }
-//        }else{//列表中没有，直接添加到末端
-//            favoriteSongMap.put(musicInfoModel.getId(),musicInfoModel.getMusicName());//放到hashmap中
-//        }
-//        allFavoriteMusicList.add(musicInfoModel);
-//        //打印一下当前的最近播放列表
-//        for (int i = allFavoriteMusicList.size()-1 ; i >= 0 ; i--){
-//            Log.e("最爱的歌"+i ,allFavoriteMusicList.get(i).getMusicName());
-//        }
     }
+
+    public static boolean addNormalMusic(SongList songList,MusicInfoModel musicInfoModel){
+        for(MusicInfoModel musicInfoModel1 : songList.getMusicList()){
+            if(musicInfoModel1.getMusicName().equals(musicInfoModel.getMusicName())){
+                Log.e("已经添加过了",musicInfoModel.getMusicName());
+                return false;
+            }
+        }
+        //没有添加过 ,先在本地加，再去数据库加
+        songList.getMusicList().add(musicInfoModel);
+//        2、数据库添加
+        addSongToSongList(songList.getSongListName(),musicInfoModel);
+        return true;
+    }
+
 
     //获得我的最爱歌单
     public static SongList getMyFavoriteSongList() {
@@ -441,7 +549,7 @@ public class MusicUtil {
     }
 
 
-
+    //歌曲初始排序
     public static void setSortSong(MusicInfoModel music){
         if(MusicUtil.checkFirstIsEnglish(music.getMusicName())){
             String name = music.getMusicName();
@@ -463,5 +571,14 @@ public class MusicUtil {
         int minute = miao / 60;
         int second = miao % 60;
         return String.format("%02d:%02d", minute, second);
+    }
+    //通过路径找到歌曲
+    public static MusicInfoModel findMusicInfoByPath(String path){
+        for(MusicInfoModel musicInfoModel : allMusicList){
+            if(musicInfoModel.getPath().equals(path)){
+                return musicInfoModel;
+            }
+        }
+        return null;
     }
 }

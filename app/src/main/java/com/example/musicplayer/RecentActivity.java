@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 
 import com.example.musicplayer.adapter.MusicFragmentAdapter;
@@ -32,10 +33,12 @@ public class RecentActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private List<Fragment> mFragments;
     private static MusicService.MyBinder mm;
+    public static int isOpen = 0;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        isOpen = 1;
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_recent);
         binding = ActivityRecentBinding.inflate(getLayoutInflater());
@@ -93,6 +96,7 @@ public class RecentActivity extends AppCompatActivity {
         mm.play(path);
     }
     public static void setCurrent(int current){
+        Log.e("我姓你了",mm+" ");
         mm.setCurrent(current);
     }
 
@@ -104,5 +108,11 @@ public class RecentActivity extends AppCompatActivity {
         mFragments.add(SingerFragment.newInstance(2));
         mFragments.add(AlbumFragment.newInstance(3));
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        isOpen = 0;
+        super.onDestroy();
     }
 }

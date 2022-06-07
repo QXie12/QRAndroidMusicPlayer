@@ -54,7 +54,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.BaseViewHo
         //专辑封面
 //        realHolder.cover.setImageResource(R.drawable.ic_album);
 //        if(folder.getCover() == null){//读不到专辑图片
-        Glide.with(mContext).load(R.drawable.album).into(realHolder.cover);
+        Glide.with(mContext).load(R.drawable.folder).into(realHolder.cover);
 
 
         realHolder.itemView.setOnClickListener(new View.OnClickListener() {

@@ -17,7 +17,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/green"
             app:popupTheme="@style/Theme.MusicPlayer.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -38,6 +38,8 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_weight="0"
+        app:cardCornerRadius="20dp"
+        app:cardBackgroundColor="@color/pink"
         android:onClick="onClick">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -49,7 +51,7 @@
                 android:layout_width="55dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/jay1"
-                app:civ_border_color="#FF000000"
+                app:civ_border_color="#00000000"
                 app:civ_border_width="2dp"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="10dp"
@@ -82,7 +84,7 @@
                 android:id="@+id/main_isPlay"
                 android:layout_width="29dp"
                 android:layout_height="29dp"
-                android:src="@drawable/ic_music_on"
+                android:src="@drawable/ic_stop"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.816"
@@ -93,7 +95,7 @@
                 android:id="@+id/main_musicList"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:src="@drawable/ic_format_indent_increase"
+                android:src="@drawable/ic_style"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/main_isPlay"

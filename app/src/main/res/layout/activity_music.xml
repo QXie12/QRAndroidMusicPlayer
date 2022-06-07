@@ -72,9 +72,10 @@
 
     <ImageButton
         android:id="@+id/play_Song"
-        android:layout_width="101dp"
-        android:layout_height="101dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:background="#00000000"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,29 +84,31 @@
 
     <ImageButton
         android:id="@+id/pre_Song"
-        android:layout_width="60dp"
-        android:layout_height="54dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:background="#00FF0000"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.27"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.908"
-        app:srcCompat="@drawable/music_shangyishou" />
+        app:srcCompat="@drawable/ic_pre" />
 
     <ImageButton
         android:id="@+id/next_Song"
-        android:layout_width="64dp"
-        android:layout_height="55dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:background="#00FF0000"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.737"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.908"
-        app:srcCompat="@drawable/music_xiayishou" />
+        app:srcCompat="@drawable/ic_next" />
 
     <ImageButton
         android:id="@+id/music_way"

@@ -18,6 +18,7 @@ import com.example.musicplayer.MusicActivity;
 import com.example.musicplayer.R;
 import com.example.musicplayer.RecentActivity;
 import com.example.musicplayer.SecondMusicActivity;
+import com.example.musicplayer.SongListActivity;
 import com.example.musicplayer.bean.Album;
 import com.example.musicplayer.bean.MusicInfoModel;
 import com.example.musicplayer.common.MusicUtil;
@@ -74,8 +75,17 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.BaseViewHo
             public void onClick(View v) {
                 //todo 最近播放列表里面的歌点击也会添加到list里面 此处要打开一个新的activity，返回之后再刷新才看到新的list
 //                MusicUtil.addRecentMusic(musicInfoModel);
-                RecentActivity.setCurrent(musicInfoModel.getId());
-                RecentActivity.playByPath(musicInfoModel.getPath());
+                Log.e("我想听这首歌",musicInfoModel.getMusicName()+musicInfoModel.getId());
+                if(SongListActivity.isOpen==1){
+                    SongListActivity.setCurrent(musicInfoModel.getId());
+                    SongListActivity.playByPath(musicInfoModel.getPath());
+                }else {
+                    if(RecentActivity.isOpen==1){
+                        RecentActivity.setCurrent(musicInfoModel.getId());
+                        RecentActivity.playByPath(musicInfoModel.getPath());
+                    }
+                }
+
                 Intent intent = new Intent();
                 intent.setClass(mContext, MusicActivity.class);
                 mContext.startActivity(intent); //打开

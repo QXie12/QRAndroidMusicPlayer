@@ -3,9 +3,11 @@ package com.example.musicplayer;
 import static android.content.ContentValues.TAG;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
@@ -13,6 +15,7 @@ import com.example.musicplayer.adapter.RecentAdapter;
 import com.example.musicplayer.bean.MusicInfoModel;
 import com.example.musicplayer.bean.SongList;
 import com.example.musicplayer.common.MusicUtil;
+import com.example.musicplayer.databinding.ActivityRecentBinding;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -26,6 +29,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -48,7 +52,6 @@ import java.util.TimerTask;
 
 //歌单详情界面的activity，包含上面的折叠的toolbar和下面的歌曲列表
 public class SongListActivity extends AppCompatActivity {
-
     //下面的歌单展示有关的东西
     RecyclerView recyclerView;
     //todo 我的最爱的音乐list，应该是要从数据库读进来
@@ -60,13 +63,18 @@ public class SongListActivity extends AppCompatActivity {
     private Button button;
 
     private SongList songList;
+    public static int isOpen = 0;
 
     //歌单的title、封面
     private String title;
     private  int cover;
 
+    public static final String reMain = "toMain";
+
     //下拉界面状态相关的内容
     private  ActivitySongListBinding binding;
+    private static MusicService.MyBinder mm;
+
     private CollapsingToolbarLayoutState state;
     private enum CollapsingToolbarLayoutState {
         EXPANDED,
@@ -75,6 +83,7 @@ public class SongListActivity extends AppCompatActivity {
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        isOpen = 1;
         super.onCreate(savedInstanceState);
         binding = ActivitySongListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -83,6 +92,10 @@ public class SongListActivity extends AppCompatActivity {
         //获取数据
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
+
+        Intent intent1 = new Intent(SongListActivity.this,MusicService.class);
+//        startService(intent);
+        bindService(intent1,sc, BIND_AUTO_CREATE);
 
         IntentFilter filter = new IntentFilter(MusicListActivity.action);
         registerReceiver(broadcastReceiver, filter);
@@ -119,12 +132,17 @@ public class SongListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //todo 返回到主界面的时候，需要往util里面改一下
-//                MusicUtil.findSongListBySongListName(title).setMusicList(songList.getMusicList());
-                finish();
+                MusicUtil.findSongListBySongListName(title).setMusicList(songList.getMusicList());
 //
-//                Intent myIntent = new Intent(SongListActivity.this, MainActivity.class);
-//                //启动新的intent
+                Intent myIntent = new Intent(SongListActivity.this, MainActivity.class);
+                //启动新的intent
 //                startActivity(myIntent);
+
+                Intent intent = new Intent(reMain);
+                intent.putExtra("SongList", (Serializable) songList);
+//                intent.putExtra("SongList", "nihao");
+                sendBroadcast(intent);
+                finish();
             }
         });
         //折叠显示的区域
@@ -192,6 +210,20 @@ public class SongListActivity extends AppCompatActivity {
             }
         });
     }
+    ServiceConnection sc = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            //绑定后初始化
+            System.out.println("初始化SongListActivity的service。。。");
+            mm = (MusicService.MyBinder)iBinder;
+            System.out.println(mm);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
     //注册广播接收器
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
 
@@ -278,5 +310,19 @@ public class SongListActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    public static void playByPath(String path){
+        mm.play(path);
+    }
+    public static void setCurrent(int current){
+        Log.e("我姓你了",mm+" ");
+        mm.setCurrent(current);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        isOpen= 0;
+        super.onDestroy();
     }
 }
