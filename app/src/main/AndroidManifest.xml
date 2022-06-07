@@ -15,10 +15,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MusicPlayer">
         <activity
+            android:name=".MusicActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MusicPlayer.NoActionBar"/>
+
+        <service
+            android:name=".MusicService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity
             android:name=".MusicListActivity"
             android:exported="false"
-            android:theme="@style/Theme.MusicPlayer.NoActionBar"
-            />
+            android:theme="@style/Theme.MusicPlayer.NoActionBar" />
         <activity
             android:name=".SongListActivity"
             android:exported="false"
@@ -50,6 +59,16 @@
             android:name=".RecentActivity"
             android:exported="false"
             android:theme="@style/Theme.MusicPlayer.NoActionBar" />
+        <receiver
+            android:name=".broadcastReceiver.PlayerReceiver"
+            android:exported="true"
+            >
+            <intent-filter>
+                <action android:name="play_pre" />
+                <action android:name="play_next" />
+                <action android:name="play_pause" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

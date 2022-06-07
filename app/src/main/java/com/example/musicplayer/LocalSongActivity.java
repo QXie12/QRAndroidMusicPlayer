@@ -1,6 +1,10 @@
 package com.example.musicplayer;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +40,7 @@ public class LocalSongActivity extends AppCompatActivity {
     private TabLayout mTabLayout;
     private Toolbar toolbar;
     private List<Fragment> mFragments;
+    private static MusicService.MyBinder mm;
 
 
 //    //读取歌曲
@@ -61,7 +66,29 @@ public class LocalSongActivity extends AppCompatActivity {
         Log.e("初始化前","本地音乐");
         initTab();
         Log.e("初始化后","本地音乐");
+        Intent intent = new Intent(LocalSongActivity.this,MusicService.class);
+//        startService(intent);
+        bindService(intent,sc, BIND_AUTO_CREATE);
 
+    }
+    ServiceConnection sc = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            //绑定后初始化
+            System.out.println("初始化service。。。");
+            mm = (MusicService.MyBinder)iBinder;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
+    public static void playByPath(String path){
+        mm.play(path);
+    }
+    public static void setCurrent(int current){
+        mm.setCurrent(current);
     }
 
     private void initTab(){

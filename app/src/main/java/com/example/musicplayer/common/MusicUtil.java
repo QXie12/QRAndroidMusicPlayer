@@ -455,4 +455,10 @@ public class MusicUtil {
             }
         }
     }
+    public static String formatTime(int time) {
+        int miao = (time /= 1000);
+        int minute = miao / 60;
+        int second = miao % 60;
+        return String.format("%02d:%02d", minute, second);
+    }
 }

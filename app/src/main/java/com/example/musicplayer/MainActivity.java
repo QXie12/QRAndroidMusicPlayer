@@ -1,7 +1,15 @@
 package com.example.musicplayer;
 
+import static android.content.ContentValues.TAG;
+
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -41,20 +49,43 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 //主Activity，包含三个底边的tab和一个侧边栏
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
     private List<Fragment> mFragments;
+    private static MusicService.MyBinder mm;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
-
+    private static CircleImageView music_image;
+    private static TextView music_name;
+    private static TextView music_singer;
+    private static ImageView main_isPlay;
     private String[] mTitles = {"我的","乐库","电台"};
     private int[] mImages = {R.drawable.ic_menu_slideshow, R.drawable.ic_menu_gallery, R.drawable.ic_menu_camera};
 
     //读取歌曲
     MusicUtil musicUtil;
 
+    public static Handler handler = new Handler(new Handler.Callback() {
+
+        @Override
+        public boolean handleMessage(Message msg) {
+            //下面接受service发送的消息，更新主页下面歌曲的信息
+            Log.d(TAG,"给main发送消息");
+            if(MusicUtil.getAlbumArtByPath(String.valueOf(msg.getData().get("path")))==null){
+                music_image.setImageResource(R.drawable.gai);
+            }else {
+                music_image.setImageBitmap(MusicUtil.getAlbumArtByPath(String.valueOf(msg.getData().get("path"))));
+            }
+            System.out.println("bitmap有没有："+MusicUtil.getAlbumArtByPath(String.valueOf(msg.getData().get("path"))));
+
+            music_name.setText(String.valueOf(msg.getData().get("musicName")));
+            music_singer.setText(String.valueOf(msg.getData().get("singer")));
+            main_isPlay.setImageResource(R.drawable.ic_music_on); //音乐开始播放
+            return false;
+        }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +93,10 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        //绑定service
+        Intent intent = new Intent(MainActivity.this,MusicService.class);
+//        startService(intent);
+        bindService(intent,sc, BIND_AUTO_CREATE);
 
         setSupportActionBar(binding.appBarMain.toolbar);
 //        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +120,32 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        music_image = findViewById(R.id.music_image);
+        music_name = findViewById(R.id.music_name);
+        music_singer = findViewById(R.id.music_author);
+        main_isPlay = findViewById(R.id.main_isPlay);
+        main_isPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //点击暂停/播放
+                if(MusicService.isPlay){
+                    main_isPlay.setImageResource(R.drawable.music_suspend); //点击暂停
+                    MusicService.isPlay = false;
+                    mm.pause();
+                }else {
+                    main_isPlay.setImageResource(R.drawable.ic_music_on); //开始播放
+                    if(!mm.isChanged()){
+                        mm.play(); //第一首歌初始化需要
+                    }else{
+                        MusicService.isPlay = true;
+                        mm.start();//后面的歌就是暂停之后再开始了
+                    }
+
+
+                }
+            }
+        });
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -117,6 +178,42 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    ServiceConnection sc = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            //绑定后初始化
+            System.out.println("初始化service。。。");
+            mm = (MusicService.MyBinder)iBinder;
+            //todo main里面下面歌曲那里初始化时可能要根据最近播放显示音乐在那里
+            if(mm.exist()){
+                if (MusicUtil.getAlbumArtByPath(mm.getPath())==null){
+                    Log.d(TAG,"空的");
+                }
+                Log.d(TAG,"......."+mm.getPath());
+                if(MusicUtil.getAlbumArtByPath(String.valueOf(mm.getPath()))==null){
+                    music_image.setImageResource(R.drawable.gai);
+                }else {
+                    music_image.setImageBitmap(MusicUtil.getAlbumArtByPath(mm.getPath()));
+                }
+
+                music_name.setText(mm.getSongName());
+                music_singer.setText(mm.getSinger());
+                if(MusicService.isPlay){
+                    main_isPlay.setImageResource(R.drawable.ic_music_on);//当前正在播放
+                }else {
+                    //设置成暂停的图片
+                    //TODO 这里图片待改
+                    main_isPlay.setImageResource(R.drawable.music_suspend);//暂停了
+                }
+            }
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
 
     //菜单栏
 //    @Override
@@ -188,6 +285,17 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setClass(MainActivity.this, HomeActivity.class);
         startActivity(intent);
+    }
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.cardView:
+                Log.d(TAG,"点了cardview");
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, MusicActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
 
 }

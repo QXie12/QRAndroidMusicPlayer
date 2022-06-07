@@ -5,7 +5,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.View;
 
 import com.example.musicplayer.adapter.MusicFragmentAdapter;
@@ -27,6 +31,7 @@ public class RecentActivity extends AppCompatActivity {
     private TabLayout mTabLayout;
     private Toolbar toolbar;
     private List<Fragment> mFragments;
+    private static MusicService.MyBinder mm;
 
 
     @Override
@@ -46,11 +51,26 @@ public class RecentActivity extends AppCompatActivity {
                 finish();
             }
         });
-
+        Intent intent = new Intent(RecentActivity.this,MusicService.class);
+//        startService(intent);
+        bindService(intent,sc, BIND_AUTO_CREATE);
         //初始化标签页
         initTab();
 
     }
+    ServiceConnection sc = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            //绑定后初始化
+            System.out.println("初始化service。。。");
+            mm = (MusicService.MyBinder)iBinder;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
     private void initTab(){
 
         //初始化分页面的 Fragment，并将其添加到列表中
@@ -68,6 +88,12 @@ public class RecentActivity extends AppCompatActivity {
         mTabLayout = binding.recentTabLayout;
         //将 ViewPager 绑定到 TabLayout上
         mTabLayout.setupWithViewPager(mViewPager);
+    }
+    public static void playByPath(String path){
+        mm.play(path);
+    }
+    public static void setCurrent(int current){
+        mm.setCurrent(current);
     }
 
     //添加每个切换页面的Fragment

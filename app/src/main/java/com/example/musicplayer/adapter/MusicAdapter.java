@@ -1,6 +1,7 @@
 package com.example.musicplayer.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,6 +16,8 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.musicplayer.LocalSongActivity;
+import com.example.musicplayer.MusicActivity;
 import com.example.musicplayer.R;
 import com.example.musicplayer.bean.MusicInfoModel;
 import com.example.musicplayer.common.MusicUtil;
@@ -87,7 +90,13 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.BaseViewHold
             @Override
             public void onClick(View v) {
                 Log.e("本首歌的信息",musicInfoModel.getMusicName()+" "+ musicInfoModel.getSinger() + " " + musicInfoModel.getSortSongId()+musicInfoModel.getId());
-                MusicUtil.addRecentMusic(musicInfoModel);
+//                MusicUtil.addRecentMusic(musicInfoModel);
+
+                LocalSongActivity.setCurrent(musicInfoModel.getId());
+                LocalSongActivity.playByPath(musicInfoModel.getPath());
+                Intent intent = new Intent();
+                intent.setClass(mContext, MusicActivity.class);
+                mContext.startActivity(intent); //打开
             }
         });
         //小爱心

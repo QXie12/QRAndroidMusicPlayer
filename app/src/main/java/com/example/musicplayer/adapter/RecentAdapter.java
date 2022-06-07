@@ -13,7 +13,10 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.musicplayer.LocalSongActivity;
+import com.example.musicplayer.MusicActivity;
 import com.example.musicplayer.R;
+import com.example.musicplayer.RecentActivity;
 import com.example.musicplayer.SecondMusicActivity;
 import com.example.musicplayer.bean.Album;
 import com.example.musicplayer.bean.MusicInfoModel;
@@ -52,7 +55,8 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.BaseViewHo
         realHolder.songName.setText(musicInfoModel.getMusicName());
         //歌手、时长详情
         //todo 时长格式更改
-        realHolder.singerName.setText(musicInfoModel.getSinger()+"  "+ musicInfoModel.getTime());
+
+        realHolder.singerName.setText(musicInfoModel.getSinger()+"  "+ MusicUtil.formatTime(musicInfoModel.getTime()));
 
 
         realHolder.imageView.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +64,8 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.BaseViewHo
             public void onClick(View v) {
                 //todo 点击打开一个操作栏
                 Log.e("更多操作",musicInfoModel.getMusicName());
+
+
             }
         });
 
@@ -67,7 +73,12 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.BaseViewHo
             @Override
             public void onClick(View v) {
                 //todo 最近播放列表里面的歌点击也会添加到list里面 此处要打开一个新的activity，返回之后再刷新才看到新的list
-                MusicUtil.addRecentMusic(musicInfoModel);
+//                MusicUtil.addRecentMusic(musicInfoModel);
+                RecentActivity.setCurrent(musicInfoModel.getId());
+                RecentActivity.playByPath(musicInfoModel.getPath());
+                Intent intent = new Intent();
+                intent.setClass(mContext, MusicActivity.class);
+                mContext.startActivity(intent); //打开
             }
         });
     }
@@ -103,5 +114,6 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.BaseViewHo
 
         }
     }
+
 
 }
