@@ -104,7 +104,18 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.BaseViewHold
             @Override
             public void onClick(View v) {
                 Log.e("本首歌的信息",musicInfoModel.getMusicName()+" "+ musicInfoModel.getSinger() + " " + musicInfoModel.getSortSongId()+musicInfoModel.getId());
-                MusicUtil.addFavoriteMusic(musicInfoModel);
+                if(MusicUtil.addFavoriteMusic(musicInfoModel)){
+                    Snackbar.make(v, "已添加到喜欢", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null)
+                            .setBackgroundTint(mContext.getResources().getColor(R.color.green))
+                            .show();
+                }else{
+                    Snackbar.make(v, "已喜欢", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null)
+                            .setBackgroundTint(mContext.getResources().getColor(R.color.red))
+                            .show();
+                }
+
             }
         });
 
@@ -197,6 +208,12 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.BaseViewHold
             @Override
             public void onClick(View v) {
                 Log.e("播放下一首",musicInfoModel.getMusicName()+" "+ musicInfoModel.getSinger() + " " + musicInfoModel.getSortSongId()+musicInfoModel.getId());
+                LocalSongActivity.setCurrent(musicInfoModel.getId()); //更新current
+                LocalSongActivity.playByPath(musicInfoModel.getPath()); //播放当前歌曲
+                Snackbar.make(v, "开始播放", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null)
+                        .setBackgroundTint(mContext.getResources().getColor(R.color.green))
+                        .show();
             }
         });
 

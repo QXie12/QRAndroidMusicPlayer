@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 
@@ -39,6 +41,8 @@ public class MusicListActivity extends AppCompatActivity {
 
     //要添加歌曲的歌单的信息
     private static SongList songList;
+
+    public static final String action = "notition";
     //歌单的歌曲的list
 //    private static List<MusicInfoModel> songListMusic;
 
@@ -71,16 +75,20 @@ public class MusicListActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                finish();
+                Intent intent = new Intent(action);
+                intent.putExtra("SongList", (Serializable) songList);
+//                intent.putExtra("SongList", "nihao");
+                sendBroadcast(intent);
+                finish();
                 //todo 返回到歌单页面的时候，把改过的songlist传回去
-                Intent myIntent = new Intent(MusicListActivity.this, SongListActivity.class);
-                //传递数据
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("SongList",(Serializable) songList);
-                myIntent.putExtras(bundle);
-                Log.e("我穿了新的歌单去了",songList.getSongListName()+" " + songList.getMusicList());
-                //启动新的intent
-                startActivity(myIntent);
+//                Intent myIntent = new Intent(MusicListActivity.this, SongListActivity.class);
+//                //传递数据
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable("SongList",(Serializable) songList);
+//                myIntent.putExtras(bundle);
+//                Log.e("我穿了新的歌单去了",songList.getSongListName()+" " + songList.getMusicList());
+//                //启动新的intent
+//                startActivity(myIntent);
             }
         });
 

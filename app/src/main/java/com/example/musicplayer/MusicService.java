@@ -62,6 +62,7 @@ public class MusicService extends Service {
     static String  singer;
     static Timer timer;
     static String path;
+    static String like = "false";
     public final IBinder binder = new MyBinder();
     private MusicUtil musicUtil;; //获取本地音乐
     public static List<MusicInfoModel> musicInfoModelList;
@@ -91,7 +92,6 @@ public class MusicService extends Service {
             musicName = musicInfoModelList.get(current).getMusicName();
             singer = musicInfoModelList.get(current).getSinger();
             path = musicInfoModelList.get(current).getPath();
-
             Bundle bundle = new Bundle();
             bundle.putString("musicName",musicName);  //往Bundle中存放数据
             bundle.putString("singer",singer);  //往Bundle中put数据
@@ -108,11 +108,20 @@ public class MusicService extends Service {
                     Message msg = Message.obtain();
                     //Message对象的arg1，arg2参数携带音乐当前播放进度信息，类型是int
                     msg.arg1 = time;
+                    //在播放过程中点了喜欢，需要更新信息
+                    if(MusicUtil.getAllFavoriteMusicList().contains(musicInfoModelList.get(current))){
+                        //设成小红心
+                        like = "true";
+                    }else
+                        like = "false";
+                    bundle.putString("like",like);
                     if(musicplayer!=null){
                         msg.arg2 = musicplayer.getCurrentPosition();
                         msg.setData(bundle);//mes利用Bundle传递数据
                         //使用MusicActivity中的handler发送信息
-                        MusicActivity.handler.sendMessage(msg);
+                        if(isPlay){
+                            MusicActivity.handler.sendMessage(msg);
+                        }
                     }
                 }
             }, 0, 100);
@@ -257,6 +266,12 @@ public class MusicService extends Service {
         public void timer_cancel(){
             timer.cancel();
         }
+        public MusicInfoModel getMusic(){
+            return musicInfoModelList.get(current);
+        }
+        public String getLike(){
+            return like;
+        }
 
     }
 
@@ -309,6 +324,9 @@ public class MusicService extends Service {
     }
     //播放歌曲必须通过这个方法！
     public static void musicPlay(String path){
+        if(timer!=null){
+            timer.cancel();
+        }
         try {
             System.out.println("当前在不在播放："+isPlay);
             Log.d(TAG,"播放新的一首歌，歌曲路径是："+path);
@@ -334,7 +352,6 @@ public class MusicService extends Service {
                     time = musicplayer.getDuration();
                     musicName = musicInfoModelList.get(current).getMusicName();
                     singer = musicInfoModelList.get(current).getSinger();
-
                     //歌曲信息更新后要更新通知栏
                     if(MusicUtil.getAlbumArtByPath(String.valueOf(musicInfoModelList.get(current).getPath()))==null){
                         remoteViews.setImageViewResource(R.id.music_notification_image,R.drawable.gai);
@@ -360,7 +377,9 @@ public class MusicService extends Service {
                     //每隔50毫秒发送音乐进度
                     Log.d(TAG,"接下来给musicActivity发消息");
                     if(MusicActivity_isStart.equals("true")){
-                        timer.cancel();
+                        if(timer!=null){
+                            timer.cancel();
+                        }
                         timer = new Timer();
                         timer.schedule(new TimerTask() {
                             @Override
@@ -372,6 +391,12 @@ public class MusicService extends Service {
                                 if(musicplayer!=null){
                                     msg.arg2 = musicplayer.getCurrentPosition();
                                     msg.setData(bundle);//mes利用Bundle传递数据
+                                    if(MusicUtil.getAllFavoriteMusicList().contains(musicInfoModelList.get(current))){
+                                        //设成小红心
+                                        like = "true";
+                                    }else
+                                        like = "false";
+                                    bundle.putString("like",like);
                                     //使用MusicActivity中的handler发送信息
                                     MusicActivity.handler.sendMessage(msg);
                                 }

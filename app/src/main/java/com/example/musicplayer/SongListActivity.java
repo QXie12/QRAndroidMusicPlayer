@@ -1,7 +1,11 @@
 package com.example.musicplayer;
 
+import static android.content.ContentValues.TAG;
+
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
@@ -21,6 +25,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
@@ -37,6 +43,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 //歌单详情界面的activity，包含上面的折叠的toolbar和下面的歌曲列表
 public class SongListActivity extends AppCompatActivity {
 
@@ -54,21 +63,19 @@ public class SongListActivity extends AppCompatActivity {
 
     //歌单的title、封面
     private String title;
-    private int cover;
+    private  int cover;
 
     //下拉界面状态相关的内容
-    private ActivitySongListBinding binding;
+    private  ActivitySongListBinding binding;
     private CollapsingToolbarLayoutState state;
     private enum CollapsingToolbarLayoutState {
         EXPANDED,
         COLLAPSED,
         INTERNEDIATE
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivitySongListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -77,6 +84,8 @@ public class SongListActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
+        IntentFilter filter = new IntentFilter(MusicListActivity.action);
+        registerReceiver(broadcastReceiver, filter);
         //采取分开传的方式
 //        title = (String) bundle.getSerializable("songListName");
 //        cover = (Integer)bundle.getSerializable("cover");
@@ -110,12 +119,12 @@ public class SongListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //todo 返回到主界面的时候，需要往util里面改一下
-                MusicUtil.findSongListBySongListName(title).setMusicList(songList.getMusicList());
-//                finish();
-
-                Intent myIntent = new Intent(SongListActivity.this, MainActivity.class);
-                //启动新的intent
-                startActivity(myIntent);
+//                MusicUtil.findSongListBySongListName(title).setMusicList(songList.getMusicList());
+                finish();
+//
+//                Intent myIntent = new Intent(SongListActivity.this, MainActivity.class);
+//                //启动新的intent
+//                startActivity(myIntent);
             }
         });
         //折叠显示的区域
@@ -183,6 +192,29 @@ public class SongListActivity extends AppCompatActivity {
             }
         });
     }
+    //注册广播接收器
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO Auto-generated method stub
+            Bundle bundle = intent.getExtras();
+            songList = ((SongList)bundle.getSerializable("SongList"));
+            Log.d(TAG,""+bundle.get("SongList"));
+            Log.d(TAG,"我接收到消息！");
+            if(songList.getMusicList()!= null && songList.getMusicList().size() >0){
+                //加载下面的歌单
+                Log.d(TAG,"11111");
+                button.setVisibility(View.GONE);
+                binding.favoritePlay.setVisibility(View.VISIBLE);
+                initMusic();
+            }else{
+                Log.d(TAG,"2222");
+                button.setVisibility(View.VISIBLE);
+                binding.favoritePlay.setVisibility(View.INVISIBLE);
+            }
+        }
+    };
 
     @Nullable
     @Override

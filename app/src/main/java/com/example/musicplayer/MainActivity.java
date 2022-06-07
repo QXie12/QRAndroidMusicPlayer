@@ -151,9 +151,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.nav_home: click_home();
+                    case R.id.nav_home:
                         break;
-                    case R.id.nav_gallery:
+                    case R.id.nav_gallery:click_home();
                         break;
                     case R.id.nav_slideshow:
                         break;

@@ -67,6 +67,7 @@
                 <action android:name="play_pre" />
                 <action android:name="play_next" />
                 <action android:name="play_pause" />
+                <action android:name="notition"/>
             </intent-filter>
         </receiver>
     </application>

@@ -205,7 +205,6 @@ public class MusicUtil {
         }
 
     }
-
     //安卓10以下使用
     public static Bitmap getAlbumArt(int album_id) {
         String mUriAlbums = "content://media/external/audio/albums";
@@ -394,6 +393,10 @@ public class MusicUtil {
     //获取我的最爱的歌曲列表
     public static List<MusicInfoModel> getAllFavoriteMusicList() {
         return allFavoriteMusicList;
+    }
+    public static boolean deleteFavoriteMusic(MusicInfoModel musicInfoModel){
+        myFavoriteSongList.getMusicList().remove(musicInfoModel);
+        return true;
     }
     //todo 向我的最爱列表中添加歌曲
     public static boolean addFavoriteMusic(MusicInfoModel musicInfoModel){

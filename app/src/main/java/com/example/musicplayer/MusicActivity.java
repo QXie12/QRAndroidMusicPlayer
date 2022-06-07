@@ -47,6 +47,7 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
     private ImageButton nextSong;
     private ImageButton playStatus;
     private ImageButton music_return;
+    private static ImageButton like;
     private static ImageView music_fengmian;
     public static String isStart = "false";
     private int way = 0; //默认单曲循环
@@ -66,6 +67,11 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
             }else {
                 music_fengmian.setImageBitmap(MusicUtil.getAlbumArtByPath(String.valueOf(msg.getData().get("path"))));
             }
+            if(String.valueOf(msg.getData().get("like")).equals("true")){
+                //设成小红心
+                like.setImageResource(R.drawable.liked);
+            }else
+                like.setImageResource(R.drawable.music_like);
             musictimes = seekBar.getProgress();
             musicTimes_f=musictimes/60000;
             musicTimes_s=(musictimes%60000)/1000;
@@ -115,6 +121,8 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
         music_return = findViewById(R.id.music_return);
         music_return.setOnClickListener(this);
         music_fengmian = findViewById(R.id.profile_image);
+        like = findViewById(R.id.music_like);
+        like.setOnClickListener(this);
 
         bindViews();
     }
@@ -153,6 +161,10 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
 //                music_fengmian.setImageBitmap(MusicUtil.getAlbumArtByPath(mm.getPath()));
                 Glide.with(MusicActivity.this).load(MusicUtil.getAlbumArtByPath(mm.getPath())).into(music_fengmian);
 
+            }
+            if(MusicUtil.getAllFavoriteMusicList().contains(mm.getMusic())){
+                //设成小红心
+                like.setImageResource(R.drawable.liked);
             }
             seekBar.setProgress(mm.getCurrentPosition());
             songName.setText(mm.getSongName());
@@ -198,10 +210,12 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
             case R.id.next_Song:
                 //切下一首
                 mm.nextSong();
+                playButton.setImageResource(R.drawable.music_play);
                 break;
             case R.id.pre_Song:
                 //切上一首
                 mm.preSong();
+                playButton.setImageResource(R.drawable.music_play);
                 break;
             case R.id.music_return:
                 mm.close_timer();
@@ -221,6 +235,17 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
                     playStatus.setImageDrawable(getResources().getDrawable(R.drawable.music_shunxu)); //顺序播放
                 else
                     playStatus.setImageDrawable(getResources().getDrawable(R.drawable.music_suiji));  //随机播放
+            case R.id.music_like:
+                if(mm.getLike().equals("true")){
+                    //这首歌已经喜欢了，再点就是取消喜欢
+                    MusicUtil.deleteFavoriteMusic(mm.getMusic());
+                    like.setImageResource(R.drawable.music_like);
+                }else {
+                    MusicUtil.addFavoriteMusic(mm.getMusic()); //加入收藏
+                    like.setImageResource(R.drawable.liked); //喜欢
+                    Log.d(TAG,"喜欢");
+                }
+
             default:
                 break;
         }

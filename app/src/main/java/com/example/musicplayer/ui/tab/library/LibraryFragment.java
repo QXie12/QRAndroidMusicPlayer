@@ -49,22 +49,7 @@ public class LibraryFragment extends Fragment {
         binding = FragmentLibraryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.libraryText;
-
-        final ImageView imageView1 = binding.imageView3;
 //        imageView1.setImageResource(R.drawable.avatar4);
-
-        Glide.with(this)
-                .load(R.drawable.avatar4)
-                .into(imageView1);
-
-
-        radioViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
         return root;
     }
 
