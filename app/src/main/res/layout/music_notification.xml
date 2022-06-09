@@ -106,7 +106,7 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="#00000000"
-                                    app:srcCompat="@drawable/ic_music_on" />
+                                    app:srcCompat="@drawable/ic_skip_next" />
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>

@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static TextView music_singer;
     private static ImageView main_isPlay;
     private String[] mTitles = {"我的","乐库","电台"};
-    private int[] mImages = {R.drawable.ic_menu_slideshow, R.drawable.ic_menu_gallery, R.drawable.ic_menu_camera};
+    private int[] mImages = {R.drawable.ic_new_singer, R.drawable.ic_cidai, R.drawable.ic_recommend};
 
     //读取歌曲
     MusicUtil musicUtil;

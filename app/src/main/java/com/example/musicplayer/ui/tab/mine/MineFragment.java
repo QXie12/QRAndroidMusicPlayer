@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -107,11 +108,11 @@ public class MineFragment extends Fragment {
 
 
 //        上方几个Button
-        Button recommend_music = binding.recommendMusic;
-        Button local_music = binding.localMusic;
-        Button download_music = binding.downloadMusic;
-        Button recent_music = binding.recentMusic;
-        Button favorite_music = binding.favoriteMusic;
+        ImageButton recommend_music = binding.recommendMusic;
+        ImageButton local_music = binding.localMusic;
+        ImageButton download_music = binding.downloadMusic;
+        ImageButton recent_music = binding.recentMusic;
+        ImageButton favorite_music = binding.favoriteMusic;
 
         //查看本地音乐的按钮
         local_music.setOnClickListener(new View.OnClickListener(){
