@@ -30,7 +30,7 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/tabViewPager"
         android:layout_width="match_parent"
-        android:layout_height="542dp"
+        android:layout_height="539dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <androidx.cardview.widget.CardView
@@ -107,7 +107,7 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="63dp"
         android:layout_weight="1"
         app:tabIndicatorFullWidth="true">
 

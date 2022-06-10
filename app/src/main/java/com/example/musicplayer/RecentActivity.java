@@ -1,6 +1,7 @@
 package com.example.musicplayer;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -11,6 +12,8 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.musicplayer.adapter.MusicFragmentAdapter;
@@ -115,4 +118,26 @@ public class RecentActivity extends AppCompatActivity {
         isOpen = 0;
         super.onDestroy();
     }
+
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.recent_menu, menu);
+        MenuItem clearItem = menu.findItem(R.id.clear);
+
+        clearItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                System.out.println("点击了清空按钮");
+
+                return false;
+            }
+        });
+        return true;
+    }
+
+
 }

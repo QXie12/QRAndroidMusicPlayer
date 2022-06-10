@@ -107,5 +107,8 @@ public class RecentSongFragment extends Fragment {
 
         recentAdapter = new RecentAdapter(getContext(), list);
         recyclerView.setAdapter(recentAdapter);
+
+
+
     }
 }

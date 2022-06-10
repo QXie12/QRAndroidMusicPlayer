@@ -133,16 +133,16 @@ public class SongListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //todo 返回到主界面的时候，需要往util里面改一下
                 MusicUtil.findSongListBySongListName(title).setMusicList(songList.getMusicList());
-//
                 Intent myIntent = new Intent(SongListActivity.this, MainActivity.class);
                 //启动新的intent
-//                startActivity(myIntent);
+                startActivity(myIntent);
+                overridePendingTransition(0,0);
 
-                Intent intent = new Intent(reMain);
-                intent.putExtra("SongList", (Serializable) songList);
+//                Intent intent = new Intent(reMain);
+//                intent.putExtra("SongList", (Serializable) songList);
 //                intent.putExtra("SongList", "nihao");
-                sendBroadcast(intent);
-                finish();
+//                sendBroadcast(intent);
+//                finish();
             }
         });
         //折叠显示的区域

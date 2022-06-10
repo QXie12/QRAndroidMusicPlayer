@@ -109,7 +109,12 @@ public class MusicService extends Service {
                     //Message对象的arg1，arg2参数携带音乐当前播放进度信息，类型是int
                     msg.arg1 = time;
                     //在播放过程中点了喜欢，需要更新信息
-                    if(MusicUtil.getAllFavoriteMusicList().contains(musicInfoModelList.get(current))){
+                    System.out.println("最喜欢的列表"+MusicUtil.getMyFavoriteSongList().getMusicList());
+                    for(MusicInfoModel musicInfoModel : MusicUtil.getMyFavoriteSongList().getMusicList()){
+                        System.out.println("最喜欢的列表中的歌曲"+musicInfoModel.getMusicName());
+                    }
+                    System.out.println("当前播放的歌曲"+musicInfoModelList.get(current).getMusicName());
+                    if(MusicUtil.getMyFavoriteSongList().getMusicList().contains(musicInfoModelList.get(current))){
                         //设成小红心
                         like = "true";
                     }else
@@ -391,14 +396,20 @@ public class MusicService extends Service {
                                 if(musicplayer!=null){
                                     msg.arg2 = musicplayer.getCurrentPosition();
                                     msg.setData(bundle);//mes利用Bundle传递数据
-                                    if(MusicUtil.getAllFavoriteMusicList().contains(musicInfoModelList.get(current))){
+                                    if(MusicUtil.getMyFavoriteSongList().getMusicList().contains(musicInfoModelList.get(current))){
                                         //设成小红心
                                         like = "true";
                                     }else
                                         like = "false";
+                                    Log.d(TAG,like);
                                     bundle.putString("like",like);
                                     //使用MusicActivity中的handler发送信息
                                     MusicActivity.handler.sendMessage(msg);
+                                    if(isPlay){
+                                        remoteViews.setImageViewResource(R.id.music_notification_play,R.drawable.ic_music_on);
+                                    }
+                                    else
+                                        remoteViews.setImageViewResource(R.id.music_notification_play,R.drawable.ic_music_down);
                                 }
                             }
                         }, 0, 100);

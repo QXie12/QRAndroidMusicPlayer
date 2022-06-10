@@ -457,6 +457,28 @@ public class MusicUtil {
         }
         return null;
     }
+    //通过歌手名字找得到歌手的相关信息
+    public static Singer findSingerBySingerName(String singerName){
+        for(Singer singer : allSingerList){
+            if(singer.getSingerName().equals(singerName)){
+                return singer;
+            }
+        }
+        return null;
+    }
+
+
+    //通过专辑名字找得到专辑的相关信息
+    public static Album findAlbumByAlbumName(String albumName){
+        for(Album album : allAlbumList){
+            if(album.getAlbumName().equals(albumName)){
+                return album;
+            }
+        }
+        return null;
+    }
+
+
     //todo 数据库的实现？获取最近播放的歌曲列表
     public static List<MusicInfoModel> getAllRecentMusicList() {
         return allRecentMusicList;
@@ -488,6 +510,10 @@ public class MusicUtil {
         for (int i = allRecentMusicList.size()-1 ; i >= 0 ; i--){
             Log.e("最近播放列表"+i ,allRecentMusicList.get(i).getMusicName());
         }
+    }
+    //清除最近播放列表
+    public static void clearRecent(){
+        allRecentMusicList.clear();
     }
 
     //获取我的最爱的歌曲列表
@@ -528,6 +554,7 @@ public class MusicUtil {
         return true;
     }
 
+    //普通歌单添加歌曲
     public static boolean addNormalMusic(SongList songList,MusicInfoModel musicInfoModel){
         for(MusicInfoModel musicInfoModel1 : songList.getMusicList()){
             if(musicInfoModel1.getMusicName().equals(musicInfoModel.getMusicName())){

@@ -3,6 +3,7 @@ package com.example.musicplayer.ui.tab.mine;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,19 +77,21 @@ public class MineFragment extends Fragment {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
         mineViewModel.setIndex(index);
+        System.out.println("你在这里？");
+
 
 
     }
 
+    //界面创建
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentMineBinding.inflate(inflater, container, false);
-
         View root = binding.getRoot();
+        System.out.println("我在什么时候会创建你啊我想问你");
 
         mTextView = binding.mainText;
-
         mineViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -96,11 +99,8 @@ public class MineFragment extends Fragment {
             }
         });
 
-        //顶部banner图片
+        //顶部banner图片 设置动画效果
         bannerImage = binding.bannerImage;
-//        Glide.with(this)
-//                .load(R.drawable.avatar10)
-//                .into(bannerImage);
         bannerImage.setImageResource(R.drawable.fengmian_animation_list);
 
         AD = (AnimationDrawable) bannerImage.getDrawable();
@@ -184,7 +184,7 @@ public class MineFragment extends Fragment {
         mViewPager.setAdapter(adapter);
         //将 ViewPager 绑定到 TabLayout上
         mTabLayout.setupWithViewPager(mViewPager);
-        }
+    }
 
 
     //添加每个切换页面的Fragment
@@ -195,6 +195,7 @@ public class MineFragment extends Fragment {
         mFragments.add(MySongListFragment.newInstance(2));
     }
 
+    //动画
     @Override
      public void onStart(){
         startAnimation();

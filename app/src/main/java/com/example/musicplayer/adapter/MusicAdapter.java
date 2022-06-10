@@ -2,6 +2,7 @@ package com.example.musicplayer.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,10 +20,13 @@ import com.bumptech.glide.Glide;
 import com.example.musicplayer.LocalSongActivity;
 import com.example.musicplayer.MusicActivity;
 import com.example.musicplayer.R;
+import com.example.musicplayer.SecondMusicActivity;
 import com.example.musicplayer.bean.MusicInfoModel;
+import com.example.musicplayer.bean.Singer;
 import com.example.musicplayer.common.MusicUtil;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.Serializable;
 import java.util.List;
 //单曲、二级页面每一个recyclerlistitem的adapter
 public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.BaseViewHolder> {
@@ -195,6 +199,8 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.BaseViewHold
         CardView pop_play = contentView.findViewById(R.id.pop_play);
         CardView pop_collect = contentView.findViewById(R.id.pop_collect);
         CardView pop_download = contentView.findViewById(R.id.pop_download);
+        CardView pop_singer = contentView.findViewById(R.id.pop_singer);
+        CardView pop_album = contentView.findViewById(R.id.pop_album);
 
 
 //        TextView tv1 = (TextView)contentView.findViewById(R.id.pop_computer);
@@ -241,6 +247,42 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.BaseViewHold
                 }
             }
         });
+
+
+        pop_singer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Singer singer = MusicUtil.findSingerBySingerName(musicInfoModel.getSinger());
+                //创建intent
+                Intent myIntent = new Intent(mContext, SecondMusicActivity.class);
+                //传递数据
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("name",singer.getSingerName());
+                bundle.putSerializable("musicList",(Serializable)singer.getMusicList());
+                myIntent.putExtras(bundle);
+                //启动新的intent
+                mContext.startActivity(myIntent);
+
+            }
+        });
+
+        pop_album.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Singer singer = MusicUtil.findSingerBySingerName(musicInfoModel.getSinger());
+                //创建intent
+                Intent myIntent = new Intent(mContext, SecondMusicActivity.class);
+                //传递数据
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("name",singer.getSingerName());
+                bundle.putSerializable("musicList",(Serializable)singer.getMusicList());
+                myIntent.putExtras(bundle);
+                //启动新的intent
+                mContext.startActivity(myIntent);
+
+            }
+        });
+
 
         //显示PopupWindow
         View rootview = LayoutInflater.from(mContext).inflate(R.layout.activity_localsong, null);

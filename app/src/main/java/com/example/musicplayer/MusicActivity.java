@@ -162,7 +162,7 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
                 Glide.with(MusicActivity.this).load(MusicUtil.getAlbumArtByPath(mm.getPath())).into(music_fengmian);
 
             }
-            if(MusicUtil.getAllFavoriteMusicList().contains(mm.getMusic())){
+            if(MusicUtil.getMyFavoriteSongList().getMusicList().contains(mm.getMusic())){
                 //设成小红心
                 like.setImageResource(R.drawable.liked);
             }
@@ -235,6 +235,7 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
                     playStatus.setImageDrawable(getResources().getDrawable(R.drawable.music_shunxu)); //顺序播放
                 else
                     playStatus.setImageDrawable(getResources().getDrawable(R.drawable.music_suiji));  //随机播放
+                break;
             case R.id.music_like:
                 if(mm.getLike().equals("true")){
                     //这首歌已经喜欢了，再点就是取消喜欢
@@ -245,6 +246,7 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
                     like.setImageResource(R.drawable.liked); //喜欢
                     Log.d(TAG,"喜欢");
                 }
+                break;
 
             default:
                 break;

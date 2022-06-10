@@ -66,6 +66,7 @@ public class MySongListFragment extends Fragment {
         return fragment;
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -112,7 +113,10 @@ public class MySongListFragment extends Fragment {
 //                                bundle.putSerializable("songListName",songList.getSongListName());
 //                                bundle.putSerializable("cover",R.drawable.album);//默认封面
 //                                bundle.putSerializable("musicList", (Serializable) musicInfoModelList);
-//
+
+
+                                songListAdapter.notifyItemChanged(0);
+
                                 myIntent.putExtras(bundle);
                                 //调用util的方法
                                 MusicUtil.addSongList(songList);

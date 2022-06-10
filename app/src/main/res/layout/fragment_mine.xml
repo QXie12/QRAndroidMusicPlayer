@@ -60,8 +60,6 @@
         >
 
 
-
-
     <LinearLayout
         android:id="@+id/selectionLayout"
         android:layout_width="match_parent"

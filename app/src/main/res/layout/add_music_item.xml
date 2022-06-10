@@ -17,7 +17,7 @@
         android:layout_marginEnd="15dp"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/item_content"
+        app:layout_constraintEnd_toStartOf="@+id/music_item_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@drawable/avatar1" />
@@ -48,7 +48,7 @@
         android:id="@+id/add_song_button"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginEnd="62dp"
+        android:layout_marginEnd="32dp"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/music_item_content"
