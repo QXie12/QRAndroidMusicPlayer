@@ -300,6 +300,19 @@ public class SongListActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.add_settings:
                 Log.e("添加歌曲","111");
+
+                //test
+                //todo 创建intent，打开二级页面
+                Intent myIntent = new Intent(SongListActivity.this,MusicListActivity.class);
+                //把歌单对象传给他
+                //传递数据
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("SongList",(Serializable) songList);//把这个歌单对象传过去
+                myIntent.putExtras(bundle);
+                startActivity(myIntent);
+
+
+
                 return true;
             case R.id.sort_settings:
                 Log.e("选择排序方式","111");

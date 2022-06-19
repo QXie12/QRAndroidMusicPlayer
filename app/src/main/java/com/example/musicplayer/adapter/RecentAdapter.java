@@ -85,7 +85,7 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.BaseViewHo
                         RecentActivity.playByPath(musicInfoModel.getPath());
                     }
                 }
-
+                notifyItemChanged(MusicUtil.getAllRecentMusicList().size()-1,1);
                 Intent intent = new Intent();
                 intent.setClass(mContext, MusicActivity.class);
                 mContext.startActivity(intent); //打开

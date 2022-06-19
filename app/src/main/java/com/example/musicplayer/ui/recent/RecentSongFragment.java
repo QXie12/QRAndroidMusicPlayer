@@ -106,6 +106,7 @@ public class RecentSongFragment extends Fragment {
 
 
         recentAdapter = new RecentAdapter(getContext(), list);
+        recentAdapter.notifyItemChanged(0);
         recyclerView.setAdapter(recentAdapter);
 
 

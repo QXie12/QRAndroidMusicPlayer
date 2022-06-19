@@ -77,10 +77,6 @@ public class MineFragment extends Fragment {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
         mineViewModel.setIndex(index);
-        System.out.println("你在这里？");
-
-
-
     }
 
     //界面创建
@@ -89,8 +85,7 @@ public class MineFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentMineBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        System.out.println("我在什么时候会创建你啊我想问你");
-
+        //为了布局好看多出来的text
         mTextView = binding.mainText;
         mineViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override

@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     });
 
+    //页面绘制
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -172,6 +173,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        //侧边栏每一项的监听 暂时没有实现
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -194,13 +196,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        drawer.addDrawerListener(drawerToggle);
 
 
+        //检查权限
         checkPermission();
         //标签页
         initView();
 
         //歌曲初始化
         if(MusicUtil.getMusicList().size()>0){
-
+            //donothing
         }else{
             musicUtil= new MusicUtil(getApplicationContext());
         }
@@ -260,6 +263,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        return true;
 //    }
 
+    //菜单栏的搜索按钮
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
@@ -278,11 +282,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 || super.onSupportNavigateUp();
     }
 
+    //用于初始化标签页的相关内容
     private void initView(){
         //实例化组件
         mViewPager = binding.appBarMain.tabViewPager;
         mTabLayout = binding.appBarMain.tabLayout;
-
 
         //初始化分页面的 Fragment，并将其添加到列表中
         initFragment();
@@ -316,6 +320,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mFragments.add(RadioFragment.newInstance(3));
     }
 
+    //点击个人中心
     public void click_home() {
         Intent intent = new Intent();
         intent.setClass(MainActivity.this, HomeActivity.class);
